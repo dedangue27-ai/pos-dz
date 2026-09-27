@@ -9,14 +9,15 @@
     <style>
         /* تصميم عارض الصور المتحرك الاحترافي بجودة عالية */
         .slider-section {
-            padding: 80px 20px;
+            padding: 60px 20px;
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             text-align: center;
             color: #fff;
+            margin: 40px 0;
         }
         .slider-container {
             max-width: 900px;
-            margin: 40px auto 0;
+            margin: 30px auto 0;
             position: relative;
             background: #1e293b;
             border-radius: 16px;
@@ -149,10 +150,50 @@
         </nav>
     </header>
 
-    <!-- UI Preview / Slider Section 4K Animated -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
+            <h1>Solution Ultime de Gestion de Stock & POS</h1>
+            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="pos-preview-box">
+                <h2>POS</h2>
+                <span>SYSTEM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Pourquoi Choisir POS Pro ?) -->
+    <section id="features" class="features">
+        <h2>Pourquoi Choisir POS Pro ?</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Rapide & Fluide</h3>
+                <p>Interface conçue en C# / WPF pour des performances maximales sur Windows.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Sécurité & Rôles</h3>
+                <p>Gestion stricte des utilisateurs et des permissions avec journalisation complète.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-barcode"></i>
+                <h3>Gestion de Barcode</h3>
+                <p>Génération automatique de codes-barres et suivi précis des articles et des prix.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Preview / Slider Section (تم وضعه هنا تماماً بين المميزات والأسعار) -->
     <section class="slider-section">
         <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;">Interfaces C# / WPF Haut de Gamme</span>
-        <h2 style="font-size: 36px; margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
+        <h2 style="font-size: 32px; margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
         <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Explorez les différentes fenêtres et fonctionnalités du système conçues avec une fluidité exceptionnelle.</p>
         
         <div class="slider-container">
@@ -202,7 +243,7 @@
                     <img src="Login.JPG" alt="Login">
                     <div class="slide-caption">
                         <h3>4. Connexion Sécurisée</h3>
-                        <p>Écran d'authentification protégeant l'accès au système avec gestion des identرants.</p>
+                        <p>Écran d'authentification protégeant l'accès au système avec gestion des identifiants.</p>
                     </div>
                 </div>
 
@@ -242,47 +283,7 @@
         </div>
     </section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
-            <h1>Solution Ultime de Gestion de Stock & POS</h1>
-            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
-            <div class="hero-buttons">
-                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
-            </div>
-        </div>
-        <div class="hero-card">
-            <div class="pos-preview-box">
-                <h2>POS</h2>
-                <span>SYSTEM</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <h2>Pourquoi Choisir POS Pro ?</h2>
-        <div class="features-grid">
-            <div class="feature-box">
-                <i class="fa-solid fa-bolt"></i>
-                <h3>Rapide & Fluide</h3>
-                <p>Interface conçue en C# / WPF pour des performances maximales sur Windows.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fa-solid fa-shield-halved"></i>
-                <h3>Sécurité & Rôles</h3>
-                <p>Gestion stricte des utilisateurs et des permissions avec journalisation complète.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fa-solid fa-barcode"></i>
-                <h3>Gestion de Barcode</h3>
-                <p>Génération automatique de codes-barres et suivi précis des articles et des prix.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
+    <!-- Pricing Section (Nos Tarifs) -->
     <section id="pricing" class="pricing">
         <h2>Nos Tarifs</h2>
         <div class="pricing-grid">
@@ -402,10 +403,8 @@
             startTimer();
         }
 
-        // بدء الحركة التلقائية عند تحميل الصفحة
         startTimer();
 
-        // إيقاف الحركة مؤقتاً عند مرور الماوس فوق العارض لسهولة القراءة
         const sliderContainer = document.querySelector('.slider-container');
         sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
         sliderContainer.addEventListener('mouseleave', () => startTimer());
@@ -419,7 +418,7 @@
         document.getElementById('telegramForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            , name = document.getElementById('fullName').value;
+            const name = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const submitBtn = document.getElementById('submitBtn');
