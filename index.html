@@ -1,66 +1,195 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Pro - نظام نقاط البيع</title>
-    <style>
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #333;
-        }
-        .container {
-            text-align: center;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-        .download-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 8px;
-            display: inline-block;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
-        }
-        .download-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>نظام نقاط البيع POS Pro</h1>
-        <p>قم بتحميل أحدث إصدار من البرنامج وثبته على حاسوبك بسهولة لإدارة أعمالك بكفاءة عالية.</p>
-        
-        <!-- زر التحميل المباشر المربوط بملف GitHub -->
-        <a href="https://github.com/dedangue27-ai/pos-dz/raw/refs/heads/main/POS.exe" class="download-btn" download="POS.exe">
-            📥 تحميل برنامج POS Pro
-        </a>
-    </div>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="mini-logo">POS</div>
+            <span class="logo-text">PRO</span>
+        </div>
+        <nav>
+            <a href="#features">Fonctionnalités</a>
+            <a href="#pricing">Tarifs</a>
+            <a href="#register">Inscription</a>
+            <a href="#contact">Contact</a>
+            <a href="#download" class="nav-btn">Télécharger</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
+            <h1>Solution Ultime de Gestion de Stock & POS</h1>
+            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="pos-preview-box">
+                <h2>POS</h2>
+                <span>SYSTEM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2>Pourquoi Choisir POS Pro ?</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Rapide & Fluide</h3>
+                <p>Interface conçue en C# / WPF pour des performances maximales sur Windows.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Sécurité & Rôles</h3>
+                <p>Gestion stricte des utilisateurs et des permissions avec journalisation complète.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-barcode"></i>
+                <h3>Gestion de Barcode</h3>
+                <p>Génération automatique de codes-barres et suivi précis des articles et des prix.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <h2>Nos Tarifs</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Version Essai</h3>
+                <div class="price">Gratuit</div>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Test de 15 jours</li>
+                    <li><i class="fa-solid fa-check"></i> Fonctionnalités de base</li>
+                    <li><i class="fa-solid fa-check"></i> Support par Email</li>
+                </ul>
+                <a href="#download" class="btn-secondary">Essayer</a>
+            </div>
+            <div class="pricing-card popular">
+                <div class="popular-badge">Recommandé</div>
+                <h3>Licence À Vie</h3>
+                <div class="price">Sur Devis</div>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Utilisation illimitée</li>
+                    <li><i class="fa-solid fa-check"></i> Toutes les fonctionnalités</li>
+                    <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
+                    <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
+                </ul>
+                <a href="#contact" class="btn-primary">Acheter Maintenant</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="download-box">
+            <h2>Prêt à digitaliser votre commerce ?</h2>
+            <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entrepôt facilement.</p>
+            <a href="#" class="btn-primary large"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <section id="register" class="register-section">
+        <div class="register-box">
+            <h2>Obtenez votre version de logiciel</h2>
+            <p>Entrez votre nom, votre e-mail et votre numéro de téléphone, et nous vous contacterons pour activer votre copie immédiatement.</p>
+            
+            <form id="telegramForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="fullName" placeholder="Nom complet" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
+                </div>
+                <button type="submit" class="btn-primary large" id="submitBtn">Envoyer la demande</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contactez-nous</h2>
+        <p>Pour l'achat de licence ou toute demande d'assistance :</p>
+        <div class="contact-info">
+            <div class="contact-item"><i class="fa-solid fa-phone"></i> +213 (0) 7 79 62 58 67</div>
+            <div class="contact-item"><i class="fa-solid fa-envelope"></i> contactposdz@gmail.com</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
+    </footer>
+
+    <!-- JavaScript المباشر لبوت تيليغرام -->
+    <script>
+        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
+        const chatId = "6016112482";
+
+        document.getElementById('telegramForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.innerText = "Envoi en cours...";
+            submitBtn.disabled = true;
+
+            const message = `🚀 Nouvelle demande POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}`;
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Demande envoyée avec succès !');
+                    document.getElementById('telegramForm').reset();
+                } else {
+                    alert('Erreur: ' + (data.description || 'Veuillez réessayer.'));
+                }
+                submitBtn.innerText = "Envoyer la demande";
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erreur de connexion.');
+                submitBtn.innerText = "Envoyer la demande";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
 
 </body>
 </html>
