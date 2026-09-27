@@ -4,17 +4,299 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* تصميم عارض الصور المتحرك الاحترافي بجودة عالية */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #0f172a;
+            --dark-card: #1e293b;
+            --gray-light: #f8fafc;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar responsive & Mobile Menu */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .mini-logo {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Desktop Nav */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s !important;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Hamburger Icon */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 5% 80px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            min-height: 90vh;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.6);
+        }
+
+        .hero-card {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pos-preview-box {
+            width: 100%;
+            max-width: 420px;
+            height: 280px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pos-preview-box h2 {
+            font-size: 48px;
+            color: white;
+            letter-spacing: 4px;
+        }
+
+        .pos-preview-box span {
+            color: #3b82f6;
+            font-weight: 600;
+            letter-spacing: 6px;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Generic Section Styling */
+        section {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: var(--dark);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-box i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: rgba(37, 99, 235, 0.1);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .feature-box h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .feature-box p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Slider Section */
         .slider-section {
-            padding: 60px 20px;
+            padding: 80px 5%;
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             text-align: center;
             color: #fff;
-            margin: 40px 0;
         }
+
         .slider-container {
             max-width: 900px;
             margin: 30px auto 0;
@@ -25,7 +307,7 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /* إطار يشبه نوافذ سطح المكتب الاحترافية */
+
         .window-header {
             background: #0f172a;
             padding: 12px 20px;
@@ -34,21 +316,25 @@
             justify-content: space-between;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .window-dots {
             display: flex;
             gap: 8px;
         }
+
         .window-dots span {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             display: inline-block;
         }
+
         .dot-red { background: #ef4444; }
         .dot-yellow { background: #f59e0b; }
         .dot-green { background: #10b981; }
+
         .window-title {
-            font-size: 14px;
+            font-size: 13px;
             color: #94a3b8;
             font-family: monospace;
         }
@@ -57,79 +343,391 @@
             display: flex;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .slide {
             min-width: 100%;
             box-sizing: border-box;
             position: relative;
         }
+
         .slide img {
             width: 100%;
-            height: 480px;
+            height: auto;
+            max-height: 480px;
             object-fit: contain;
             background: #000;
+            display: block;
         }
+
         .slide-caption {
             padding: 20px;
             background: rgba(15, 23, 42, 0.95);
             text-align: left;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .slide-caption h3 {
             margin: 0 0 5px;
             color: #60a5fa;
-            font-size: 18px;
+            font-size: 17px;
         }
+
         .slide-caption p {
             margin: 0;
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* أزرار التنقل اليدوية */
         .slider-btn {
             position: absolute;
-            top: 55%;
+            top: 50%;
             transform: translateY(-50%);
             background: rgba(15, 23, 42, 0.7);
             color: white;
             border: none;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             transition: 0.3s;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
         .slider-btn:hover {
             background: #3b82f6;
         }
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
 
-        /* مؤشرات النقاط في الأسفل */
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
         .slider-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             padding: 15px;
             background: #0f172a;
         }
+
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #475569;
             cursor: pointer;
             transition: 0.3s;
         }
+
         .dot.active {
             background: #3b82f6;
-            width: 25px;
-            border-radius: 6px;
+            width: 22px;
+            border-radius: 4px;
+        }
+
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 380px));
+            justify-content: center;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pricing-card h3 {
+            font-size: 22px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 25px;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .pricing-card ul li {
+            padding: 10px 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+        }
+
+        .pricing-card ul li i {
+            color: #10b981;
+        }
+
+        .btn-secondary {
+            display: block;
+            text-align: center;
+            background: var(--gray-light);
+            color: var(--dark);
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .download-box {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-box h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .download-box p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .version-text {
+            display: block;
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Register & Form Section */
+        .register-section {
+            background: white;
+            padding: 80px 5%;
+        }
+
+        .register-box {
+            max-width: 550px;
+            margin: 0 auto;
+            background: var(--gray-light);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+
+        .register-box h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .register-box p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--dark);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .register-box .btn-primary {
+            width: 100%;
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            background: var(--gray-light);
+            border-top: 1px solid var(--border);
+            padding: 60px 20px;
+        }
+
+        .contact h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .contact p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .contact-item i {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: #64748b;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Mobile Media Queries */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 65px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 65px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 65px);
+                background: #0f172a;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 25px;
+                transition: left 0.3s ease-in-out;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                font-size: 18px;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 120px 20px 60px;
+                gap: 30px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero .btn-primary {
+                max-width: 100%;
+            }
+
+            .pos-preview-box {
+                max-width: 100%;
+                height: 220px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .register-box {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
@@ -137,16 +735,19 @@
 
     <!-- Header -->
     <header class="navbar">
-        <div class="logo-container">
+        <a href="index.html" class="logo-container" onclick="reloadToHome(event)">
             <div class="mini-logo">POS</div>
             <span class="logo-text">PRO</span>
-        </div>
-        <nav>
-            <a href="#features">Fonctionnalités</a>
-            <a href="#pricing">Tarifs</a>
-            <a href="#register">Inscription</a>
-            <a href="#contact">Contact</a>
-            <a href="#download" class="nav-btn">Télécharger</a>
+        </a>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <nav class="nav-links" id="navLinks">
+            <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
+            <a href="#pricing" onclick="closeMenu()">Tarifs</a>
+            <a href="#register" onclick="closeMenu()">Inscription</a>
+            <a href="#contact" onclick="closeMenu()">Contact</a>
+            <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
         </nav>
     </header>
 
@@ -169,13 +770,16 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="features">
-        <h2>Pourquoi Choisir POS Pro ?</h2>
+    <section id="features">
+        <div class="section-title">
+            <h2>Pourquoi Choisir POS Pro ?</h2>
+            <p>Des outils robustes pour transformer la gestion quotidienne de votre commerce.</p>
+        </div>
         <div class="features-grid">
             <div class="feature-box">
                 <i class="fa-solid fa-bolt"></i>
                 <h3>Rapide & Fluide</h3>
-                <p>Interface conçue pour des performances maximales sur Windows.</p>
+                <p>Interface conçue pour des performances maximales sur Windows sans latence.</p>
             </div>
             <div class="feature-box">
                 <i class="fa-solid fa-shield-halved"></i>
@@ -192,12 +796,11 @@
 
     <!-- UI Preview / Slider Section -->
     <section class="slider-section">
-        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;">Interfaces Haut de Gamme</span>
-        <h2 style="font-size: 32px; margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
-        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Explorez les différentes fenêtres et fonctionnalités du système conçues avec une fluidité exceptionnelle.</p>
+        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">Interfaces Haut de Gamme</span>
+        <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
+        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto 30px;">Explorez les différentes fenêtres et fonctionnalités du système conçues avec une fluidité exceptionnelle.</p>
         
         <div class="slider-container">
-            <!-- نافذة النظام الوهمية -->
             <div class="window-header">
                 <div class="window-dots">
                     <span class="dot-red"></span>
@@ -205,73 +808,57 @@
                     <span class="dot-green"></span>
                 </div>
                 <div class="window-title">POS_Pro_System_v2.6.exe</div>
-                <div style="width: 40px;"></div>
+                <div style="width: 30px;"></div>
             </div>
 
-            <!-- شرائح الصور -->
             <div class="slide-track" id="slideTrack">
-                
-                <!-- 1. Dashboard -->
                 <div class="slide">
                     <img src="Dashboard.JPG" alt="Dashboard">
                     <div class="slide-caption">
                         <h3>1. Gestion de Stock & Ventes (Dashboard)</h3>
-                        <p>Interface principale avec alertes de stock bas, statistiques en temps réel et accès rapide aux modules.</p>
+                        <p>Interface principale avec alertes de stock bas et statistiques en temps réel.</p>
                     </div>
                 </div>
-
-                <!-- 2. POS -->
                 <div class="slide">
                     <img src="Pos.JPG" alt="POS">
                     <div class="slide-caption">
                         <h3>2. Système de Point de Vente Direct (POS)</h3>
-                        <p>Passation ultra-rapide des ventes, gestion des codes-barres et calcul instantané du panier.</p>
+                        <p>Passation ultra-rapide des ventes et calcul instantané du panier.</p>
                     </div>
                 </div>
-
-                <!-- 3. Bénéfice -->
                 <div class="slide">
                     <img src="benifice.JPG" alt="Bénéfice">
                     <div class="slide-caption">
                         <h3>3. Calcul des Intérêts & Bénéfice Net</h3>
-                        <p>Suivi détaillé des profits journaliers, mensuels et annuels sous forme de graphiques financiers.</p>
+                        <p>Suivi détaillé des profits journaliers, mensuels et annuels.</p>
                     </div>
                 </div>
-
-                <!-- 4. Login -->
                 <div class="slide">
                     <img src="Login.JPG" alt="Login">
                     <div class="slide-caption">
                         <h3>4. Connexion Sécurisée</h3>
-                        <p>Écran d'authentification protégeant l'accès au système avec gestion des identifiants.</p>
+                        <p>Écran d'authentification protégeant l'accès au système.</p>
                     </div>
                 </div>
-
-                <!-- 5. Loading -->
                 <div class="slide">
                     <img src="Loading.jpg" alt="Loading">
                     <div class="slide-caption">
                         <h3>5. Écran de Chargement Professionnel</h3>
-                        <p>Animation de démarrage fluide et initialisation sécurisée de la base de données locale.</p>
+                        <p>Animation de démarrage fluide et initialisation sécurisée de la base locale.</p>
                     </div>
                 </div>
-
-                <!-- 6. Add User -->
                 <div class="slide">
                     <img src="Adduser.JPG" alt="Add User">
                     <div class="slide-caption">
                         <h3>6. Gestion des Utilisateurs & Rôles</h3>
-                        <p>Ajout de nouveaux utilisateurs, attribution des permissions et contrôle des accès administrateur.</p>
+                        <p>Ajout de nouveaux utilisateurs et attribution des permissions.</p>
                     </div>
                 </div>
-
             </div>
 
-            <!-- أزرار التبديل -->
             <button class="slider-btn prev-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="slider-btn next-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
 
-            <!-- النقاط السفلية -->
             <div class="slider-dots" id="sliderDots">
                 <span class="dot active" onclick="currentSlide(0)"></span>
                 <span class="dot" onclick="currentSlide(1)"></span>
@@ -284,8 +871,11 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="pricing">
-        <h2>Nos Tarifs</h2>
+    <section id="pricing">
+        <div class="section-title">
+            <h2>Nos Tarifs</h2>
+            <p>Choisissez la formule adaptée à la taille de votre structure.</p>
+        </div>
         <div class="pricing-grid">
             <div class="pricing-card">
                 <h3>Version Essai</h3>
@@ -307,7 +897,7 @@
                     <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
                     <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
                 </ul>
-                <a href="#contact" class="btn-primary">Acheter Maintenant</a>
+                <a href="#contact" class="btn-primary" style="max-width: 100%;">Acheter Maintenant</a>
             </div>
         </div>
     </section>
@@ -317,7 +907,7 @@
         <div class="download-box">
             <h2>Prêt à digitaliser votre commerce ?</h2>
             <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entité facilement.</p>
-            <a href="POS.exe" class="btn-primary large" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
             <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
         </div>
     </section>
@@ -325,8 +915,8 @@
     <!-- Register Section -->
     <section id="register" class="register-section">
         <div class="register-box">
-            <h2>Obtenez votre version de logiciel</h2>
-            <p>Entrez votre nom, votre e-mail et votre numéro de téléphone, et nous vous contacterons pour activer votre copie immédiatement.</p>
+            <h2>Obtenez votre version</h2>
+            <p>Remplissez le formulaire ci-dessous pour activer votre copie immédiatement.</p>
             
             <form id="telegramForm">
                 <div class="input-group">
@@ -341,7 +931,7 @@
                     <i class="fa-solid fa-phone"></i>
                     <input type="tel" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
                 </div>
-                <button type="submit" class="btn-primary large" id="submitBtn">Envoyer la demande</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Envoyer la demande</button>
             </form>
         </div>
     </section>
@@ -360,6 +950,41 @@
     <footer>
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
+
+    <!-- JavaScript Mobile Menu & Logo Handler -->
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            navLinks.classList.toggle('active');
+            
+            const icon = hamburgerBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            navLinks.classList.remove('active');
+            const icon = hamburgerBtn.querySelector('i');
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+        }
+
+        function reloadToHome(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        }
+    </script>
 
     <!-- JavaScript Slider -->
     <script>
