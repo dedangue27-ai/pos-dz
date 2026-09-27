@@ -109,19 +109,18 @@
             <h2>Obtenez votre version de logiciel</h2>
             <p>Entrez votre nom, votre e-mail et votre numéro de téléphone, et nous vous contacterons pour activer votre copie immédiatement.</p>
             
-            <!-- تم تعديل الفورم ليعمل مباشرة مع بوت تيليغرام الخاص بك -->
-            <form class="register-form" id="telegramForm">
+            <form id="telegramForm">
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" name="name" id="fullName" placeholder="Nom complet" required>
+                    <input type="text" id="fullName" placeholder="Nom complet" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" name="email" id="email" placeholder="Adresse e-mail" required>
+                    <input type="email" id="email" placeholder="Adresse e-mail" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="tel" name="phone" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
+                    <input type="tel" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
                 </div>
                 <button type="submit" class="btn-primary large" id="submitBtn">Envoyer la demande</button>
             </form>
@@ -143,7 +142,7 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- سكريبت البرمجة لإرسال البيانات مباشرة لبوت تيليغرام الخاص بك -->
+    <!-- JavaScript المباشر لبوت تيليغرام -->
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
@@ -160,7 +159,6 @@
             submitBtn.disabled = true;
 
             const message = `🚀 Nouvelle demande POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}`;
-
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             fetch(url, {
@@ -176,10 +174,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert('Demande envoyée avec succès ! Nous vous contacterons bientôt.');
+                    alert('Demande envoyée avec succès !');
                     document.getElementById('telegramForm').reset();
                 } else {
-                    alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+                    alert('Erreur: ' + (data.description || 'Veuillez réessayer.'));
                 }
                 submitBtn.innerText = "Envoyer la demande";
                 submitBtn.disabled = false;
