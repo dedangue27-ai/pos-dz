@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="mini-logo">POS</div>
+            <span class="logo-text">PRO</span>
+        </div>
+        <nav>
+            <a href="#features">Fonctionnalités</a>
+            <a href="#pricing">Tarifs</a>
+            <a href="#register">Inscription</a>
+            <a href="#contact">Contact</a>
+            <a href="#download" class="nav-btn">Télécharger</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
+            <h1>Solution Ultime de Gestion de Stock & POS</h1>
+            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="pos-preview-box">
+                <h2>POS</h2>
+                <span>SYSTEM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2>Pourquoi Choisir POS Pro ?</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Rapide & Fluide</h3>
+                <p>Interface conçue en C# / WPF pour des performances maximales sur Windows.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Sécurité & Rôles</h3>
+                <p>Gestion stricte des utilisateurs et des permissions avec journalisation complète.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fa-solid fa-barcode"></i>
+                <h3>Gestion de Barcode</h3>
+                <p>Génération automatique de codes-barres et suivi précis des articles et des prix.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <h2>Nos Tarifs</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Version Essai</h3>
+                <div class="price">Gratuit</div>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Test de 15 jours</li>
+                    <li><i class="fa-solid fa-check"></i> Fonctionnalités de base</li>
+                    <li><i class="fa-solid fa-check"></i> Support par Email</li>
+                </ul>
+                <a href="#download" class="btn-secondary">Essayer</a>
+            </div>
+            <div class="pricing-card popular">
+                <div class="popular-badge">Recommandé</div>
+                <h3>Licence À Vie</h3>
+                <div class="price">Sur Devis</div>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Utilisation illimitée</li>
+                    <li><i class="fa-solid fa-check"></i> Toutes les fonctionnalités</li>
+                    <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
+                    <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
+                </ul>
+                <a href="#contact" class="btn-primary">Acheter Maintenant</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="download-box">
+            <h2>Prêt à digitaliser votre commerce ?</h2>
+            <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entrepôt facilement.</p>
+            <a href="#" class="btn-primary large"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <section id="register" class="register-section">
+        <div class="register-box">
+            <h2>Obtenez votre version de logiciel</h2>
+            <p>Entrez votre nom, votre e-mail et votre numéro de téléphone, et nous vous contacterons pour activer votre copie immédiatement.</p>
+            
+            <!-- تم استخدام خدمة Formspree المجانية لضمان وصول الرسائل من الهواتف والحواسيب عبر أي شبكة في الجزائر -->
+            <form class="register-form" id="telegramForm" action="https://formspree.io/f/mwpvdzkk" method="POST">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="name" id="fullName" placeholder="Nom complet" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" name="email" id="email" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" name="phone" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
+                </div>
+                <button type="submit" class="btn-primary large" id="submitBtn">Envoyer la demande</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contactez-nous</h2>
+        <p>Pour l'achat de licence ou toute demande d'assistance :</p>
+        <div class="contact-info">
+            <div class="contact-item"><i class="fa-solid fa-phone"></i> +213 (0) 7 79 62 58 67</div>
+            <div class="contact-item"><i class="fa-solid fa-envelope"></i> contactposdz@gmail.com</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>
