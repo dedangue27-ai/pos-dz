@@ -6,6 +6,131 @@
     <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* تصميم عارض الصور المتحرك الاحترافي بجودة عالية */
+        .slider-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            text-align: center;
+            color: #fff;
+        }
+        .slider-container {
+            max-width: 900px;
+            margin: 40px auto 0;
+            position: relative;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* إطار يشبه نوافذ سطح المكتب الاحترافية */
+        .window-header {
+            background: #0f172a;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .window-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+        .window-title {
+            font-size: 14px;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+
+        .slide-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .slide img {
+            width: 100%;
+            height: 480px;
+            object-fit: contain;
+            background: #000;
+        }
+        .slide-caption {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .slide-caption h3 {
+            margin: 0 0 5px;
+            color: #60a5fa;
+            font-size: 18px;
+        }
+        .slide-caption p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* أزرار التنقل اليدوية */
+        .slider-btn {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.7);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider-btn:hover {
+            background: #3b82f6;
+        }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* مؤشرات النقاط في الأسفل */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: #0f172a;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #475569;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .dot.active {
+            background: #3b82f6;
+            width: 25px;
+            border-radius: 6px;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,31 +149,95 @@
         </nav>
     </header>
 
-    <!-- UI Preview / Screenshots Section -->
-    <section class="ui-preview-section" style="padding: 60px 20px; background: #f1f5f9; text-align: center;">
-        <h2 style="font-size: 28px; color: #1e3a8a; margin-bottom: 10px;">Aperçu de l'Application</h2>
-        <p style="color: #64748B; margin-bottom: 40px;">Découvrez la fluidité et l'ergonomie de nos interfaces C# / WPF</p>
+    <!-- UI Preview / Slider Section 4K Animated -->
+    <section class="slider-section">
+        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;">Interfaces C# / WPF Haut de Gamme</span>
+        <h2 style="font-size: 36px; margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
+        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Explorez les différentes fenêtres et fonctionnalités du système conçues avec une fluidité exceptionnelle.</p>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto;">
-            <!-- لوحة التحكم -->
-            <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="DashboardJPG" alt="Dashboard" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
-                <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Gestion de Stock & Ventes</h3>
-                <p style="color: #64748B; font-size: 13px;">Interface principale intuitive avec alertes de stock bas et suivi des profits.</p>
+        <div class="slider-container">
+            <!-- نافذة النظام الوهمية -->
+            <div class="window-header">
+                <div class="window-dots">
+                    <span class="dot-red"></span>
+                    <span class="dot-yellow"></span>
+                    <span class="dot-green"></span>
+                </div>
+                <div class="window-title">POS_Pro_System_v2.6.exe</div>
+                <div style="width: 40px;"></div>
             </div>
 
-            <!-- نقطة البيع POS -->
-            <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="Pos.JPG" alt="POS" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
-                <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Système POS Direct</h3>
-                <p style="color: #64748B; font-size: 13px;">Passation rapide des ventes, gestion du panier et validation des factures.</p>
+            <!-- شرائح الصور -->
+            <div class="slide-track" id="slideTrack">
+                
+                <!-- 1. Dashboard -->
+                <div class="slide">
+                    <img src="Dashboard.JPG" alt="Dashboard">
+                    <div class="slide-caption">
+                        <h3>1. Gestion de Stock & Ventes (Dashboard)</h3>
+                        <p>Interface principale avec alertes de stock bas, statistiques en temps réel et accès rapide aux modules.</p>
+                    </div>
+                </div>
+
+                <!-- 2. POS -->
+                <div class="slide">
+                    <img src="Pos.JPG" alt="POS">
+                    <div class="slide-caption">
+                        <h3>2. Système de Point de Vente Direct (POS)</h3>
+                        <p>Passation ultra-rapide des ventes, gestion des codes-barres et calcul instantané du panier.</p>
+                    </div>
+                </div>
+
+                <!-- 3. Bénéfice -->
+                <div class="slide">
+                    <img src="benifice.JPG" alt="Bénéfice">
+                    <div class="slide-caption">
+                        <h3>3. Calcul des Intérêts & Bénéfice Net</h3>
+                        <p>Suivi détaillé des profits journaliers, mensuels et annuels sous forme de graphiques financiers.</p>
+                    </div>
+                </div>
+
+                <!-- 4. Login -->
+                <div class="slide">
+                    <img src="Login.JPG" alt="Login">
+                    <div class="slide-caption">
+                        <h3>4. Connexion Sécurisée</h3>
+                        <p>Écran d'authentification protégeant l'accès au système avec gestion des identرants.</p>
+                    </div>
+                </div>
+
+                <!-- 5. Loading -->
+                <div class="slide">
+                    <img src="Loading.jpg" alt="Loading">
+                    <div class="slide-caption">
+                        <h3>5. Écran de Chargement Professionnel</h3>
+                        <p>Animation de démarrage fluide et initialisation sécurisée de la base de données locale.</p>
+                    </div>
+                </div>
+
+                <!-- 6. Add User -->
+                <div class="slide">
+                    <img src="Adduser.JPG" alt="Add User">
+                    <div class="slide-caption">
+                        <h3>6. Gestion des Utilisateurs & Rôles</h3>
+                        <p>Ajout de nouveaux utilisateurs, attribution des permissions et contrôle des accès administrateur.</p>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- الأرباح -->
-            <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="benifice.JPG" alt="Bénéfice" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
-                <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Calcul des Intérêts (Bénéfice net)</h3>
-                <p style="color: #64748B; font-size: 13px;">Suivi détaillé des intérêts journaliers, mensuels et annuels sous forme de graphiques.</p>
+            <!-- أزرار التبديل -->
+            <button class="slider-btn prev-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-btn next-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+
+            <!-- النقاط السفلية -->
+            <div class="slider-dots" id="sliderDots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
             </div>
         </div>
     </section>
@@ -171,7 +360,58 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- JavaScript لبرمجة الحركة التلقائية (Slider Animation) -->
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+        let slideInterval;
+
+        function updateSlider() {
+            const track = document.getElementById('slideTrack');
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function currentSlide(index) {
+            currentIndex = index;
+            updateSlider();
+            resetTimer();
+        }
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 4000); // تتغير الصورة تلقائياً كل 4 ثوانٍ
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        // بدء الحركة التلقائية عند تحميل الصفحة
+        startTimer();
+
+        // إيقاف الحركة مؤقتاً عند مرور الماوس فوق العارض لسهولة القراءة
+        const sliderContainer = document.querySelector('.slider-container');
+        sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        sliderContainer.addEventListener('mouseleave', () => startTimer());
+    </script>
+
+    <!-- Telegram Bot Script -->
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
@@ -179,7 +419,7 @@
         document.getElementById('telegramForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('fullName').value;
+            , name = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const submitBtn = document.getElementById('submitBtn');
