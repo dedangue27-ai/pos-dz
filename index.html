@@ -32,21 +32,21 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto;">
             <!-- لوحة التحكم -->
             <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="images/dashboard.jpg" alt="Dashboard" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
+                <img src="DashboardJPG" alt="Dashboard" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
                 <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Gestion de Stock & Ventes</h3>
                 <p style="color: #64748B; font-size: 13px;">Interface principale intuitive avec alertes de stock bas et suivi des profits.</p>
             </div>
 
             <!-- نقطة البيع POS -->
             <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="images/pos.jpg" alt="POS" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
+                <img src="Pos.JPG" alt="POS" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
                 <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Système POS Direct</h3>
                 <p style="color: #64748B; font-size: 13px;">Passation rapide des ventes, gestion du panier et validation des factures.</p>
             </div>
 
             <!-- الأرباح -->
             <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <img src="images/benifice.jpg" alt="Bénéfice" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
+                <img src="benifice.JPG" alt="Bénéfice" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px;">
                 <h3 style="margin: 15px 0 5px; color: #1e3a8a; font-size: 16px;">Calcul des Intérêts (Bénéfice net)</h3>
                 <p style="color: #64748B; font-size: 13px;">Suivi détaillé des intérêts journaliers, mensuels et annuels sous forme de graphiques.</p>
             </div>
@@ -126,8 +126,8 @@
     <section id="download" class="download-section">
         <div class="download-box">
             <h2>Prêt à digitaliser votre commerce ?</h2>
-            <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entrepôt facilement.</p>
-            <a href="https://github.com/dedangue27-ai/pos-dz/raw/refs/heads/main/POS.exe" class="btn-primary large" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entité facilement.</p>
+            <a href="POS.exe" class="btn-primary large" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
             <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
         </div>
     </section>
@@ -171,10 +171,10 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- JavaScript لجلب بيانات نموذج التسجيل وإرسالها عبر بوت تيليغرام -->
+    <!-- JavaScript -->
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
-        chatId = "6016112482";
+        const chatId = "6016112482";
 
         document.getElementById('telegramForm').addEventListener('submit', function(e) {
             e.preventDefault();
