@@ -109,7 +109,8 @@
             <h2>Obtenez votre version de logiciel</h2>
             <p>Entrez votre nom, votre e-mail et votre numéro de téléphone, et nous vous contacterons pour activer votre copie immédiatement.</p>
             
-            <form class="register-form" id="telegramForm" action="https://formspree.io/f/mjykazde" method="POST">
+            <!-- تم تعديل الفورم ليعمل مباشرة مع بوت تيليغرام الخاص بك -->
+            <form class="register-form" id="telegramForm">
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" name="name" id="fullName" placeholder="Nom complet" required>
@@ -141,6 +142,56 @@
     <footer>
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
+
+    <!-- سكريبت البرمجة لإرسال البيانات مباشرة لبوت تيليغرام الخاص بك -->
+    <script>
+        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
+        const chatId = "6016112482";
+
+        document.getElementById('telegramForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.innerText = "Envoi en cours...";
+            submitBtn.disabled = true;
+
+            const message = `🚀 Nouvelle demande POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Demande envoyée avec succès ! Nous vous contacterons bientôt.');
+                    document.getElementById('telegramForm').reset();
+                } else {
+                    alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+                }
+                submitBtn.innerText = "Envoyer la demande";
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erreur de connexion.');
+                submitBtn.innerText = "Envoyer la demande";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
 
 </body>
 </html>
