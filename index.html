@@ -1035,15 +1035,15 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Key Generation -->
+    <!-- Unified Script: Telegram + Supabase Key Generation (Fixed) -->
     <script>
-        // إعدادات Telegram القديمة
+        // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
         // إعدادات Supabase
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
-        const SUPABASE_ANON_KEY = "https://ephfdrmswjryfzenjrvi.supabase.co/rest/v1/POS Pro Activation"; // استبدل هذا بمفتاح الـ Anon الحقيقي من لوحة تحكم Supabase
+        const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_هنا"; // استبدل هذا بمفتاح الـ Anon الحقيقي من لوحة تحكم Supabase
 
         // دالة توليد كود التفعيل تماماً مثل برنامج C#
         function generateLicenseKey(tag = "LIFE") {
@@ -1065,13 +1065,13 @@
             // 1. توليد مفتاح التفعيل الجديد
             const generatedKey = generateLicenseKey("LIFE");
             
-            // 2. حساب تاريخ انتهاء الصلاحية (مثلاً بعد سنة من الآن)
+            // 2. حساب تاريخ انتهاء الصلاحية (بعد سنة)
             const expiryDate = new Date();
             expiryDate.setFullYear(expiryDate.getFullYear() + 1);
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                // الخطوة أ: إرسال الإشعار إلى Telegram لتنبيهك بعملية الشراء
+                // الخطوة أ: إرسال الإشعار إلى Telegram
                 const telegramMessage = `🚀 Nouvelle demande d'achat POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}\n🔑 Clé générée : ${generatedKey}`;
                 
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -1080,14 +1080,14 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase (POS Pro Activation)
-                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/POS Pro Activation`, {
+                // الخطوة ب: حفظ المفتاح في جدول Supabase (تم تصحيح اسم الجدول بإضافة %20 بدل المسافات)
+                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/POS%20Pro%20Activation`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=minimal'
+                        'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
@@ -1097,11 +1097,14 @@
                     })
                 });
 
+                const supabaseResult = await supabaseResponse.json();
+
                 if (supabaseResponse.ok) {
                     alert(`Demande envoyée avec succès !\nVotre clé d'activation est : ${generatedKey}`);
                     document.getElementById('telegramForm').reset();
                 } else {
-                    alert('Erreur lors de l\'enregistrement dans la base de données.');
+                    console.error("Supabase Error:", supabaseResult);
+                    alert('Erreur Supabase: ' + (supabaseResult.message || JSON.stringify(supabaseResult)));
                 }
 
             } catch (error) {
