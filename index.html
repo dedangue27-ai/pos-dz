@@ -1035,15 +1035,15 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Key Generation (Corrected) -->
+    <!-- Unified Script: Telegram + Supabase Key Generation (Integrated) -->
     <script>
         // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        // إعدادات Supabase (ضع مفتاح الـ anon/public الصحيح هنا، وليس الرابط)
+        // إعدادات Supabase (تم وضع مفتاح الـ Publishable الحقيقي هنا)
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
-        const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_الحقيقي_هنا"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_TB5FLC6xFnRqGIsLf7uDhQ_ShXwvegQ"; 
 
         // دالة توليد كود التفعيل تماماً مثل برنامج C#
         function generateLicenseKey(tag = "LIFE") {
@@ -1103,7 +1103,6 @@
                     alert(`Demande envoyée avec succès !\nVotre clé d'activation est : ${generatedKey}`);
                     document.getElementById('telegramForm').reset();
                 } else {
-                    // سيظهر لك سبب الخطأ الدقيق إذا حدث أي خلل
                     alert('Erreur Supabase: ' + responseText);
                 }
 
