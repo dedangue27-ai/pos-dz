@@ -1035,15 +1035,15 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Key Generation (Fixed) -->
+    <!-- Unified Script: Telegram + Supabase Key Generation (Corrected) -->
     <script>
         // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        // إعدادات Supabase
+        // إعدادات Supabase (ضع مفتاح الـ anon/public الصحيح هنا، وليس الرابط)
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
-        const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_هنا"; // استبدل هذا بمفتاح الـ Anon الحقيقي من لوحة تحكم Supabase
+        const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_الحقيقي_هنا"; 
 
         // دالة توليد كود التفعيل تماماً مثل برنامج C#
         function generateLicenseKey(tag = "LIFE") {
@@ -1080,7 +1080,7 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase (تم تصحيح اسم الجدول بإضافة %20 بدل المسافات)
+                // الخطوة ب: حفظ المفتاح في جدول Supabase
                 const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/POS%20Pro%20Activation`, {
                     method: 'POST',
                     headers: {
@@ -1097,19 +1097,19 @@
                     })
                 });
 
-                const supabaseResult = await supabaseResponse.json();
+                const responseText = await supabaseResponse.text();
 
                 if (supabaseResponse.ok) {
                     alert(`Demande envoyée avec succès !\nVotre clé d'activation est : ${generatedKey}`);
                     document.getElementById('telegramForm').reset();
                 } else {
-                    console.error("Supabase Error:", supabaseResult);
-                    alert('Erreur Supabase: ' + (supabaseResult.message || JSON.stringify(supabaseResult)));
+                    // سيظهر لك سبب الخطأ الدقيق إذا حدث أي خلل
+                    alert('Erreur Supabase: ' + responseText);
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de connexion.');
+                alert('Erreur de connexion réseau.');
             } finally {
                 submitBtn.innerText = "Envoyer la demande";
                 submitBtn.disabled = false;
