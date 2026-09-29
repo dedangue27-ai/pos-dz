@@ -1080,14 +1080,16 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase بالاسم الجديد pos_activations بدون مسافات
+                // الخطوة ب: حفظ المفتاح في جدول Supabase مع إجبار المخطط api صراحةً
                 const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation'
+                        'Prefer': 'return=representation',
+                        'Accept-Profile': 'api',
+                        'Content-Profile': 'api'
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
