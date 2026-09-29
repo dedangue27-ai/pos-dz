@@ -1035,13 +1035,13 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Key Generation (Integrated) -->
+    <!-- Unified Script: Telegram + Supabase Activation -->
     <script>
         // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        // إعدادات Supabase (تم وضع مفتاح الـ Publishable الحقيقي هنا)
+        // إعدادات Supabase
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_TB5FLC6xFnRqGIsLf7uDhQ_ShXwvegQ"; 
 
@@ -1080,14 +1080,15 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase
+                // الخطوة ب: حفظ المفتاح في جدول Supabase (مع تحديد Accept-Profile لتوجيه الجدول لـ public)
                 const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/POS%20Pro%20Activation`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation'
+                        'Prefer': 'return=representation',
+                        'Accept-Profile': 'public'
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
