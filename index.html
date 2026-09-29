@@ -1035,12 +1035,18 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Telegram Bot Script -->
+    <!-- Supabase Integration Script (Auto License Generator & Database Storage) -->
     <script>
-        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
-        const chatId = "6016112482";
+        const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
+        const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_هنا"; // استبدل هذا بمفتاح الـ Anon الحقيقي من لوحة تحكم Supabase
 
-        document.getElementById('telegramForm').addEventListener('submit', function(e) {
+        // دالة توليد كود التفعيل تماماً مثل برنامج C#
+        function generateLicenseKey(tag = "LIFE") {
+            const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
+            return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
+        }
+
+        document.getElementById('telegramForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('fullName').value;
@@ -1048,39 +1054,49 @@
             const phone = document.getElementById('phone').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            submitBtn.innerText = "Envoi en cours...";
+            submitBtn.innerText = "Traitement en cours...";
             submitBtn.disabled = true;
 
-            const message = `🚀 Nouvelle demande POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}`;
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            // 1. توليد مفتاح تفعيل جديد
+            const generatedKey = generateLicenseKey("LIFE");
+            
+            // 2. حساب تاريخ انتهاء الصلاحية (مثلاً بعد سنة من الآن)
+            const expiryDate = new Date();
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+            const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Demande envoyée avec succès !');
+            try {
+                // 3. إرسال البيانات مباشرة إلى جدول Supabase (POS Pro Activation)
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/POS Pro Activation`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        activation_key: generatedKey,
+                        hwid: "PENDING_" + phone, // سيتم تحديثه تلقائياً بصمة جهاز العميل عند التفعيل الأول
+                        status: "active",
+                        expiry_date: formattedExpiry
+                    })
+                });
+
+                if (response.ok) {
+                    alert(`Succès ! Votre clé d'activation est : ${generatedKey}\nElle a été enregistrée et envoyée.`);
                     document.getElementById('telegramForm').reset();
                 } else {
-                    alert('Erreur: ' + (data.description || 'Veuillez réessayer.'));
+                    const errData = await response.json();
+                    alert('Erreur lors de l\'enregistrement : ' + (errData.message || 'Veuillez réessayer.'));
                 }
-                submitBtn.innerText = "Envoyer la demande";
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de connexion.');
+                alert('Erreur de connexion avec le serveur de base de données.');
+            } finally {
                 submitBtn.innerText = "Envoyer la demande";
                 submitBtn.disabled = false;
-            });
+            }
         });
     </script>
 
