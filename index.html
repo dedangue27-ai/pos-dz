@@ -1035,8 +1035,13 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Supabase Integration Script (Auto License Generator & Database Storage) -->
+    <!-- Unified Script: Telegram + Supabase Key Generation -->
     <script>
+        // إعدادات Telegram القديمة
+        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
+        const chatId = "6016112482";
+
+        // إعدادات Supabase
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
         const SUPABASE_ANON_KEY = "ضع_مفتاح_الـ_Anon_هنا"; // استبدل هذا بمفتاح الـ Anon الحقيقي من لوحة تحكم Supabase
 
@@ -1057,7 +1062,7 @@
             submitBtn.innerText = "Traitement en cours...";
             submitBtn.disabled = true;
 
-            // 1. توليد مفتاح تفعيل جديد
+            // 1. توليد مفتاح التفعيل الجديد
             const generatedKey = generateLicenseKey("LIFE");
             
             // 2. حساب تاريخ انتهاء الصلاحية (مثلاً بعد سنة من الآن)
@@ -1066,8 +1071,17 @@
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                // 3. إرسال البيانات مباشرة إلى جدول Supabase (POS Pro Activation)
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/POS Pro Activation`, {
+                // الخطوة أ: إرسال الإشعار إلى Telegram لتنبيهك بعملية الشراء
+                const telegramMessage = `🚀 Nouvelle demande d'achat POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}\n🔑 Clé générée : ${generatedKey}`;
+                
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                });
+
+                // الخطوة ب: حفظ المفتاح في جدول Supabase (POS Pro Activation)
+                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/POS Pro Activation`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1077,22 +1091,22 @@
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
-                        hwid: "PENDING_" + phone, // سيتم تحديثه تلقائياً بصمة جهاز العميل عند التفعيل الأول
+                        hwid: "PENDING_" + phone,
                         status: "active",
                         expiry_date: formattedExpiry
                     })
                 });
 
-                if (response.ok) {
-                    alert(`Succès ! Votre clé d'activation est : ${generatedKey}\nElle a été enregistrée et envoyée.`);
+                if (supabaseResponse.ok) {
+                    alert(`Demande envoyée avec succès !\nVotre clé d'activation est : ${generatedKey}`);
                     document.getElementById('telegramForm').reset();
                 } else {
-                    const errData = await response.json();
-                    alert('Erreur lors de l\'enregistrement : ' + (errData.message || 'Veuillez réessayer.'));
+                    alert('Erreur lors de l\'enregistrement dans la base de données.');
                 }
+
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de connexion avec le serveur de base de données.');
+                alert('Erreur de connexion.');
             } finally {
                 submitBtn.innerText = "Envoyer la demande";
                 submitBtn.disabled = false;
