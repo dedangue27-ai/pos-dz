@@ -968,7 +968,7 @@
 
             <!-- Formulaire d'Inscription -->
             <form id="registerForm" class="auth-form active">
-                <p>Créez votre compte pour obtenir votre clé d'activation instantanément.</p>
+                <p>Créez votre compte pour accéder à votre espace personnel.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="regName" placeholder="Nom complet" required>
@@ -1152,7 +1152,7 @@
             }
         });
 
-        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل فوري
+        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل وحفظه في Supabase
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1205,7 +1205,7 @@
                     localStorage.setItem('pos_logged_user', JSON.stringify(userData));
                     showDashboard(userData);
                 } else {
-                    alert('Erreur: Cet e-mail existe peut-être déjà. ' + resText);
+                    alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu. ' + resText);
                 }
 
             } catch (err) {
@@ -1217,7 +1217,7 @@
             }
         });
 
-        // 2. تسجيل الدخول للحساب
+        // 2. تسجيل الدخول للحساب وجلب مفتاح التفعيل من قاعدة البيانات
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
