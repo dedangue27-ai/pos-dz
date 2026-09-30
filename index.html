@@ -548,13 +548,13 @@
             font-size: 13px;
         }
 
-        /* Register & Form Section */
+        /* Register & Auth Section */
         .register-section {
             background: white;
             padding: 80px 5%;
         }
 
-        .register-box, .login-box {
+        .auth-container {
             max-width: 550px;
             margin: 0 auto;
             background: var(--gray-light);
@@ -564,18 +564,35 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
         }
 
-        .register-box h2, .login-box h2 {
-            font-size: 24px;
-            color: var(--dark);
-            margin-bottom: 10px;
-            text-align: center;
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .register-box p, .login-box p {
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 25px;
-            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
         }
 
         .input-group {
@@ -609,24 +626,37 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        .register-box .btn-primary, .login-box .btn-primary {
+        .auth-form .btn-primary {
             width: 100%;
             max-width: 100%;
             margin-top: 10px;
         }
 
-        /* Result display box */
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
+        /* Client Dashboard inside box */
+        .dashboard-box {
+            display: none;
+            text-align: center;
+        }
+
+        .dashboard-box h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .key-display {
             background: #e0f2fe;
             border: 1px solid #bae6fd;
-            border-radius: 10px;
-            color: #0369a1;
-            font-weight: 600;
-            text-align: center;
-            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
             word-break: break-all;
+        }
+
+        .key-display span {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
         }
 
         /* Contact Section */
@@ -739,7 +769,7 @@
                 padding: 60px 20px;
             }
 
-            .register-box, .login-box {
+            .auth-container {
                 padding: 25px 20px;
             }
         }
@@ -759,8 +789,7 @@
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#pricing" onclick="closeMenu()">Tarifs</a>
-            <a href="#register" onclick="closeMenu()">Inscription</a>
-            <a href="#findKey" onclick="closeMenu()">Mon Compte / Clé</a>
+            <a href="#accountSection" onclick="closeMenu()">Mon Compte</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
             <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
         </nav>
@@ -912,7 +941,7 @@
                     <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
                     <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
                 </ul>
-                <a href="#contact" class="btn-primary" style="max-width: 100%;">Acheter Maintenant</a>
+                <a href="#accountSection" class="btn-primary" style="max-width: 100%;">Créer un Compte</a>
             </div>
         </div>
     </section>
@@ -927,45 +956,65 @@
         </div>
     </section>
 
-    <!-- Register Section -->
-    <section id="register" class="register-section">
-        <div class="register-box">
-            <h2>Obtenez votre version</h2>
-            <p>Remplissez le formulaire ci-dessous pour activer votre copie immédiatement.</p>
+    <!-- Account & Auth Section (Inscription / Connexion / Dashboard) -->
+    <section id="accountSection" class="register-section">
+        <div class="auth-container">
             
-            <form id="telegramForm">
+            <!-- Tabs -->
+            <div class="auth-tabs" id="authTabs">
+                <button class="tab-btn active" onclick="switchTab('register')">Inscription</button>
+                <button class="tab-btn" onclick="switchTab('login')">Connexion</button>
+            </div>
+
+            <!-- Formulaire d'Inscription -->
+            <form id="registerForm" class="auth-form active">
+                <p>Créez votre compte pour obtenir votre clé d'activation instantanément.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="fullName" placeholder="Nom complet" required>
+                    <input type="text" id="regName" placeholder="Nom complet" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" placeholder="Adresse e-mail" required>
+                    <input type="email" id="regEmail" placeholder="Adresse e-mail" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="phone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
+                    <input type="tel" id="regPhone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
                 </div>
-                <button type="submit" class="btn-primary" id="submitBtn">Envoyer la demande</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Find License Key Section (Espace Client / Trouver ma clé) -->
-    <section id="findKey" class="register-section" style="background: #f1f5f9;">
-        <div class="login-box">
-            <h2><i class="fa-solid fa-key" style="color: var(--primary);"></i> Retrouver votre Clé d'Activation</h2>
-            <p>Entrez votre numéro de téléphone pour afficher votre clé d'activation instantanément sans attendre d'e-mail.</p>
-            
-            <form id="findKeyForm">
                 <div class="input-group">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="searchPhone" placeholder="Votre numéro de téléphone (ex: 0550000000)" required>
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="Mot de passe" required>
                 </div>
-                <button type="submit" class="btn-primary" id="searchBtn">Chercher ma clé</button>
+                <button type="submit" class="btn-primary" id="regBtn">S'inscrire</button>
             </form>
 
-            <div id="keyResultBox" class="result-box"></div>
+            <!-- Formulaire de Connexion -->
+            <form id="loginForm" class="auth-form">
+                <p>Connectez-vous pour retrouver votre clé d'activation.</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="logPassword" placeholder="Mot de passe" required>
+                </div>
+                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
+            </form>
+
+            <!-- Espace Dashboard Client (S'affiche après connexion) -->
+            <div id="clientDashboard" class="dashboard-box">
+                <h2><i class="fa-solid fa-user-check" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
+                <p>Votre compte est actif. Voici votre clé d'activation unique pour le logiciel :</p>
+                
+                <div class="key-display">
+                    <span id="userKeyDisplay">POS-LIFE-XXXXX</span><br>
+                    <small style="color: var(--text-muted); display: block; margin-top: 8px;">Expire le : <span id="userExpiryDisplay"></span></small>
+                </div>
+
+                <button onclick="logoutUser()" class="btn-secondary" style="width: 100%; border-radius: 12px; cursor: pointer;">Se Déconnecter</button>
+            </div>
+
         </div>
     </section>
 
@@ -984,7 +1033,7 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- JavaScript Mobile Menu & Logo Handler -->
+    <!-- JavaScript Mobile Menu & UI Handlers -->
     <script>
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
@@ -1016,6 +1065,19 @@
             setTimeout(() => {
                 window.location.reload();
             }, 300);
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+
+            if (tab === 'register') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            }
         }
     </script>
 
@@ -1068,51 +1130,57 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Activation & Finding Key -->
+    <!-- Supabase Auth & Account System -->
     <script>
-        // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        // إعدادات Supabase
         const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_TB5FLC6xFnRqGIsLf7uDhQ_ShXwvegQ"; 
 
-        // دالة توليد كود التفعيل تماماً مثل برنامج C#
         function generateLicenseKey(tag = "LIFE") {
             const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
             return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
         }
 
-        // 1. إرسال طلب التفعيل وحفظه في جدول public
-        document.getElementById('telegramForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const submitBtn = document.getElementById('submitBtn');
+        // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً في الـ LocalStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('pos_logged_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                showDashboard(user);
+            }
+        });
 
-            submitBtn.innerText = "Traitement en cours...";
-            submitBtn.disabled = true;
+        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل فوري
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const regBtn = document.getElementById('regBtn');
+
+            regBtn.innerText = "Création en cours...";
+            regBtn.disabled = true;
 
             const generatedKey = generateLicenseKey("LIFE");
-            
             const expiryDate = new Date();
             expiryDate.setFullYear(expiryDate.getFullYear() + 1);
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                const telegramMessage = `🚀 Nouvelle demande d'achat POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}\n🔑 Clé générée : ${generatedKey}`;
-                
+                // إرسال تنبيه لتليجرام
+                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // حفظ المفتاح في جدول pos_activations (المخطط public) وتخزين الرقم في hwid للبحث السهل
-                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations`, {
+                // حفظ المستخدم في جدول users في Supabase
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1121,46 +1189,47 @@
                         'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        password: password,
                         activation_key: generatedKey,
-                        hwid: phone, // تخزين رقم الهاتف هنا لتمكين العميل من البحث لاحقاً
-                        status: "inactive",
                         expiry_date: formattedExpiry
                     })
                 });
 
-                const responseText = await supabaseResponse.text();
+                const resText = await response.text();
 
-                if (supabaseResponse.ok) {
-                    alert(`Demande envoyée avec succès !\nVotre clé d'activation est : ${generatedKey}`);
-                    document.getElementById('telegramForm').reset();
+                if (response.ok) {
+                    const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
+                    localStorage.setItem('pos_logged_user', JSON.stringify(userData));
+                    showDashboard(userData);
                 } else {
-                    alert('Erreur Supabase: ' + responseText);
+                    alert('Erreur: Cet e-mail existe peut-être déjà. ' + resText);
                 }
 
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur de connexion réseau.');
+            } catch (err) {
+                console.error(err);
+                alert('Erreur de connexion.');
             } finally {
-                submitBtn.innerText = "Envoyer la demande";
-                submitBtn.disabled = false;
+                regBtn.innerText = "S'inscrire";
+                regBtn.disabled = false;
             }
         });
 
-        // 2. البحث عن الكود عبر رقم الهاتف (بدون إيميل وبدون Spam)
-        document.getElementById('findKeyForm').addEventListener('submit', async function(e) {
+        // 2. تسجيل الدخول للحساب
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const searchPhone = document.getElementById('searchPhone').value.trim();
-            const searchBtn = document.getElementById('searchBtn');
-            const resultBox = document.getElementById('keyResultBox');
+            const email = document.getElementById('logEmail').value.trim();
+            const password = document.getElementById('logPassword').value.trim();
+            const logBtn = document.getElementById('logBtn');
 
-            searchBtn.innerText = "Recherche...";
-            searchBtn.disabled = true;
-            resultBox.style.display = "none";
+            logBtn.innerText = "Connexion...";
+            logBtn.disabled = true;
 
             try {
-                // البحث في الجدول عن المطابق لرقم الهاتف المخزن في حقل hwid
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations?hwid=eq.${searchPhone}&select=activation_key,expiry_date`, {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&password=eq.${password}&select=*`, {
                     method: 'GET',
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
@@ -1171,22 +1240,45 @@
                 const data = await response.json();
 
                 if (response.ok && data.length > 0) {
-                    const record = data[0];
-                    resultBox.innerHTML = `✅ Votre Clé Trouvée : <br><strong style="font-size: 16px; color: #0284c7;">${record.activation_key}</strong><br><span style="font-size: 12px; color: #64748b;">Expire le : ${record.expiry_date}</span>`;
-                    resultBox.style.display = "block";
+                    const user = data[0];
+                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
+                    showDashboard(user);
                 } else {
-                    resultBox.innerHTML = `❌ Aucune clé trouvée pour ce numéro (${searchPhone}). Assurez-vous d'avoir soumis une demande d'abord.`;
-                    resultBox.style.display = "block";
+                    alert('E-mail ou mot de passe incorrect.');
                 }
 
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur lors de la recherche.');
+            } catch (err) {
+                console.error(err);
+                alert('Erreur de connexion.');
             } finally {
-                searchBtn.innerText = "Chercher ma clé";
-                searchBtn.disabled = false;
+                logBtn.innerText = "Se connecter";
+                logBtn.disabled = false;
             }
         });
+
+        // عرض لوحة تحكم العميل وإخفاء النماذج
+        function showDashboard(user) {
+            document.getElementById('authTabs').style.display = 'none';
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.remove('active');
+            
+            document.getElementById('userNameDisplay').innerText = user.name;
+            document.getElementById('userKeyDisplay').innerText = user.activation_key;
+            document.getElementById('userExpiryDisplay').innerText = user.expiry_date;
+            
+            document.getElementById('clientDashboard').style.display = 'block';
+        }
+
+        // تسجيل الخروج
+        function logoutUser() {
+            localStorage.removeItem('pos_logged_user');
+            document.getElementById('clientDashboard').style.display = 'none';
+            document.getElementById('authTabs').style.display = 'flex';
+            document.getElementById('registerForm').classList.add('active');
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').reset();
+            document.getElementById('loginForm').reset();
+        }
     </script>
 
 </body>
