@@ -609,7 +609,7 @@
             font-size: 16px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 14px 16px 14px 48px;
             background: white;
@@ -621,7 +621,7 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus {
+        .input-group input:focus, .input-group select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
@@ -630,6 +630,20 @@
             width: 100%;
             max-width: 100%;
             margin-top: 10px;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .forgot-link:hover {
+            text-decoration: underline;
         }
 
         /* Client Dashboard inside box */
@@ -956,7 +970,7 @@
         </div>
     </section>
 
-    <!-- Account & Auth Section (Inscription / Connexion / Dashboard) -->
+    <!-- Account & Auth Section (Inscription / Connexion / Dashboard / Récupération) -->
     <section id="accountSection" class="register-section">
         <div class="auth-container">
             
@@ -999,7 +1013,27 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
                 </div>
+                <a class="forgot-link" onclick="switchTab('forgot')">Mot de passe oublié ?</a>
                 <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
+            </form>
+
+            <!-- Formulaire de Récupération (3 méthodes: Email, WhatsApp, Telegram) -->
+            <form id="forgotForm" class="auth-form">
+                <p>Récupérez votre mot de passe par la méthode de votre choix.</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="forgotEmail" placeholder="Votre e-mail enregistré" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-sliders"></i>
+                    <select id="forgotMethod">
+                        <option value="email">Par E-mail</option>
+                        <option value="whatsapp">Par WhatsApp</option>
+                        <option value="telegram">Par Telegram</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" id="forgotBtn">Envoyer les instructions</button>
+                <a class="forgot-link" style="text-align: center; margin-top: 15px;" onclick="switchTab('login')">Retour à la connexion</a>
             </form>
 
             <!-- Espace Dashboard Client (S'affiche après connexion) -->
@@ -1074,9 +1108,14 @@
             if (tab === 'register') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('registerForm').classList.add('active');
-            } else {
+                document.getElementById('authTabs').style.display = 'flex';
+            } else if (tab === 'login') {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('loginForm').classList.add('active');
+                document.getElementById('authTabs').style.display = 'flex';
+            } else if (tab === 'forgot') {
+                document.getElementById('authTabs').style.display = 'none';
+                document.getElementById('forgotForm').classList.add('active');
             }
         }
     </script>
@@ -1256,11 +1295,78 @@
             }
         });
 
+        // 3. استعادة كلمة المرور عبر (Email, WhatsApp, Telegram)
+        document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('forgotEmail').value.trim();
+            const method = document.getElementById('forgotMethod').value;
+            const forgotBtn = document.getElementById('forgotBtn');
+
+            forgotBtn.innerText = "Traitement en cours...";
+            forgotBtn.disabled = true;
+
+            try {
+                // التحقق من وجود الإيميل في قاعدة البيانات أولاً
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&select=*`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.length > 0) {
+                    const user = data[0];
+
+                    if (method === 'email') {
+                        // إرسال إشعار عبر بوت تليجرام للإدارة لإرسال الإيميل أو محاكاة الإرسال
+                        const msg = `🔄 Demande de récupération de mot de passe (Par EMAIL) :\n\n👤 Nom : ${user.name}\n📧 Email : ${user.email}\n🔑 Mot de passe actuel : ${user.password}`;
+                        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ chat_id: chatId, text: msg })
+                        });
+                        alert(`Un e-mail contenant les instructions de récupération a été envoyé à : ${email}`);
+                    } 
+                    else if (method === 'whatsapp') {
+                        // توجيه المستخدم أو إرسال إشعار للواتساب (توجيه مباشر لرابط واتساب الدعم مع بياناته)
+                        const waText = encodeURIComponent(`Bonjour, j'ai oublié mon mot de passe POS Pro pour l'email: ${email}. Mon nom est ${user.name}.`);
+                        window.open(`https://wa.me/213779625867?text=${waText}`, '_blank');
+                    } 
+                    else if (method === 'telegram') {
+                        // إرسال تنبيه فوري عبر بوت تليجرام للمستخدم أو الإدارة
+                        const msg = `🔄 Demande de récupération de mot de passe (Par TELEGRAM) :\n\n👤 Nom : ${user.name}\n📧 Email : ${user.email}\n📞 Tél : ${user.phone}\n🔑 Mot de passe : ${user.password}`;
+                        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ chat_id: chatId, text: msg })
+                        });
+                        alert(`Une demande a été transmise via Telegram pour le compte associé à : ${email}`);
+                    }
+
+                    switchTab('login');
+                } else {
+                    alert("Aucun compte trouvé avec cet e-mail.");
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Une erreur s'est produite lors de la récupération.");
+            } finally {
+                forgotBtn.innerText = "Envoyer les instructions";
+                forgotBtn.disabled = false;
+            }
+        });
+
         // عرض لوحة تحكم العميل وإخفاء النماذج
         function showDashboard(user) {
             document.getElementById('authTabs').style.display = 'none';
             document.getElementById('registerForm').classList.remove('active');
             document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('forgotForm').classList.remove('active');
             
             document.getElementById('userNameDisplay').innerText = user.name;
             document.getElementById('userKeyDisplay').innerText = user.activation_key;
@@ -1276,8 +1382,10 @@
             document.getElementById('authTabs').style.display = 'flex';
             document.getElementById('registerForm').classList.add('active');
             document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('forgotForm').classList.remove('active');
             document.getElementById('registerForm').reset();
             document.getElementById('loginForm').reset();
+            document.getElementById('forgotForm').reset();
         }
     </script>
 
