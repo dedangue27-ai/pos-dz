@@ -1080,7 +1080,7 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase داخل المخطط api
+                // الخطوة ب: حفظ المفتاح في جدول Supabase داخل المخطط api مع الترويسات المطلوبة لتجاوز قيود الأمان
                 const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations`, {
                     method: 'POST',
                     headers: {
