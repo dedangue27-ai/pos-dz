@@ -554,7 +554,7 @@
             padding: 80px 5%;
         }
 
-        .register-box {
+        .register-box, .login-box {
             max-width: 550px;
             margin: 0 auto;
             background: var(--gray-light);
@@ -564,14 +564,14 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
         }
 
-        .register-box h2 {
+        .register-box h2, .login-box h2 {
             font-size: 24px;
             color: var(--dark);
             margin-bottom: 10px;
             text-align: center;
         }
 
-        .register-box p {
+        .register-box p, .login-box p {
             color: var(--text-muted);
             font-size: 14px;
             margin-bottom: 25px;
@@ -609,10 +609,24 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        .register-box .btn-primary {
+        .register-box .btn-primary, .login-box .btn-primary {
             width: 100%;
             max-width: 100%;
             margin-top: 10px;
+        }
+
+        /* Result display box */
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            color: #0369a1;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            word-break: break-all;
         }
 
         /* Contact Section */
@@ -725,7 +739,7 @@
                 padding: 60px 20px;
             }
 
-            .register-box {
+            .register-box, .login-box {
                 padding: 25px 20px;
             }
         }
@@ -746,6 +760,7 @@
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#pricing" onclick="closeMenu()">Tarifs</a>
             <a href="#register" onclick="closeMenu()">Inscription</a>
+            <a href="#findKey" onclick="closeMenu()">Mon Compte / Clé</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
             <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
         </nav>
@@ -936,6 +951,24 @@
         </div>
     </section>
 
+    <!-- Find License Key Section (Espace Client / Trouver ma clé) -->
+    <section id="findKey" class="register-section" style="background: #f1f5f9;">
+        <div class="login-box">
+            <h2><i class="fa-solid fa-key" style="color: var(--primary);"></i> Retrouver votre Clé d'Activation</h2>
+            <p>Entrez votre numéro de téléphone pour afficher votre clé d'activation instantanément sans attendre d'e-mail.</p>
+            
+            <form id="findKeyForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="searchPhone" placeholder="Votre numéro de téléphone (ex: 0550000000)" required>
+                </div>
+                <button type="submit" class="btn-primary" id="searchBtn">Chercher ma clé</button>
+            </form>
+
+            <div id="keyResultBox" class="result-box"></div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <h2>Contactez-nous</h2>
@@ -1035,7 +1068,7 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Unified Script: Telegram + Supabase Activation -->
+    <!-- Unified Script: Telegram + Supabase Activation & Finding Key -->
     <script>
         // إعدادات Telegram
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
@@ -1051,6 +1084,7 @@
             return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
         }
 
+        // 1. إرسال طلب التفعيل وحفظه في جدول public
         document.getElementById('telegramForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1062,16 +1096,13 @@
             submitBtn.innerText = "Traitement en cours...";
             submitBtn.disabled = true;
 
-            // 1. توليد مفتاح التفعيل الجديد
             const generatedKey = generateLicenseKey("LIFE");
             
-            // 2. حساب تاريخ انتهاء الصلاحية (بعد سنة)
             const expiryDate = new Date();
             expiryDate.setFullYear(expiryDate.getFullYear() + 1);
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                // الخطوة أ: إرسال الإشعار إلى Telegram
                 const telegramMessage = `🚀 Nouvelle demande d'achat POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Téléphone : ${phone}\n🔑 Clé générée : ${generatedKey}`;
                 
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -1080,8 +1111,8 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase مع تضمين api في الرابط مباشرة لتجاوز المشكلة
-                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/api/pos_activations`, {
+                // حفظ المفتاح في جدول pos_activations (المخطط public) وتخزين الرقم في hwid للبحث السهل
+                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1091,7 +1122,7 @@
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
-                        hwid: "PENDING_" + phone,
+                        hwid: phone, // تخزين رقم الهاتف هنا لتمكين العميل من البحث لاحقاً
                         status: "inactive",
                         expiry_date: formattedExpiry
                     })
@@ -1112,6 +1143,48 @@
             } finally {
                 submitBtn.innerText = "Envoyer la demande";
                 submitBtn.disabled = false;
+            }
+        });
+
+        // 2. البحث عن الكود عبر رقم الهاتف (بدون إيميل وبدون Spam)
+        document.getElementById('findKeyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const searchPhone = document.getElementById('searchPhone').value.trim();
+            const searchBtn = document.getElementById('searchBtn');
+            const resultBox = document.getElementById('keyResultBox');
+
+            searchBtn.innerText = "Recherche...";
+            searchBtn.disabled = true;
+            resultBox.style.display = "none";
+
+            try {
+                // البحث في الجدول عن المطابق لرقم الهاتف المخزن في حقل hwid
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations?hwid=eq.${searchPhone}&select=activation_key,expiry_date`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.length > 0) {
+                    const record = data[0];
+                    resultBox.innerHTML = `✅ Votre Clé Trouvée : <br><strong style="font-size: 16px; color: #0284c7;">${record.activation_key}</strong><br><span style="font-size: 12px; color: #64748b;">Expire le : ${record.expiry_date}</span>`;
+                    resultBox.style.display = "block";
+                } else {
+                    resultBox.innerHTML = `❌ Aucune clé trouvée pour ce numéro (${searchPhone}). Assurez-vous d'avoir soumis une demande d'abord.`;
+                    resultBox.style.display = "block";
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur lors de la recherche.');
+            } finally {
+                searchBtn.innerText = "Chercher ma clé";
+                searchBtn.disabled = false;
             }
         });
     </script>
