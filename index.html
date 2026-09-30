@@ -1080,16 +1080,14 @@
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // الخطوة ب: حفظ المفتاح في جدول Supabase داخل المخطط api مع الترويسات المطلوبة لتجاوز قيود الأمان
-                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/pos_activations`, {
+                // الخطوة ب: حفظ المفتاح في جدول Supabase مع تضمين api في الرابط مباشرة لتجاوز المشكلة
+                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/api/pos_activations`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation',
-                        'Accept-Profile': 'api',
-                        'Content-Profile': 'api'
+                        'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
                         activation_key: generatedKey,
