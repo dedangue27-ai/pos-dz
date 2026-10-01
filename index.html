@@ -1132,154 +1132,151 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Appwrite Account & Database System -->
-    <script>
-        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
-        const chatId = "6016112482";
+    <!-- Appwrite SDK -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+<script>
+    const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
+    const chatId = "6016112482";
 
-        // إعدادات Appwrite المحدثة الخاصة بك
-        const { Client, Databases, ID, Query } = Appwrite;
+    // إعدادات Appwrite
+    const { Client, Databases, ID } = Appwrite;
+    const client = new Client()
+        .setEndpoint('https://fra.cloud.appwrite.io/v1')
+        .setProject('6abe94b500149981a9c2');
 
-        const client = new Client()
-            .setEndpoint('https://fra.cloud.appwrite.io/v1')
-            .setProject('6abe94b500149981a9c2');
+    const databases = new Databases(client);
+    const DATABASE_ID = '6abe955d003d5da5415b';
+    const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
-        const databases = new Databases(client);
+    function generateLicenseKey(tag = "LIFE") {
+        const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
+        return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
+    }
 
-        const DATABASE_ID = '6abe955d003d5da5415b';
-        const COLLECTION_ID = '6abe94b0031f85bf410';
-
-        function generateLicenseKey(tag = "LIFE") {
-            const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
-            return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
+    // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedUser = localStorage.getItem('pos_logged_user');
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            showDashboard(user);
         }
+    });
 
-        // التحقق من تسجيل الدخول مسبقاً في LocalStorage
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('pos_logged_user');
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                showDashboard(user);
-            }
-        });
+    // 1. تسجيل حساب جديد وحفظه في Appwrite
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-        // 1. تسجيل حساب جديد وحفظه في Appwrite
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const regBtn = document.getElementById('regBtn');
 
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const regBtn = document.getElementById('regBtn');
+        regBtn.innerText = "Création en cours...";
+        regBtn.disabled = true;
 
-            regBtn.innerText = "Création en cours...";
-            regBtn.disabled = true;
+        const generatedKey = generateLicenseKey("LIFE");
+        const expiryDate = new Date();
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+        const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
-            const generatedKey = generateLicenseKey("LIFE");
-            const expiryDate = new Date();
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-            const formattedExpiry = expiryDate.toISOString().split('T')[0];
+        try {
+            // إرسال تنبيه لتليجرام
+            const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
+            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+            });
 
-            try {
-                // إرسال البيانات إلى قاعدة بيانات Appwrite
-                await databases.createDocument(
-                    DATABASE_ID,
-                    COLLECTION_ID,
-                    ID.unique(),
-                    {
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        password: password,
-                        activation_key: generatedKey,
-                        expiry_date: formattedExpiry
-                    }
-                );
-
-                // إرسال تنبيه لتليجرام
-                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
-                });
-
-                const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
-                localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-                showDashboard(userData);
-
-            } catch (err) {
-                console.error(err);
-                alert('Erreur lors de la création du compte. Vérifiez les données ou la connexion.');
-            } finally {
-                regBtn.innerText = "S'inscrire";
-                regBtn.disabled = false;
-            }
-        });
-
-        // 2. تسجيل الدخول والبحث في Appwrite باستخدام الاستعلامات (Queries)
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('logEmail').value.trim();
-            const password = document.getElementById('logPassword').value.trim();
-            const logBtn = document.getElementById('logBtn');
-
-            logBtn.innerText = "Connexion...";
-            logBtn.disabled = true;
-
-            try {
-                const response = await databases.listDocuments(
-                    DATABASE_ID,
-                    COLLECTION_ID,
-                    [
-                        Query.equal('email', email),
-                        Query.equal('password', password)
-                    ]
-                );
-
-                if (response.documents.length > 0) {
-                    const user = response.documents[0];
-                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    showDashboard(user);
-                } else {
-                    alert('E-mail ou mot de passe incorrect.');
+            // حفظ المستخدم في جدول users عبر Appwrite
+            await databases.createDocument(
+                DATABASE_ID,
+                COLLECTION_ID,
+                ID.unique(),
+                {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    activation_key: generatedKey,
+                    expiry_date: formattedExpiry
                 }
+            );
 
-            } catch (err) {
-                console.error(err);
-                alert('Erreur de connexion.');
-            } finally {
-                logBtn.innerText = "Se connecter";
-                logBtn.disabled = false;
+            const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
+            localStorage.setItem('pos_logged_user', JSON.stringify(userData));
+            showDashboard(userData);
+
+        } catch (err) {
+            console.error(err);
+            alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu. ' + (err.message || ''));
+        } finally {
+            regBtn.innerText = "S'inscrire";
+            regBtn.disabled = false;
+        }
+    });
+
+    // 2. تسجيل الدخول والبحث عن المستخدم في Appwrite
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('logEmail').value.trim();
+        const password = document.getElementById('logPassword').value.trim();
+        const logBtn = document.getElementById('logBtn');
+
+        logBtn.innerText = "Connexion...";
+        logBtn.disabled = true;
+
+        try {
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Appwrite.Query.equal('email', email),
+                    Appwrite.Query.equal('password', password)
+                ]
+            );
+
+            if (response.documents.length > 0) {
+                const user = response.documents[0];
+                localStorage.setItem('pos_logged_user', JSON.stringify(user));
+                showDashboard(user);
+            } else {
+                alert('E-mail ou mot de passe incorrect.');
             }
-        });
 
-        // عرض لوحة تحكم العميل
-        function showDashboard(user) {
-            document.getElementById('authTabs').style.display = 'none';
-            document.getElementById('registerForm').classList.remove('active');
-            document.getElementById('loginForm').classList.remove('active');
-            
-            document.getElementById('userNameDisplay').innerText = user.name;
-            document.getElementById('userKeyDisplay').innerText = user.activation_key;
-            document.getElementById('userExpiryDisplay').innerText = user.expiry_date;
-            
-            document.getElementById('clientDashboard').style.display = 'block';
+        } catch (err) {
+            console.error(err);
+            alert('Erreur de connexion.');
+        } finally {
+            logBtn.innerText = "Se connecter";
+            logBtn.disabled = false;
         }
+    });
 
-        // تسجيل الخروج
-        function logoutUser() {
-            localStorage.removeItem('pos_logged_user');
-            document.getElementById('clientDashboard').style.display = 'none';
-            document.getElementById('authTabs').style.display = 'flex';
-            document.getElementById('registerForm').classList.add('active');
-            document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('registerForm').reset();
-            document.getElementById('loginForm').reset();
-        }
-    </script>
+    function showDashboard(user) {
+        document.getElementById('authTabs').style.display = 'none';
+        document.getElementById('registerForm').classList.remove('active');
+        document.getElementById('loginForm').classList.remove('active');
+        
+        document.getElementById('userNameDisplay').innerText = user.name;
+        document.getElementById('userKeyDisplay').innerText = user.activation_key;
+        document.getElementById('userExpiryDisplay').innerText = user.expiry_date;
+        
+        document.getElementById('clientDashboard').style.display = 'block';
+    }
+
+    function logoutUser() {
+        localStorage.removeItem('pos_logged_user');
+        document.getElementById('clientDashboard').style.display = 'none';
+        document.getElementById('authTabs').style.display = 'flex';
+        document.getElementById('registerForm').classList.add('active');
+        document.getElementById('loginForm').classList.remove('active');
+        document.getElementById('registerForm').reset();
+        document.getElementById('loginForm').reset();
+    }
+</script>
 
 </body>
 </html>
