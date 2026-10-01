@@ -1101,7 +1101,7 @@
             }
         });
 
-        // 1. تسجيل حساب جديد (بدون توليد مفتاح تلقائي)
+        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل وحفظه في Supabase
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1111,39 +1111,78 @@
             const password = document.getElementById('regPassword').value.trim();
             const regBtn = document.getElementById('regBtn');
 
+            // التحقق من صيغة رقم الهاتف الجزائري (+213 بدون 0)
+            const phoneRegex = /^\+213[5-7][0-9]{8}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Erreur: Le numéro de téléphone doit commencer par +213 suivi de 9 chiffres (ex: +213555123456) sans le zéro initial !');
+                return;
+            }
+
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
+            const generatedKey = generateLicenseKey("LIFE");
+            const expiryDate = new Date();
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+            const formattedExpiry = expiryDate.toISOString().split('T')[0];
+
             try {
-                // إرسال تنبيه لتليجرام بوجود مسجل جديد
-                const telegramMessage = `👤 Nouveau compte client (En attente d'achat) :\n\nNom : ${name}\nEmail : ${email}\nTél : ${phone}`;
+                // التحقق أولاً إذا كان الإيميل موجوداً مسبقاً
+                const checkResponse = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&select=email`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                const existingUsers = await checkResponse.json();
+                if (existingUsers.length > 0) {
+                    alert('Erreur: Cet e-mail est déjà utilisé par un autre compte !');
+                    regBtn.innerText = "S'inscrire";
+                    regBtn.disabled = false;
+                    return;
+                }
+
+                // إرسال تنبيه لتليجرام
+                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // حفظ المستخدم في جدول users في Appwrite (بدون مفتاح أو بمفتاح فارغ)
-                const doc = await databases.createDocument(
-                    DATABASE_ID,
-                    COLLECTION_ID,
-                    ID.unique(),
-                    {
+                // حفظ المستخدم في جدول users في Supabase
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
                         name: name,
                         email: email,
                         phone: phone,
                         password: password,
-                        activation_key: "", // فارغ لحين الشراء والاعتماد
-                        expiry_date: ""
-                    }
-                );
+                        activation_key: generatedKey,
+                        expiry_date: formattedExpiry
+                    })
+                });
 
-                localStorage.setItem('pos_logged_user', JSON.stringify(doc));
-                showDashboard(doc);
+                const resText = await response.text();
+
+                if (response.ok) {
+                    const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
+                    localStorage.setItem('pos_logged_user', JSON.stringify(userData));
+                    showDashboard(userData);
+                } else {
+                    alert('Erreur: Un problème est survenu lors de l\'enregistrement. ' + resText);
+                }
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur: Cet e-mail existe déjà ou un problème est survenu.');
+                alert('Erreur de connexion.');
             } finally {
                 regBtn.innerText = "S'inscrire";
                 regBtn.disabled = false;
