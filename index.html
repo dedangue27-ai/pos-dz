@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Appwrite Web SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -609,7 +611,7 @@
             font-size: 16px;
         }
 
-        .input-group input, .input-group select {
+        .input-group input {
             width: 100%;
             padding: 14px 16px 14px 48px;
             background: white;
@@ -621,7 +623,7 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus, .input-group select:focus {
+        .input-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
@@ -630,20 +632,6 @@
             width: 100%;
             max-width: 100%;
             margin-top: 10px;
-        }
-
-        .forgot-link {
-            display: block;
-            text-align: right;
-            margin-top: -10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: var(--primary);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .forgot-link:hover {
-            text-decoration: underline;
         }
 
         /* Client Dashboard inside box */
@@ -970,7 +958,7 @@
         </div>
     </section>
 
-    <!-- Account & Auth Section (Inscription / Connexion / Dashboard / Récupération) -->
+    <!-- Account & Auth Section (Inscription / Connexion / Dashboard) -->
     <section id="accountSection" class="register-section">
         <div class="auth-container">
             
@@ -1013,27 +1001,7 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
                 </div>
-                <a class="forgot-link" onclick="switchTab('forgot')">Mot de passe oublié ?</a>
                 <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
-            </form>
-
-            <!-- Formulaire de Récupération (3 méthodes: Email, WhatsApp, Telegram) -->
-            <form id="forgotForm" class="auth-form">
-                <p>Récupérez votre mot de passe par la méthode de votre choix.</p>
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="forgotEmail" placeholder="Votre e-mail enregistré" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-sliders"></i>
-                    <select id="forgotMethod">
-                        <option value="email">Par E-mail</option>
-                        <option value="whatsapp">Par WhatsApp</option>
-                        <option value="telegram">Par Telegram</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary" id="forgotBtn">Envoyer les instructions</button>
-                <a class="forgot-link" style="text-align: center; margin-top: 15px;" onclick="switchTab('login')">Retour à la connexion</a>
             </form>
 
             <!-- Espace Dashboard Client (S'affiche après connexion) -->
@@ -1108,14 +1076,9 @@
             if (tab === 'register') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('registerForm').classList.add('active');
-                document.getElementById('authTabs').style.display = 'flex';
-            } else if (tab === 'login') {
+            } else {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('loginForm').classList.add('active');
-                document.getElementById('authTabs').style.display = 'flex';
-            } else if (tab === 'forgot') {
-                document.getElementById('authTabs').style.display = 'none';
-                document.getElementById('forgotForm').classList.add('active');
             }
         }
     </script>
@@ -1169,20 +1132,31 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Supabase Auth & Account System -->
+    <!-- Appwrite Database & Account System -->
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        const SUPABASE_URL = "https://ephfdrmswjryfzenjrvi.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_TB5FLC6xFnRqGIsLf7uDhQ_ShXwvegQ"; 
+        // إعدادات Appwrite
+        const { Client, Databases, ID, Query } = Appwrite;
+
+        const client = new Client()
+            .setEndpoint('https://cloud.appwrite.io/v1') // أو ضع سيرفرك الخاص إذا كنت تستضيفه بنفسك
+            .setProject('YOUR_PROJECT_ID') // استبدل هذا بمعرف مشروعك في Appwrite
+            .setKey('standard_71395ff6cda699377a43fb4061c86abff5e5ac95488e4391129a19e16f4ba4ca8e69dc142dd3a6471e5fe6a4c4bb43f108095ec8c9fb2fb4839a19105fda3216e3e0995a34717afa8a863b3e73fd3c1084b6fc348dac8cbefb37175a3eabdff20cddaa6cd9ad15194dbf30adb065af78aec4eaeeb1189a96df61393664441013'); // الـ API Key الخاص بك
+
+        const databases = new Databases(client);
+        
+        // ضع معرف قاعدة البيانات ومعرف جدول users الذي أنشأته في Appwrite هنا
+        const DATABASE_ID = 'YOUR_DATABASE_ID'; 
+        const COLLECTION_ID = 'users'; 
 
         function generateLicenseKey(tag = "LIFE") {
             const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
             return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
         }
 
-        // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً في الـ LocalStorage
+        // التحقق من الجلسة المحفوظة مسبقاً
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
@@ -1191,7 +1165,7 @@
             }
         });
 
-        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل وحفظه في Supabase
+        // 1. تسجيل حساب جديد وتوليد المفتاح وحفظه في Appwrite
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1210,53 +1184,49 @@
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                // إرسال تنبيه لتليجرام
-                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
+                // إرسال تنبيه عبر تيليجرام
+                const telegramMessage = `🚀 Nouveau compte client POS Pro (Appwrite) :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // حفظ المستخدم في جدول users في Supabase
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation'
-                    },
-                    body: JSON.stringify({
+                // حفظ المستخدم في جدول users داخل قاعدة بيانات Appwrite
+                const response = await databases.createDocument(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    ID.unique(),
+                    {
                         name: name,
                         email: email,
                         phone: phone,
                         password: password,
                         activation_key: generatedKey,
                         expiry_date: formattedExpiry
-                    })
-                });
+                    }
+                );
 
-                const resText = await response.text();
+                const userData = { 
+                    name: response.name, 
+                    email: response.email, 
+                    activation_key: response.activation_key, 
+                    expiry_date: response.expiry_date 
+                };
 
-                if (response.ok) {
-                    const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
-                    localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-                    showDashboard(userData);
-                } else {
-                    alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu. ' + resText);
-                }
+                localStorage.setItem('pos_logged_user', JSON.stringify(userData));
+                showDashboard(userData);
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion.');
+                alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu avec Appwrite.');
             } finally {
                 regBtn.innerText = "S'inscrire";
                 regBtn.disabled = false;
             }
         });
 
-        // 2. تسجيل الدخول للحساب وجلب مفتاح التفعيل من قاعدة البيانات
+        // 2. تسجيل الدخول والتحقق من البيانات عبر Appwrite
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1268,18 +1238,18 @@
             logBtn.disabled = true;
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&password=eq.${password}&select=*`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
+                // البحث عن المستخدم باستخدام البريد وكلمة المرور
+                const response = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    [
+                        Query.equal('email', email),
+                        Query.equal('password', password)
+                    ]
+                );
 
-                const data = await response.json();
-
-                if (response.ok && data.length > 0) {
-                    const user = data[0];
+                if (response.documents.length > 0) {
+                    const user = response.documents[0];
                     localStorage.setItem('pos_logged_user', JSON.stringify(user));
                     showDashboard(user);
                 } else {
@@ -1288,85 +1258,18 @@
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion.');
+                alert('Erreur de connexion à Appwrite.');
             } finally {
                 logBtn.innerText = "Se connecter";
                 logBtn.disabled = false;
             }
         });
 
-        // 3. استعادة كلمة المرور عبر (Email, WhatsApp, Telegram)
-        document.getElementById('forgotForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('forgotEmail').value.trim();
-            const method = document.getElementById('forgotMethod').value;
-            const forgotBtn = document.getElementById('forgotBtn');
-
-            forgotBtn.innerText = "Traitement en cours...";
-            forgotBtn.disabled = true;
-
-            try {
-                // التحقق من وجود الإيميل في قاعدة البيانات أولاً
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&select=*`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.length > 0) {
-                    const user = data[0];
-
-                    if (method === 'email') {
-                        // إرسال إشعار عبر بوت تليجرام للإدارة لإرسال الإيميل أو محاكاة الإرسال
-                        const msg = `🔄 Demande de récupération de mot de passe (Par EMAIL) :\n\n👤 Nom : ${user.name}\n📧 Email : ${user.email}\n🔑 Mot de passe actuel : ${user.password}`;
-                        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ chat_id: chatId, text: msg })
-                        });
-                        alert(`Un e-mail contenant les instructions de récupération a été envoyé à : ${email}`);
-                    } 
-                    else if (method === 'whatsapp') {
-                        // توجيه المستخدم أو إرسال إشعار للواتساب (توجيه مباشر لرابط واتساب الدعم مع بياناته)
-                        const waText = encodeURIComponent(`Bonjour, j'ai oublié mon mot de passe POS Pro pour l'email: ${email}. Mon nom est ${user.name}.`);
-                        window.open(`https://wa.me/213779625867?text=${waText}`, '_blank');
-                    } 
-                    else if (method === 'telegram') {
-                        // إرسال تنبيه فوري عبر بوت تليجرام للمستخدم أو الإدارة
-                        const msg = `🔄 Demande de récupération de mot de passe (Par TELEGRAM) :\n\n👤 Nom : ${user.name}\n📧 Email : ${user.email}\n📞 Tél : ${user.phone}\n🔑 Mot de passe : ${user.password}`;
-                        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ chat_id: chatId, text: msg })
-                        });
-                        alert(`Une demande a été transmise via Telegram pour le compte associé à : ${email}`);
-                    }
-
-                    switchTab('login');
-                } else {
-                    alert("Aucun compte trouvé avec cet e-mail.");
-                }
-
-            } catch (err) {
-                console.error(err);
-                alert("Une erreur s'est produite lors de la récupération.");
-            } finally {
-                forgotBtn.innerText = "Envoyer les instructions";
-                forgotBtn.disabled = false;
-            }
-        });
-
-        // عرض لوحة تحكم العميل وإخفاء النماذج
+        // عرض لوحة تحكم العميل
         function showDashboard(user) {
             document.getElementById('authTabs').style.display = 'none';
             document.getElementById('registerForm').classList.remove('active');
             document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('forgotForm').classList.remove('active');
             
             document.getElementById('userNameDisplay').innerText = user.name;
             document.getElementById('userKeyDisplay').innerText = user.activation_key;
@@ -1382,10 +1285,8 @@
             document.getElementById('authTabs').style.display = 'flex';
             document.getElementById('registerForm').classList.add('active');
             document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('forgotForm').classList.remove('active');
             document.getElementById('registerForm').reset();
             document.getElementById('loginForm').reset();
-            document.getElementById('forgotForm').reset();
         }
     </script>
 
