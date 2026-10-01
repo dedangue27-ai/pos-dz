@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* Navbar responsive & Mobile Menu */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -75,7 +75,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Desktop Nav */
         .nav-links {
             display: flex;
             align-items: center;
@@ -595,7 +594,7 @@
             font-size: 16px;
         }
 
-        .input-group input, .input-group select {
+        .input-group input {
             width: 100%;
             padding: 14px 16px 14px 48px;
             background: white;
@@ -607,41 +606,9 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus, .input-group select:focus {
+        .input-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
-
-        /* اختيار طريقة الاستلام (إيميل أو تيليجرام/هاتف) */
-        .method-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .method-option {
-            flex: 1;
-            background: white;
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: 0.3s;
-            color: var(--text-muted);
-        }
-
-        .method-option input {
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        .method-option.selected {
-            border-color: var(--primary);
-            background: rgba(37, 99, 235, 0.05);
-            color: var(--primary);
         }
 
         /* Client Dashboard UI */
@@ -978,9 +945,9 @@
                 <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
             </form>
 
-            <!-- Formulaire d'Inscription -->
+            <!-- Formulaire d'Inscription (بدون توليد كود تلقائي) -->
             <form id="registerForm" class="auth-form">
-                <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous pour commander votre licence logicielle.</p>
+                <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous pour accéder à votre tableau de bord et commander votre licence.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="regName" placeholder="Nom complet" required>
@@ -991,56 +958,33 @@
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="regPhone" placeholder="Numéro (ex: +213550000000)" required>
+                    <input type="tel" id="regPhone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="regPassword" placeholder="Mot de passe" required>
                 </div>
-
-                <!-- اختيار طريقة استلام رمز التحقق -->
-                <label style="font-size: 13px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">Mode de réception du code de vérification :</label>
-                <div class="method-selector">
-                    <label class="method-option selected" id="optEmailLabel" onclick="setVerifyMethod('email')">
-                        <input type="radio" name="verifyMethod" value="email" checked> E-mail
-                    </label>
-                    <label class="method-option" id="optPhoneLabel" onclick="setVerifyMethod('phone')">
-                        <input type="radio" name="verifyMethod" value="phone"> Téléphone / Telegram
-                    </label>
-                </div>
-
-                <button type="submit" class="btn-primary" id="regBtn">S'inscrire</button>
+                <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
             </form>
 
-            <!-- واجهة إدخال رمز التحقق OTP -->
-            <div id="verifyForm" class="auth-form" style="display: none;">
-                <h3><i class="fa-solid fa-shield-check" style="color: var(--primary);"></i> Vérification requise</h3>
-                <p id="verifyInstructions" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Veuillez saisir le code de vérification envoyé.</p>
-                <div class="input-group">
-                    <i class="fa-solid fa-key"></i>
-                    <input type="text" id="otpCode" placeholder="Code à 6 chiffres" required>
-                </div>
-                <button type="button" class="btn-primary" id="verifyBtn" onclick="verifyEmailOTP()" style="max-width: 100%;">Valider le code</button>
-            </div>
-
-            <!-- Dashboard Client Professionnel -->
+            <!-- Dashboard Client الاحترافي (حيث يتم طلب الشراء وتظهر حالة التفعيل) -->
             <div id="clientDashboard" class="dashboard-box">
                 <div class="dashboard-header">
-                    <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
+                    <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Espace Client - <span id="userNameDisplay"></span></h2>
                     <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Déconnexion</button>
                 </div>
 
                 <div class="status-card">
                     <h4>Statut de votre Licence :</h4>
                     <div id="licenseStatusContainer">
-                        <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> En attente de validation</span>
+                        <!-- يتم ملؤها ديناميكياً حسب حالة الكود في قاعدة البيانات -->
                     </div>
                 </div>
 
-                <div class="order-box">
-                    <h3><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Licence Pro</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Commandez votre licence à vie pour débloquer toutes les fonctionnalités.</p>
-                    <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;">Commander une Licence</button>
+                <div class="order-box" id="orderBoxSection">
+                    <h3><i class="fa-solid fa-cart-shopping" style="color: var(--primary);"></i> Acheter ou Activer une Licence Pro</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Votre compte n'a pas encore de licence active. Cliquez ci-dessous pour envoyer une demande d'achat et obtenir votre clé d'activation à vie.</p>
+                    <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;"><i class="fa-solid fa-paper-plane"></i> Demander l'achat d'une licence</button>
                 </div>
             </div>
 
@@ -1131,14 +1075,6 @@
         startTimer();
     </script>
 
-    <!-- EmailJS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        (function(){
-            emailjs.init("YOUR_PUBLIC_KEY"); 
-        })();
-    </script>
-
     <!-- Appwrite Auth & System Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
@@ -1154,17 +1090,6 @@
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410';
 
-        let tempUserData = null;
-        let generatedOTP = "";
-        let selectedMethod = "email";
-
-        function setVerifyMethod(method) {
-            selectedMethod = method;
-            document.getElementById('optEmailLabel').classList.toggle('selected', method === 'email');
-            document.getElementById('optPhoneLabel').classList.toggle('selected', method === 'phone');
-            document.querySelector(`input[value="${method}"]`).checked = true;
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
@@ -1172,7 +1097,7 @@
             }
         });
 
-        // 1. التسجيل وإرسال الرمز حسب اختيار المستخدم
+        // 1. عملية التسجيل بدون توليد كود تفعيل تلقائي (الحساب يُنشأ بحالة انتظار)
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1182,90 +1107,40 @@
             const password = document.getElementById('regPassword').value.trim();
             const regBtn = document.getElementById('regBtn');
 
-            const phoneRegex = /^\+213[5-7][0-9]{8}$/;
-            if (!phoneRegex.test(phone)) {
-                alert('Erreur: Le numéro doit commencer par +213 suivi de 9 chiffres (ex: +213555123456).');
-                return;
-            }
-
-            regBtn.innerText = "Envoi du code...";
+            regBtn.innerText = "Création du compte...";
             regBtn.disabled = true;
 
-            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            const generatedKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const expiryDate = new Date();
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-
-            tempUserData = { name, email, phone, password, activation_key: generatedKey, expiry_date: expiryDate.toISOString().split('T')[0] };
-
             try {
-                if (selectedMethod === 'email') {
-                    // إذا اختار الإيميل (استبدل القيم بـ Service ID و Template ID الخاصة بك في EmailJS إن أردت الإرسال الفعلي)
-                    document.getElementById('verifyInstructions').innerText = `Un code a été envoyé à votre e-mail : ${email} (Code: ${generatedOTP})`;
-                } else {
-                    // إذا اختار الهاتف/تيليجرام
-                    const telegramMessage = `📱 Code OTP pour ${phone} :\n\n👉 Code : <b>${generatedOTP}</b>\n👤 Nom : ${name}`;
-                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
-                    });
-                    document.getElementById('verifyInstructions').innerText = `Un code SMS/Telegram a été envoyé au : ${phone}`;
-                }
+                // حفظ المستخدم في قاعدة البيانات بدون مفتاح تفعيل (أو فارغ)
+                const newUser = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    activation_key: "",       // فارغ تماماً لحين الشراء
+                    expiry_date: ""
+                });
 
-                document.getElementById('registerForm').classList.remove('active');
-                document.getElementById('verifyForm').style.display = 'block';
-                document.getElementById('authTabs').style.display = 'none';
-
+                localStorage.setItem('pos_logged_user', JSON.stringify(newUser));
+                showDashboard(newUser);
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de l\'envoi du code.');
+                alert('Erreur lors de l\'inscription. Cet e-mail est peut-être déjà utilisé.');
             } finally {
-                regBtn.innerText = "S'inscrire";
+                regBtn.innerText = "Créer mon compte";
                 regBtn.disabled = false;
             }
         });
 
-        // 2. تأكيد رمز الـ OTP
-        async function verifyEmailOTP() {
-            const enteredOTP = document.getElementById('otpCode').value.trim();
-            const verifyBtn = document.getElementById('verifyBtn');
-
-            if (enteredOTP !== generatedOTP) {
-                alert('Erreur: Code de vérification incorrect !');
-                return;
-            }
-
-            verifyBtn.innerText = "Validation...";
-            verifyBtn.disabled = true;
-
-            try {
-                await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
-                    name: tempUserData.name,
-                    email: tempUserData.email,
-                    phone: tempUserData.phone,
-                    password: tempUserData.password,
-                    activation_key: tempUserData.activation_key,
-                    expiry_date: tempUserData.expiry_date
-                });
-
-                localStorage.setItem('pos_logged_user', JSON.stringify(tempUserData));
-                document.getElementById('verifyForm').style.display = 'none';
-                showDashboard(tempUserData);
-            } catch (err) {
-                console.error(err);
-                alert('Erreur lors de l\'enregistrement.');
-            } finally {
-                verifyBtn.innerText = "Valider le code";
-                verifyBtn.disabled = false;
-            }
-        }
-
-        // 3. تسجيل الدخول
+        // 2. تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
             const password = document.getElementById('logPassword').value.trim();
+            const logBtn = document.getElementById('logBtn');
+
+            logBtn.innerText = "Connexion...";
+            logBtn.disabled = true;
 
             try {
                 const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -1283,25 +1158,37 @@
             } catch (err) {
                 console.error(err);
                 alert('Erreur de connexion.');
+            } finally {
+                logBtn.innerText = "Se connecter";
+                logBtn.disabled = false;
             }
         });
 
+        // 3. عرض لوحة التحكم وتحديث حالة التفعيل بناءً على قاعدة البيانات
         function showDashboard(user) {
             document.getElementById('authTabs').style.display = 'none';
             document.getElementById('registerForm').classList.remove('active');
             document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('verifyForm').style.display = 'none';
             
             document.getElementById('userNameDisplay').innerText = user.name;
             const licenseContainer = document.getElementById('licenseStatusContainer');
+            const orderBoxSection = document.getElementById('orderBoxSection');
             
             if (user.activation_key && user.activation_key.trim() !== "") {
+                // إذا كان لديه كود تفعيل مسجل مسبقاً
                 licenseContainer.innerHTML = `
                     <span style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Licence Active</span>
                     <div class="license-box">${user.activation_key}</div>
                     <small style="color: var(--text-muted); display: block; margin-top: 8px;">Expire le : <b>${user.expiry_date || 'Illimité'}</b></small>
                 `;
-                document.querySelector('.order-box').style.display = 'none';
+                orderBoxSection.style.display = 'none';
+            } else {
+                // إذا لم يكن لديه كود تفعيل (حساب جديد يحتاج للشراء)
+                licenseContainer.innerHTML = `
+                    <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> En attente d'activation (Aucune licence active)</span>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Veuillez commander votre licence ci-dessous pour débloquer l'application.</p>
+                `;
+                orderBoxSection.style.display = 'block';
             }
 
             document.getElementById('clientDashboard').style.display = 'block';
@@ -1312,27 +1199,30 @@
             window.location.reload();
         }
 
+        // 4. طلب شراء التفعيل من داخل الداشبورد (إرسال إشعار فوري لتيليجرام)
         async function requestLicensePurchase() {
             const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
             if (!savedUser) return;
 
             const orderBtn = document.getElementById('orderBtn');
-            orderBtn.innerText = "Envoi...";
+            orderBtn.innerText = "Envoi de la demande...";
             orderBtn.disabled = true;
 
             try {
-                const telegramMessage = `🛒 DEMANDE DE LICENCE :\n👤 ${savedUser.name}\n📧 ${savedUser.email}\n📞 ${savedUser.phone}`;
+                const telegramMessage = `🛒 <b>Nouvelle Demande de Licence POS Pro !</b>\n\n👤 <b>Nom :</b> ${savedUser.name}\n📧 <b>E-mail :</b> ${savedUser.email}\n📞 <b>Téléphone :</b> ${savedUser.phone || 'Non renseigné'}\n\n<i>Veuillez valider le paiement et lui attribuer une clé d'activation.</i>`;
+                
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
                 });
-                alert('Demande envoyée avec succès !');
+
+                alert('Votre demande d\'achat de licence a été envoyée avec succès ! Nous vous contacterons très rapidement.');
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de l\'envoi.');
+                alert('Erreur lors de l\'envoi de la demande.');
             } finally {
-                orderBtn.innerText = "Commander une Licence";
+                orderBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Demander l'achat d'une licence`;
                 orderBtn.disabled = false;
             }
         }
