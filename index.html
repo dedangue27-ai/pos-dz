@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Appwrite Web SDK -->
+    <!-- مكتبة Appwrite SDK -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <style>
         :root {
@@ -1132,30 +1132,27 @@
         sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Appwrite Database & Account System -->
+    <!-- Appwrite Auth & Account System -->
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
         const chatId = "6016112482";
 
-        // إعدادات Appwrite
+        // إعدادات Appwrite (استبدل القيم بالمعرفات الخاصة بك)
         const { Client, Databases, ID, Query } = Appwrite;
-
         const client = new Client()
-            .setEndpoint('https://fra.cloud.appwrite.io/v1')
-            .setProject('6abe94b500149981a9c2')
-            .setKey('standard_71395ff6cda699377a43fb4061c86abff5e5ac95488e4391129a19e16f4ba4ca8e69dc142dd3a6471e5fe6a4c4bb43f108095ec8c9fb2fb4839a19105fda3216e3e0995a34717afa8a863b3e73fd3c1084b6fc348dac8cbefb37175a3eabdff20cddaa6cd9ad15194dbf30adb065af78aec4eaeeb1189a96df61393664441013');
+            .setEndpoint('https://cloud.appwrite.io/v1') // أو رابط السيرفر المحلي الخاص بك
+            .setProject('YOUR_PROJECT_ID');            // ضع معرف المشروع الخاص بك
 
         const databases = new Databases(client);
-        
-        const DATABASE_ID = '6abe955d003d5da5415b'; 
-        const COLLECTION_ID = 'users'; 
+        const DATABASE_ID = 'YOUR_DATABASE_ID';         // ضع معرف قاعدة البيانات
+        const COLLECTION_ID = 'YOUR_COLLECTION_ID';     // ضع معرف مجموعة المستخدمين
 
         function generateLicenseKey(tag = "LIFE") {
             const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
             return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
         }
 
-        // التحقق من الجلسة المحفوظة مسبقاً
+        // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً في الـ LocalStorage
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
@@ -1164,7 +1161,7 @@
             }
         });
 
-        // 1. تسجيل حساب جديد وتوليد المفتاح وحفظه في Appwrite
+        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل وحفظه في Appwrite
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1183,16 +1180,16 @@
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
             try {
-                // إرسال تنبيه عبر تيليجرام
-                const telegramMessage = `🚀 Nouveau compte client POS Pro (Appwrite) :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
+                // إرسال تنبيه لتليجرام
+                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
                 });
 
-                // حفظ المستخدم في جدول users داخل قاعدة بيانات Appwrite
-                const response = await databases.createDocument(
+                // حفظ المستخدم في مجموعة البيانات في Appwrite
+                await databases.createDocument(
                     DATABASE_ID,
                     COLLECTION_ID,
                     ID.unique(),
@@ -1206,26 +1203,20 @@
                     }
                 );
 
-                const userData = { 
-                    name: response.name, 
-                    email: response.email, 
-                    activation_key: response.activation_key, 
-                    expiry_date: response.expiry_date 
-                };
-
+                const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
                 localStorage.setItem('pos_logged_user', JSON.stringify(userData));
                 showDashboard(userData);
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu avec Appwrite.');
+                alert('Erreur lors de la création du compte. Vérifiez les données ou la connexion.');
             } finally {
                 regBtn.innerText = "S'inscrire";
                 regBtn.disabled = false;
             }
         });
 
-        // 2. تسجيل الدخول والتحقق من البيانات عبر Appwrite
+        // 2. تسجيل الدخول للحساب وجلب بيانات المستخدم من Appwrite
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1256,14 +1247,14 @@
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion à Appwrite.');
+                alert('Erreur de connexion.');
             } finally {
                 logBtn.innerText = "Se connecter";
                 logBtn.disabled = false;
             }
         });
 
-        // عرض لوحة تحكم العميل
+        // عرض لوحة تحكم العميل وإخفاء النماذج
         function showDashboard(user) {
             document.getElementById('authTabs').style.display = 'none';
             document.getElementById('registerForm').classList.remove('active');
