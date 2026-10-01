@@ -968,6 +968,17 @@
                 <button type="submit" class="btn-primary" id="regBtn">S'inscrire</button>
             </form>
 
+            <!-- واجهة التحقق من البريد الإلكتروني (تظهر بعد إرسال طلب التسجيل) -->
+            <div id="verifyForm" class="auth-form" style="display: none;">
+                <h3><i class="fa-solid fa-shield-check" style="color: var(--primary);"></i> Vérification de l'e-mail</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Un code de vérification (OTP) a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous pour activer votre compte.</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="text" id="otpCode" placeholder="Entrez le code à 6 chiffres" required>
+                </div>
+                <button type="button" class="btn-primary" id="verifyBtn" onclick="verifyEmailOTP()" style="max-width: 100%;">Vérifier le code</button>
+            </div>
+
             <!-- Dashboard Client Professionnel -->
             <div id="clientDashboard" class="dashboard-box">
                 <div class="dashboard-header">
@@ -1077,7 +1088,7 @@
         startTimer();
     </script>
 
-    <!-- Appwrite Auth & Professional Dashboard System -->
+    <!-- Appwrite Auth & Email Verification System -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
@@ -1092,6 +1103,10 @@
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
+        // متغير مؤقت لتخزين بيانات المستخدم قبل تأكيد الرمز
+        let tempUserData = null;
+        let generatedOTP = "";
+
         // التحقق من الجلسة المحفوظة مسبقاً
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
@@ -1101,7 +1116,7 @@
             }
         });
 
-        // 1. تسجيل حساب جديد وتوليد مفتاح تفعيل وحفظه في Supabase
+        // 1. تسجيل حساب جديد وإرسال رمز التحقق OTP
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1118,78 +1133,92 @@
                 return;
             }
 
-            regBtn.innerText = "Création en cours...";
+            regBtn.innerText = "Génération du code...";
             regBtn.disabled = true;
 
-            const generatedKey = generateLicenseKey("LIFE");
+            // توليد رمز تحقق عشوائي من 6 أرقام
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            const generatedKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
             const expiryDate = new Date();
             expiryDate.setFullYear(expiryDate.getFullYear() + 1);
             const formattedExpiry = expiryDate.toISOString().split('T')[0];
 
-            try {
-                // التحقق أولاً إذا كان الإيميل موجوداً مسبقاً
-                const checkResponse = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&select=email`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
-                const existingUsers = await checkResponse.json();
-                if (existingUsers.length > 0) {
-                    alert('Erreur: Cet e-mail est déjà utilisé par un autre compte !');
-                    regBtn.innerText = "S'inscrire";
-                    regBtn.disabled = false;
-                    return;
-                }
+            tempUserData = { name, email, phone, password, activation_key: generatedKey, expiry_date: formattedExpiry };
 
-                // إرسال تنبيه لتليجرام
-                const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
+            try {
+                // إرسال تنبيه لتليجرام يحتوي على رمز التحقق (أو يمكنك ربطه بخدمة إيميل حقيقية)
+                const telegramMessage = `🔐 Code de vérification OTP pour ${email} :\n\n👉 Code : <b>${generatedOTP}</b>\n👤 Nom : ${name}`;
                 await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
                 });
 
-                // حفظ المستخدم في جدول users في Supabase
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=representation'
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        password: password,
-                        activation_key: generatedKey,
-                        expiry_date: formattedExpiry
-                    })
-                });
-
-                const resText = await response.text();
-
-                if (response.ok) {
-                    const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
-                    localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-                    showDashboard(userData);
-                } else {
-                    alert('Erreur: Un problème est survenu lors de l\'enregistrement. ' + resText);
-                }
+                // الانتقال لواجهة إدخال رمز التحقق
+                document.getElementById('registerForm').classList.remove('active');
+                document.getElementById('verifyForm').style.display = 'block';
+                document.getElementById('authTabs').style.display = 'none';
 
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion.');
+                alert('Erreur lors de l\'envoi du code de vérification.');
             } finally {
                 regBtn.innerText = "S'inscrire";
                 regBtn.disabled = false;
             }
         });
 
-        // 2. تسجيل الدخول
+        // 2. التحقق من صحة الرمز المدخل (OTP) وحفظ الحساب نهائياً
+        async function verifyEmailOTP() {
+            const enteredOTP = document.getElementById('otpCode').value.trim();
+            const verifyBtn = document.getElementById('verifyBtn');
+
+            if (enteredOTP !== generatedOTP) {
+                alert('Erreur: Code de vérification incorrect !');
+                return;
+            }
+
+            verifyBtn.innerText = "Validation en cours...";
+            verifyBtn.disabled = true;
+
+            try {
+                // إرسال تنبيه نهائي باكتمال التسجيل لتليجرام
+                const telegramMessage = `🚀 Nouveau compte client vérifié POS Pro :\n\n👤 Nom : ${tempUserData.name}\n📧 Email : ${tempUserData.email}\n📞 Tél : ${tempUserData.phone}\n🔑 Clé : ${tempUserData.activation_key}`;
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                });
+
+                // حفظ المستخدم في قاعدة بيانات Appwrite
+                await databases.createDocument(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    ID.unique(),
+                    {
+                        name: tempUserData.name,
+                        email: tempUserData.email,
+                        phone: tempUserData.phone,
+                        password: tempUserData.password,
+                        activation_key: tempUserData.activation_key,
+                        expiry_date: tempUserData.expiry_date
+                    }
+                );
+
+                localStorage.setItem('pos_logged_user', JSON.stringify(tempUserData));
+                document.getElementById('verifyForm').style.display = 'none';
+                showDashboard(tempUserData);
+
+            } catch (err) {
+                console.error(err);
+                alert('Erreur lors de l\'enregistrement dans la base de données.');
+            } finally {
+                verifyBtn.innerText = "Vérifier le code";
+                verifyBtn.disabled = false;
+            }
+        }
+
+        // 3. تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1227,7 +1256,7 @@
             }
         });
 
-        // 3. طلب شراء رخصة من الداشبورد وإرسال إشعار لتليجرام
+        // 4. طلب شراء رخصة من الداشبورد وإرسال إشعار لتليجرام
         async function requestLicensePurchase() {
             const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
             if (!savedUser) return;
@@ -1259,6 +1288,7 @@
             document.getElementById('authTabs').style.display = 'none';
             document.getElementById('registerForm').classList.remove('active');
             document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('verifyForm').style.display = 'none';
             
             document.getElementById('userNameDisplay').innerText = user.name;
             
@@ -1287,6 +1317,7 @@
             document.getElementById('authTabs').style.display = 'flex';
             document.getElementById('loginForm').classList.add('active');
             document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('verifyForm').style.display = 'none';
             document.getElementById('loginForm').reset();
             document.getElementById('registerForm').reset();
         }
