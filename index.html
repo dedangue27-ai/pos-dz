@@ -1141,14 +1141,13 @@
         const { Client, Databases, ID, Query } = Appwrite;
 
         const client = new Client()
-            .setEndpoint('https://cloud.appwrite.io/v1') // أو ضع سيرفرك الخاص إذا كنت تستضيفه بنفسك
-            .setProject('YOUR_PROJECT_ID') // استبدل هذا بمعرف مشروعك في Appwrite
-            .setKey('standard_71395ff6cda699377a43fb4061c86abff5e5ac95488e4391129a19e16f4ba4ca8e69dc142dd3a6471e5fe6a4c4bb43f108095ec8c9fb2fb4839a19105fda3216e3e0995a34717afa8a863b3e73fd3c1084b6fc348dac8cbefb37175a3eabdff20cddaa6cd9ad15194dbf30adb065af78aec4eaeeb1189a96df61393664441013'); // الـ API Key الخاص بك
+            .setEndpoint('https://fra.cloud.appwrite.io/v1')
+            .setProject('6abe94b500149981a9c2')
+            .setKey('standard_71395ff6cda699377a43fb4061c86abff5e5ac95488e4391129a19e16f4ba4ca8e69dc142dd3a6471e5fe6a4c4bb43f108095ec8c9fb2fb4839a19105fda3216e3e0995a34717afa8a863b3e73fd3c1084b6fc348dac8cbefb37175a3eabdff20cddaa6cd9ad15194dbf30adb065af78aec4eaeeb1189a96df61393664441013');
 
         const databases = new Databases(client);
         
-        // ضع معرف قاعدة البيانات ومعرف جدول users الذي أنشأته في Appwrite هنا
-        const DATABASE_ID = 'YOUR_DATABASE_ID'; 
+        const DATABASE_ID = '6abe955d003d5da5415b'; 
         const COLLECTION_ID = 'users'; 
 
         function generateLicenseKey(tag = "LIFE") {
@@ -1238,7 +1237,6 @@
             logBtn.disabled = true;
 
             try {
-                // البحث عن المستخدم باستخدام البريد وكلمة المرور
                 const response = await databases.listDocuments(
                     DATABASE_ID,
                     COLLECTION_ID,
