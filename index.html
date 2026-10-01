@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
+    <title>POS Pro - Espace Client & Gestion des Licences</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -29,10 +29,8 @@
             background-color: var(--gray-light);
             color: var(--text-main);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -64,491 +62,41 @@
             border-radius: 8px;
             font-weight: 800;
             font-size: 16px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         .logo-text {
             color: white;
             font-size: 20px;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #60a5fa;
-        }
-
-        .nav-btn {
-            background: var(--primary);
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background 0.3s, transform 0.2s !important;
-        }
-
-        .nav-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-        }
-
-        /* Hero Section */
         .hero {
             padding: 140px 5% 80px;
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            min-height: 90vh;
-        }
-
-        .hero-content {
-            flex: 1;
-            max-width: 600px;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 4vw, 3.5rem);
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 800;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 15px;
         }
 
         .hero p {
-            font-size: clamp(1rem, 1.5vw, 1.15rem);
             color: #94a3b8;
-            margin-bottom: 30px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: var(--primary);
-            color: white;
-            padding: 14px 28px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            max-width: 300px;
-            font-size: 16px;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.6);
-        }
-
-        .hero-card {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        .pos-preview-box {
-            width: 100%;
-            max-width: 420px;
-            height: 280px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .pos-preview-box h2 {
-            font-size: 48px;
-            color: white;
-            letter-spacing: 4px;
-        }
-
-        .pos-preview-box span {
-            color: #3b82f6;
-            font-weight: 600;
-            letter-spacing: 6px;
-            font-size: 14px;
-            margin-top: 5px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         section {
-            padding: 80px 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 50px;
-        }
-
-        .section-title h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            color: var(--dark);
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-
-        .section-title p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-        }
-
-        /* Features Section */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-box {
-            background: white;
-            padding: 35px 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .feature-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .feature-box i {
-            font-size: 32px;
-            color: var(--primary);
-            margin-bottom: 20px;
-            background: rgba(37, 99, 235, 0.1);
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        .feature-box h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-
-        .feature-box p {
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        /* Slider Section */
-        .slider-section {
-            padding: 80px 5%;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            text-align: center;
-            color: #fff;
-        }
-
-        .slider-container {
-            max-width: 900px;
-            margin: 30px auto 0;
-            position: relative;
-            background: #1e293b;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .window-header {
-            background: #0f172a;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .window-dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .window-dots span {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .dot-red { background: #ef4444; }
-        .dot-yellow { background: #f59e0b; }
-        .dot-green { background: #10b981; }
-
-        .window-title {
-            font-size: 13px;
-            color: #94a3b8;
-            font-family: monospace;
-        }
-
-        .slide-track {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        .slide img {
-            width: 100%;
-            height: auto;
-            max-height: 480px;
-            object-fit: contain;
-            background: #000;
-            display: block;
-        }
-
-        .slide-caption {
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            text-align: left;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .slide-caption h3 {
-            margin: 0 0 5px;
-            color: #60a5fa;
-            font-size: 17px;
-        }
-
-        .slide-caption p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(15, 23, 42, 0.7);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slider-btn:hover { background: #3b82f6; }
-        .prev-btn { left: 10px; }
-        .next-btn { right: 10px; }
-
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            padding: 15px;
-            background: #0f172a;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #475569;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .dot.active {
-            background: #3b82f6;
-            width: 22px;
-            border-radius: 4px;
-        }
-
-        /* Pricing Section */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 380px));
-            justify-content: center;
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pricing-card.popular {
-            border: 2px solid var(--primary);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .pricing-card h3 {
-            font-size: 22px;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        .price {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 25px;
-        }
-
-        .pricing-card ul {
-            list-style: none;
-            margin-bottom: 30px;
-            flex-grow: 1;
-        }
-
-        .pricing-card ul li {
-            padding: 10px 0;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-        }
-
-        .pricing-card ul li i { color: #10b981; }
-
-        .btn-secondary {
-            display: block;
-            text-align: center;
-            background: var(--gray-light);
-            color: var(--dark);
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .btn-secondary:hover { background: var(--border); }
-
-        /* Download Section */
-        .download-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .download-box {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .download-box h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .download-box p {
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-
-        .version-text {
-            display: block;
-            margin-top: 15px;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        /* Register & Auth Section */
-        .register-section {
-            background: white;
-            padding: 80px 5%;
+            padding: 60px 5%;
         }
 
         .auth-container {
-            max-width: 650px;
+            max-width: 800px;
             margin: 0 auto;
-            background: var(--gray-light);
-            padding: 40px 30px;
+            background: white;
+            padding: 40px;
             border-radius: 20px;
             border: 1px solid var(--border);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
@@ -591,27 +139,41 @@
             left: 16px;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 16px;
         }
 
         .input-group input {
             width: 100%;
             padding: 14px 16px 14px 48px;
-            background: white;
+            background: var(--gray-light);
             border: 1px solid var(--border);
             border-radius: 12px;
             font-size: 15px;
             color: var(--dark);
             outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
         }
 
-        /* Client Dashboard UI */
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Dashboard Styles */
         .dashboard-box {
             display: none;
             text-align: left;
@@ -626,91 +188,39 @@
             padding-bottom: 15px;
         }
 
-        .dashboard-header h2 {
-            font-size: 22px;
-            color: var(--dark);
-        }
-
-        .status-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .status-card h4 {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .license-box {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-top: 10px;
-            word-break: break-all;
-        }
-
-        .order-box {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
+        .licenses-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
-        }
-
-        .order-box h3 {
-            font-size: 18px;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        /* Contact Section */
-        .contact {
-            text-align: center;
-            background: var(--gray-light);
-            border-top: 1px solid var(--border);
-            padding: 60px 20px;
-        }
-
-        .contact h2 {
-            font-size: 24px;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .contact p {
-            color: var(--text-muted);
-            margin-bottom: 25px;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             background: white;
-            padding: 12px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
+            overflow: hidden;
             border: 1px solid var(--border);
-            font-weight: 600;
-            color: var(--dark);
         }
 
-        .contact-item i { color: var(--primary); }
+        .licenses-table th, .licenses-table td {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .licenses-table th {
+            background: var(--gray-light);
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .badge-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active { background: #dcfce7; color: #15803d; }
+        .status-pending { background: #fef9c3; color: #a16207; }
+        .status-expired { background: #fee2e2; color: #b91c1c; }
 
         footer {
             background: var(--dark);
@@ -718,211 +228,25 @@
             text-align: center;
             padding: 25px;
             font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        @media (max-width: 768px) {
-            .navbar { padding: 0 20px; height: 65px; }
-            .hamburger { display: block; }
-            .nav-links {
-                position: fixed;
-                top: 65px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 65px);
-                background: #0f172a;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 25px;
-                transition: left 0.3s ease-in-out;
-            }
-            .nav-links.active { left: 0; }
-            .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header class="navbar">
-        <a href="index.html" class="logo-container" onclick="reloadToHome(event)">
+        <a href="#" class="logo-container">
             <div class="mini-logo">POS</div>
             <span class="logo-text">PRO</span>
         </a>
-        <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <nav class="nav-links" id="navLinks">
-            <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
-            <a href="#pricing" onclick="closeMenu()">Tarifs</a>
-            <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
-            <a href="#contact" onclick="closeMenu()">Contact</a>
-            <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
-        </nav>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
-            <h1>Solution Ultime de Gestion de Stock & POS</h1>
-            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
-            <div class="hero-buttons">
-                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
-            </div>
-        </div>
-        <div class="hero-card">
-            <div class="pos-preview-box">
-                <h2>POS</h2>
-                <span>SYSTEM</span>
-            </div>
-        </div>
+        <h1>Espace Client Sécurisé</h1>
+        <p>Gérez vos abonnements, suivez l'historique de vos licences et demandez de nouvelles activations.</p>
     </section>
 
-    <!-- Features Section -->
-    <section id="features">
-        <div class="section-title">
-            <h2>Pourquoi Choisir POS Pro ?</h2>
-            <p>Des outils robustes pour transformer la gestion quotidienne de votre commerce.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-box">
-                <i class="fa-solid fa-bolt"></i>
-                <h3>Rapide & Fluide</h3>
-                <p>Interface conçue pour des performances maximales sur Windows sans latence.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fa-solid fa-shield-halved"></i>
-                <h3>Sécurité & Rôles</h3>
-                <p>Gestion stricte des utilisateurs et des permissions avec journalisation complète.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fa-solid fa-barcode"></i>
-                <h3>Gestion de Barcode</h3>
-                <p>Génération automatique de codes-barres et suivi précis des articles et des prix.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- UI Preview / Slider Section -->
-    <section class="slider-section">
-        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">Interfaces Haut de Gamme</span>
-        <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
-        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto 30px;">Explorez les différentes fenêtres et fonctionnalités du système.</p>
-        
-        <div class="slider-container">
-            <div class="window-header">
-                <div class="window-dots">
-                    <span class="dot-red"></span>
-                    <span class="dot-yellow"></span>
-                    <span class="dot-green"></span>
-                </div>
-                <div class="window-title">POS_Pro_System_v2.6.exe</div>
-                <div style="width: 30px;"></div>
-            </div>
-
-            <div class="slide-track" id="slideTrack">
-                <div class="slide">
-                    <img src="Dashboard.JPG" alt="Dashboard">
-                    <div class="slide-caption">
-                        <h3>1. Gestion de Stock & Ventes (Dashboard)</h3>
-                        <p>Interface principale avec alertes de stock bas et statistiques en temps réel.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Pos.JPG" alt="POS">
-                    <div class="slide-caption">
-                        <h3>2. Système de Point de Vente Direct (POS)</h3>
-                        <p>Passation ultra-rapide des ventes et calcul instantané du panier.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="benifice.JPG" alt="Bénéfice">
-                    <div class="slide-caption">
-                        <h3>3. Calcul des Intérêts & Bénéfice Net</h3>
-                        <p>Suivi détaillé des profits journaliers, mensuels et annuels.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Login.JPG" alt="Login">
-                    <div class="slide-caption">
-                        <h3>4. Connexion Sécurisée</h3>
-                        <p>Écran d'authentification protégeant l'accès au système.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Loading.jpg" alt="Loading">
-                    <div class="slide-caption">
-                        <h3>5. Écran de Chargement Professionnel</h3>
-                        <p>Animation de démarrage fluide et initialisation sécurisée de la base locale.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Adduser.JPG" alt="Add User">
-                    <div class="slide-caption">
-                        <h3>6. Gestion des Utilisateurs & Rôles</h3>
-                        <p>Ajout de nouveaux utilisateurs et attribution des permissions.</p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="slider-btn prev-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="slider-btn next-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-
-            <div class="slider-dots" id="sliderDots">
-                <span class="dot active" onclick="currentSlide(0)"></span>
-                <span class="dot" onclick="currentSlide(1)"></span>
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
-                <span class="dot" onclick="currentSlide(4)"></span>
-                <span class="dot" onclick="currentSlide(5)"></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <div class="section-title">
-            <h2>Nos Tarifs</h2>
-            <p>Choisissez la formule adaptée à votre commerce.</p>
-        </div>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>Version Essai</h3>
-                <div class="price">Gratuit</div>
-                <ul>
-                    <li><i class="fa-solid fa-check"></i> Test de 15 jours</li>
-                    <li><i class="fa-solid fa-check"></i> Fonctionnalités de base</li>
-                </ul>
-                <a href="#download" class="btn-secondary">Essayer</a>
-            </div>
-            <div class="pricing-card popular">
-                <div class="popular-badge">Recommandé</div>
-                <h3>Licence À Vie</h3>
-                <div class="price">Sur Devis</div>
-                <ul>
-                    <li><i class="fa-solid fa-check"></i> Utilisation illimitée</li>
-                    <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
-                    <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
-                </ul>
-                <a href="#accountSection" class="btn-primary" style="max-width: 100%;">Commander une Licence</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="download-section">
-        <div class="download-box">
-            <h2>Prêt à digitaliser votre commerce ?</h2>
-            <p>Téléchargez la dernière version du logiciel dès maintenant.</p>
-            <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
-            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
-        </div>
-    </section>
-
-    <!-- Espace Client & Dashboard Section -->
-    <section id="accountSection" class="register-section">
+    <section>
         <div class="auth-container">
             
             <!-- Tabs -->
@@ -931,9 +255,9 @@
                 <button class="tab-btn" onclick="switchTab('register')">Créer un Compte</button>
             </div>
 
-            <!-- Formulaire de Connexion -->
+            <!-- 1. نموذج تسجيل الدخول (مع دعم OTP) -->
             <form id="loginForm" class="auth-form active">
-                <p style="margin-bottom: 20px; color: var(--text-muted);">Accédez à votre tableau de bord client.</p>
+                <p style="margin-bottom: 20px; color: var(--text-muted);">Entrez vos identifiants pour recevoir un code OTP de sécurité.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-envelope"></i>
                     <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
@@ -942,12 +266,22 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
                 </div>
-                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
+                <button type="submit" class="btn-primary" id="logBtn">Envoyer le code OTP & Se connecter</button>
             </form>
 
-            <!-- Formulaire d'Inscription (بدون توليد كود تلقائي) -->
+            <!-- نموذج التحقق من OTP -->
+            <form id="otpForm" class="auth-form">
+                <p style="margin-bottom: 20px; color: var(--text-muted);">Veuillez entrer le code OTP à 6 chiffres envoyé à votre e-mail.</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="text" id="otpCodeInput" placeholder="Code OTP (ex: 123456)" required>
+                </div>
+                <button type="submit" class="btn-primary" id="verifyOtpBtn">Vérifier & Accéder</button>
+            </form>
+
+            <!-- 2. نموذج إنشاء حساب جديد -->
             <form id="registerForm" class="auth-form">
-                <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous pour accéder à votre tableau de bord et commander votre licence.</p>
+                <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous pour commencer à suivre vos licences.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="regName" placeholder="Nom complet" required>
@@ -958,7 +292,7 @@
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="regPhone" placeholder="Numéro de téléphone (ex: 0550000000)" required>
+                    <input type="tel" id="regPhone" placeholder="Numéro de téléphone" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
@@ -967,37 +301,36 @@
                 <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
             </form>
 
-            <!-- Dashboard Client الاحترافي (حيث يتم طلب الشراء وتظهر حالة التفعيل) -->
+            <!-- 3. لوحة التحكم الأنيقة (عرض جميع الأكواد من القديم إلى الجديد مع تواريخ الشراء وانتهاء الصلاحية) -->
             <div id="clientDashboard" class="dashboard-box">
                 <div class="dashboard-header">
-                    <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Espace Client - <span id="userNameDisplay"></span></h2>
+                    <h2><i class="fa-solid fa-user-shield" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
                     <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Déconnexion</button>
                 </div>
 
-                <div class="status-card">
-                    <h4>Statut de votre Licence :</h4>
-                    <div id="licenseStatusContainer">
-                        <!-- يتم ملؤها ديناميكياً حسب حالة الكود في قاعدة البيانات -->
-                    </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="font-size: 18px; color: var(--dark);">Historique de vos Licences (Du plus ancien au plus récent)</h3>
+                    <button onclick="requestNewLicense()" class="btn-primary" style="width: auto; padding: 10px 20px; font-size: 14px;"><i class="fa-solid fa-plus"></i> Commander une nouvelle licence</button>
                 </div>
 
-                <div class="order-box" id="orderBoxSection">
-                    <h3><i class="fa-solid fa-cart-shopping" style="color: var(--primary);"></i> Acheter ou Activer une Licence Pro</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Votre compte n'a pas encore de licence active. Cliquez ci-dessous pour envoyer une demande d'achat et obtenir votre clé d'activation à vie.</p>
-                    <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;"><i class="fa-solid fa-paper-plane"></i> Demander l'achat d'une licence</button>
+                <div style="overflow-x: auto;">
+                    <table class="licenses-table">
+                        <thead>
+                            <tr>
+                                <th>Clé de Licence</th>
+                                <th>Date d'Achat</th>
+                                <th>Date d'Activation</th>
+                                <th>Date d'Expiration</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody id="licensesTableBody">
+                            <!-- يتم تعبئة السجلات ديناميكياً من قاعدة البيانات مرتبة من القديم إلى الجديد -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <h2>Contactez-nous</h2>
-        <p>Pour l'achat de licence ou toute demande d'assistance :</p>
-        <div class="contact-info">
-            <div class="contact-item"><i class="fa-solid fa-phone"></i> +213 (0) 7 79 62 58 67</div>
-            <div class="contact-item"><i class="fa-solid fa-envelope"></i> contact@pospro.lol</div>
         </div>
     </section>
 
@@ -1005,37 +338,7 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- JavaScript Mobile Menu & UI Handlers -->
     <script>
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            navLinks.classList.toggle('active');
-            const icon = hamburgerBtn.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-xmark');
-            } else {
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-bars');
-            }
-        }
-
-        function closeMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            navLinks.classList.remove('active');
-            const icon = hamburgerBtn.querySelector('i');
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        }
-
-        function reloadToHome(e) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => { window.location.reload(); }, 300);
-        }
-
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
@@ -1050,32 +353,6 @@
         }
     </script>
 
-    <!-- Slider JavaScript -->
-    <script>
-        let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        const totalSlides = slides.length;
-        let slideInterval;
-
-        function updateSlider() {
-            const track = document.getElementById('slideTrack');
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        function nextSlide() { currentIndex = (currentIndex + 1) % totalSlides; updateSlider(); }
-        function prevSlide() { currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; updateSlider(); }
-        function currentSlide(index) { currentIndex = index; updateSlider(); resetTimer(); }
-        function startTimer() { slideInterval = setInterval(nextSlide, 4000); }
-        function resetTimer() { clearInterval(slideInterval); startTimer(); }
-
-        startTimer();
-    </script>
-
-    <!-- Appwrite Auth & System Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
         const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
@@ -1088,58 +365,19 @@
 
         const databases = new Databases(client);
         const DATABASE_ID = '6abe955d003d5da5415b';
-        const COLLECTION_ID = '6abe9d4b0031f85bf410';
+        const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول المستخدمين أو جدول الأكواد
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('pos_logged_user');
-            if (savedUser) {
-                showDashboard(JSON.parse(savedUser));
-            }
-        });
+        let tempUserEmail = "";
+        let generatedOtp = "";
 
-        // 1. عملية التسجيل بدون توليد كود تفعيل تلقائي (الحساب يُنشأ بحالة انتظار)
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const regBtn = document.getElementById('regBtn');
-
-            regBtn.innerText = "Création du compte...";
-            regBtn.disabled = true;
-
-            try {
-                // حفظ المستخدم في قاعدة البيانات بدون مفتاح تفعيل (أو فارغ)
-                const newUser = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    password: password,
-                    activation_key: "",       // فارغ تماماً لحين الشراء
-                    expiry_date: ""
-                });
-
-                localStorage.setItem('pos_logged_user', JSON.stringify(newUser));
-                showDashboard(newUser);
-            } catch (err) {
-                console.error(err);
-                alert('Erreur lors de l\'inscription. Cet e-mail est peut-être déjà utilisé.');
-            } finally {
-                regBtn.innerText = "Créer mon compte";
-                regBtn.disabled = false;
-            }
-        });
-
-        // 2. تسجيل الدخول
+        // خطوة 1: تسجيل الدخول وإرسال OTP
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
             const password = document.getElementById('logPassword').value.trim();
             const logBtn = document.getElementById('logBtn');
 
-            logBtn.innerText = "Connexion...";
+            logBtn.innerText = "Vérification...";
             logBtn.disabled = true;
 
             try {
@@ -1149,82 +387,144 @@
                 ]);
 
                 if (response.documents.length > 0) {
-                    const user = response.documents[0];
-                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    showDashboard(user);
+                    tempUserEmail = email;
+                    generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+                    // إرسال كود OTP عبر تيليجرام (أو البريد)
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: `🔐 <b>Code OTP de Connexion POS Pro</b>\n\nEmail : ${email}\nCode OTP : <code>${generatedOtp}</code>`,
+                            parse_mode: "HTML"
+                        })
+                    });
+
+                    // الانتقال لنموذج إدخال OTP
+                    document.getElementById('loginForm').classList.remove('active');
+                    document.getElementById('otpForm').classList.add('active');
                 } else {
                     alert('E-mail ou mot de passe incorrect.');
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion.');
+                alert('Erreur lors de la connexion.');
             } finally {
-                logBtn.innerText = "Se connecter";
+                logBtn.innerText = "Envoyer le code OTP & Se connecter";
                 logBtn.disabled = false;
             }
         });
 
-        // 3. عرض لوحة التحكم وتحديث حالة التفعيل بناءً على قاعدة البيانات
-        function showDashboard(user) {
+        // خطوة 2: التحقق من كود OTP وإظهار الداشبورد
+        document.getElementById('otpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const enteredOtp = document.getElementById('otpCodeInput').value.trim();
+
+            if (enteredOtp === generatedOtp) {
+                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+                    Query.equal('email', tempUserEmail)
+                ]);
+                const user = response.documents[0];
+                localStorage.setItem('pos_logged_user', JSON.stringify(user));
+                showDashboard(user);
+            } else {
+                alert('Code OTP invalide. Veuillez réessayer.');
+            }
+        });
+
+        // تسجيل حساب جديد
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const regBtn = document.getElementById('regBtn');
+
+            regBtn.innerText = "Création...";
+            regBtn.disabled = true;
+
+            try {
+                const newUser = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    activation_key: "ESSAI-GRATUIT-15DAYS",
+                    purchase_date: new Date().toISOString().split('T')[0],
+                    activation_date: new Date().toISOString().split('T')[0],
+                    expiry_date: new Date(Date.now() + 15*24*60*60*1000).toISOString().split('T')[0],
+                    status: "active"
+                });
+
+                localStorage.setItem('pos_logged_user', JSON.stringify(newUser));
+                showDashboard(newUser);
+            } catch (err) {
+                console.error(err);
+                alert('Erreur lors de l\'inscription.');
+            } finally {
+                regBtn.innerText = "Créer mon compte";
+                regBtn.disabled = false;
+            }
+        });
+
+        // عرض لوحة التحكم وترتيب الأكواد من القديم إلى الجديد
+        async function showDashboard(user) {
             document.getElementById('authTabs').style.display = 'none';
-            document.getElementById('registerForm').classList.remove('active');
-            document.getElementById('loginForm').classList.remove('active');
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
             
             document.getElementById('userNameDisplay').innerText = user.name;
-            const licenseContainer = document.getElementById('licenseStatusContainer');
-            const orderBoxSection = document.getElementById('orderBoxSection');
             
-            if (user.activation_key && user.activation_key.trim() !== "") {
-                // إذا كان لديه كود تفعيل مسجل مسبقاً
-                licenseContainer.innerHTML = `
-                    <span style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Licence Active</span>
-                    <div class="license-box">${user.activation_key}</div>
-                    <small style="color: var(--text-muted); display: block; margin-top: 8px;">Expire le : <b>${user.expiry_date || 'Illimité'}</b></small>
-                `;
-                orderBoxSection.style.display = 'none';
-            } else {
-                // إذا لم يكن لديه كود تفعيل (حساب جديد يحتاج للشراء)
-                licenseContainer.innerHTML = `
-                    <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> En attente d'activation (Aucune licence active)</span>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Veuillez commander votre licence ci-dessous pour débloquer l'application.</p>
-                `;
-                orderBoxSection.style.display = 'block';
+            // جلب جميع الأكواد الخاصة بهذا المستخدم مرتبة تصاعدياً (من القديم إلى الجديد)
+            try {
+                const userLicenses = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+                    Query.equal('email', user.email),
+                    Query.orderAsc('$createdAt') // ترتيب من القديم إلى الجديد
+                ]);
+
+                const tableBody = document.getElementById('licensesTableBody');
+                tableBody.innerHTML = "";
+
+                userLicenses.documents.forEach(lic => {
+                    let statusClass = "status-active";
+                    let statusText = "Active";
+                    if(lic.status === "pending") { statusClass = "status-pending"; statusText = "En attente"; }
+                    else if(lic.status === "expired") { statusClass = "status-expired"; statusText = "Expirée"; }
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td><code>${lic.activation_key || 'En attente'}</code></td>
+                            <td>${lic.purchase_date || 'N/A'}</td>
+                            <td>${lic.activation_date || 'Non activé'}</td>
+                            <td><b>${lic.expiry_date || 'Illimité'}</b></td>
+                            <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
             }
 
             document.getElementById('clientDashboard').style.display = 'block';
         }
 
+        async function requestNewLicense() {
+            const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
+            if(!savedUser) return;
+
+            const telegramMessage = `🛒 <b>Demande de Nouvelle Licence POS Pro !</b>\n\n👤 Nom : ${savedUser.name}\n📧 Email : ${savedUser.email}\n📞 Téléphone : ${savedUser.phone}`;
+            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
+            });
+            alert('Votre demande a été envoyée avec succès !');
+        }
+
         function logoutUser() {
             localStorage.removeItem('pos_logged_user');
             window.location.reload();
-        }
-
-        // 4. طلب شراء التفعيل من داخل الداشبورد (إرسال إشعار فوري لتيليجرام)
-        async function requestLicensePurchase() {
-            const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
-            if (!savedUser) return;
-
-            const orderBtn = document.getElementById('orderBtn');
-            orderBtn.innerText = "Envoi de la demande...";
-            orderBtn.disabled = true;
-
-            try {
-                const telegramMessage = `🛒 <b>Nouvelle Demande de Licence POS Pro !</b>\n\n👤 <b>Nom :</b> ${savedUser.name}\n📧 <b>E-mail :</b> ${savedUser.email}\n📞 <b>Téléphone :</b> ${savedUser.phone || 'Non renseigné'}\n\n<i>Veuillez valider le paiement et lui attribuer une clé d'activation.</i>`;
-                
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
-                });
-
-                alert('Votre demande d\'achat de licence a été envoyée avec succès ! Nous vous contacterons très rapidement.');
-            } catch (err) {
-                console.error(err);
-                alert('Erreur lors de l\'envoi de la demande.');
-            } finally {
-                orderBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Demander l'achat d'une licence`;
-                orderBtn.disabled = false;
-            }
         }
     </script>
 </body>
