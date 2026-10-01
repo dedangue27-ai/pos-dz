@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- تضمين مكتبة Appwrite SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -109,7 +107,6 @@
             transform: translateY(-2px);
         }
 
-        /* Mobile Hamburger Icon */
         .hamburger {
             display: none;
             cursor: pointer;
@@ -221,7 +218,6 @@
             margin-top: 5px;
         }
 
-        /* Generic Section Styling */
         section {
             padding: 80px 5%;
         }
@@ -399,10 +395,7 @@
             justify-content: center;
         }
 
-        .slider-btn:hover {
-            background: #3b82f6;
-        }
-
+        .slider-btn:hover { background: #3b82f6; }
         .prev-btn { left: 10px; }
         .next-btn { right: 10px; }
 
@@ -497,9 +490,7 @@
             font-size: 15px;
         }
 
-        .pricing-card ul li i {
-            color: #10b981;
-        }
+        .pricing-card ul li i { color: #10b981; }
 
         .btn-secondary {
             display: block;
@@ -514,9 +505,7 @@
             transition: all 0.3s;
         }
 
-        .btn-secondary:hover {
-            background: var(--border);
-        }
+        .btn-secondary:hover { background: var(--border); }
 
         /* Download Section */
         .download-section {
@@ -557,7 +546,7 @@
         }
 
         .auth-container {
-            max-width: 550px;
+            max-width: 650px;
             margin: 0 auto;
             background: var(--gray-light);
             padding: 40px 30px;
@@ -589,13 +578,8 @@
             border-bottom: 2px solid var(--primary);
         }
 
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
 
         .input-group {
             position: relative;
@@ -611,7 +595,7 @@
             font-size: 16px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 14px 16px 14px 48px;
             background: white;
@@ -623,42 +607,70 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus {
+        .input-group input:focus, .input-group select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        .auth-form .btn-primary {
-            width: 100%;
-            max-width: 100%;
-            margin-top: 10px;
-        }
-
-        /* Client Dashboard inside box */
+        /* Client Dashboard UI */
         .dashboard-box {
             display: none;
-            text-align: center;
+            text-align: left;
         }
 
-        .dashboard-box h2 {
-            font-size: 24px;
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .dashboard-header h2 {
+            font-size: 22px;
             color: var(--dark);
-            margin-bottom: 15px;
         }
 
-        .key-display {
-            background: #e0f2fe;
-            border: 1px solid #bae6fd;
-            padding: 20px;
+        .status-card {
+            background: white;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            margin: 20px 0;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .status-card h4 {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .license-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 10px;
             word-break: break-all;
         }
 
-        .key-display span {
+        .order-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .order-box h3 {
             font-size: 18px;
-            font-weight: bold;
-            color: var(--primary);
+            color: var(--dark);
+            margin-bottom: 15px;
         }
 
         /* Contact Section */
@@ -699,11 +711,8 @@
             color: var(--dark);
         }
 
-        .contact-item i {
-            color: var(--primary);
-        }
+        .contact-item i { color: var(--primary); }
 
-        /* Footer */
         footer {
             background: var(--dark);
             color: #64748b;
@@ -713,17 +722,9 @@
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Mobile Media Queries */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 0 20px;
-                height: 65px;
-            }
-
-            .hamburger {
-                display: block;
-            }
-
+            .navbar { padding: 0 20px; height: 65px; }
+            .hamburger { display: block; }
             .nav-links {
                 position: fixed;
                 top: 65px;
@@ -736,44 +737,9 @@
                 justify-content: center;
                 gap: 25px;
                 transition: left 0.3s ease-in-out;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links a {
-                font-size: 18px;
-            }
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding: 120px 20px 60px;
-                gap: 30px;
-            }
-
-            .hero-content {
-                max-width: 100%;
-            }
-
-            .hero .btn-primary {
-                max-width: 100%;
-            }
-
-            .pos-preview-box {
-                max-width: 100%;
-                height: 220px;
-            }
-
-            section {
-                padding: 60px 20px;
-            }
-
-            .auth-container {
-                padding: 25px 20px;
-            }
+            .nav-links.active { left: 0; }
+            .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
         }
     </style>
 </head>
@@ -791,7 +757,7 @@
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#pricing" onclick="closeMenu()">Tarifs</a>
-            <a href="#accountSection" onclick="closeMenu()">Mon Compte</a>
+            <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
             <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
         </nav>
@@ -844,7 +810,7 @@
     <section class="slider-section">
         <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">Interfaces Haut de Gamme</span>
         <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
-        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto 30px;">Explorez les différentes fenêtres et fonctionnalités du système conçues avec une fluidité exceptionnelle.</p>
+        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto 30px;">Explorez les différentes fenêtres et fonctionnalités du système.</p>
         
         <div class="slider-container">
             <div class="window-header">
@@ -920,7 +886,7 @@
     <section id="pricing">
         <div class="section-title">
             <h2>Nos Tarifs</h2>
-            <p>Choisissez la formule adaptée à la taille de votre structure.</p>
+            <p>Choisissez la formule adaptée à votre commerce.</p>
         </div>
         <div class="pricing-grid">
             <div class="pricing-card">
@@ -929,7 +895,6 @@
                 <ul>
                     <li><i class="fa-solid fa-check"></i> Test de 15 jours</li>
                     <li><i class="fa-solid fa-check"></i> Fonctionnalités de base</li>
-                    <li><i class="fa-solid fa-check"></i> Support par Email</li>
                 </ul>
                 <a href="#download" class="btn-secondary">Essayer</a>
             </div>
@@ -939,11 +904,10 @@
                 <div class="price">Sur Devis</div>
                 <ul>
                     <li><i class="fa-solid fa-check"></i> Utilisation illimitée</li>
-                    <li><i class="fa-solid fa-check"></i> Toutes les fonctionnalités</li>
                     <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
                     <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
                 </ul>
-                <a href="#accountSection" class="btn-primary" style="max-width: 100%;">Créer un Compte</a>
+                <a href="#accountSection" class="btn-primary" style="max-width: 100%;">Commander une Licence</a>
             </div>
         </div>
     </section>
@@ -952,25 +916,39 @@
     <section id="download" class="download-section">
         <div class="download-box">
             <h2>Prêt à digitaliser votre commerce ?</h2>
-            <p>Téléchargez la dernière version du logiciel dès maintenant et commencez à gérer votre entité facilement.</p>
+            <p>Téléchargez la dernière version du logiciel dès maintenant.</p>
             <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
             <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
         </div>
     </section>
 
-    <!-- Account & Auth Section (Inscription / Connexion / Dashboard) -->
+    <!-- Espace Client & Dashboard Section -->
     <section id="accountSection" class="register-section">
         <div class="auth-container">
             
             <!-- Tabs -->
             <div class="auth-tabs" id="authTabs">
-                <button class="tab-btn active" onclick="switchTab('register')">Inscription</button>
-                <button class="tab-btn" onclick="switchTab('login')">Connexion</button>
+                <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
+                <button class="tab-btn" onclick="switchTab('register')">Créer un Compte</button>
             </div>
 
+            <!-- Formulaire de Connexion -->
+            <form id="loginForm" class="auth-form active">
+                <p>Accédez à votre tableau de bord client.</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="logPassword" placeholder="Mot de passe" required>
+                </div>
+                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
+            </form>
+
             <!-- Formulaire d'Inscription -->
-            <form id="registerForm" class="auth-form active">
-                <p>Créez votre compte pour accéder à votre espace personnel.</p>
+            <form id="registerForm" class="auth-form">
+                <p>Inscrivez-vous pour commander votre licence logicielle.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="regName" placeholder="Nom complet" required>
@@ -990,31 +968,26 @@
                 <button type="submit" class="btn-primary" id="regBtn">S'inscrire</button>
             </form>
 
-            <!-- Formulaire de Connexion -->
-            <form id="loginForm" class="auth-form">
-                <p>Connectez-vous pour retrouver votre clé d'activation.</p>
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="logPassword" placeholder="Mot de passe" required>
-                </div>
-                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
-            </form>
-
-            <!-- Espace Dashboard Client (S'affiche après connexion) -->
+            <!-- Dashboard Client Professionnel -->
             <div id="clientDashboard" class="dashboard-box">
-                <h2><i class="fa-solid fa-user-check" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
-                <p>Votre compte est actif. Voici votre clé d'activation unique pour le logiciel :</p>
-                
-                <div class="key-display">
-                    <span id="userKeyDisplay">POS-LIFE-XXXXX</span><br>
-                    <small style="color: var(--text-muted); display: block; margin-top: 8px;">Expire le : <span id="userExpiryDisplay"></span></small>
+                <div class="dashboard-header">
+                    <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Tableau de Bord : <span id="userNameDisplay"></span></h2>
+                    <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px;">Déconnexion</button>
                 </div>
 
-                <button onclick="logoutUser()" class="btn-secondary" style="width: 100%; border-radius: 12px; cursor: pointer;">Se Déconnecter</button>
+                <div class="status-card">
+                    <h4>Statut de votre Licence :</h4>
+                    <div id="licenseStatusContainer">
+                        <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> En attente de validation / Achat requis</span>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Vous n'avez pas encore de licence active. Veuillez soumettre une demande ci-dessous ou contacter le support.</p>
+                    </div>
+                </div>
+
+                <div class="order-box">
+                    <h3><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Licence Pro</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Remplissez les détails pour commander votre licence à vie. Une fois validée par l'administrateur, votre clé apparaîtra ici.</p>
+                    <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;">Commander une Licence (Validation Admin)</button>
+                </div>
             </div>
 
         </div>
@@ -1030,7 +1003,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
@@ -1041,7 +1013,6 @@
             const navLinks = document.getElementById('navLinks');
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             navLinks.classList.toggle('active');
-            
             const icon = hamburgerBtn.querySelector('i');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
@@ -1064,9 +1035,7 @@
         function reloadToHome(e) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => {
-                window.location.reload();
-            }, 300);
+            setTimeout(() => { window.location.reload(); }, 300);
         }
 
         function switchTab(tab) {
@@ -1074,16 +1043,16 @@
             document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
 
             if (tab === 'register') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('registerForm').classList.add('active');
             } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('loginForm').classList.add('active');
             }
         }
     </script>
 
-    <!-- JavaScript Slider -->
+    <!-- Slider JavaScript -->
     <script>
         let currentIndex = 0;
         const slides = document.querySelectorAll('.slide');
@@ -1094,189 +1063,195 @@
         function updateSlider() {
             const track = document.getElementById('slideTrack');
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentIndex);
             });
         }
 
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % totalSlides;
-            updateSlider();
-        }
-
-        function prevSlide() {
-            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-            updateSlider();
-        }
-
-        function currentSlide(index) {
-            currentIndex = index;
-            updateSlider();
-            resetTimer();
-        }
-
-        function startTimer() {
-            slideInterval = setInterval(nextSlide, 4000);
-        }
-
-        function resetTimer() {
-            clearInterval(slideInterval);
-            startTimer();
-        }
+        function nextSlide() { currentIndex = (currentIndex + 1) % totalSlides; updateSlider(); }
+        function prevSlide() { currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; updateSlider(); }
+        function currentSlide(index) { currentIndex = index; updateSlider(); resetTimer(); }
+        function startTimer() { slideInterval = setInterval(nextSlide, 4000); }
+        function resetTimer() { clearInterval(slideInterval); startTimer(); }
 
         startTimer();
-
-        const sliderContainer = document.querySelector('.slider-container');
-        sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        sliderContainer.addEventListener('mouseleave', () => startTimer());
     </script>
 
-    <!-- Appwrite SDK -->
-<script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
-<script>
-    const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
-    const chatId = "6016112482";
+    <!-- Appwrite Auth & Professional Dashboard System -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    <script>
+        const botToken = "8754438577:AAGiAXCxRBG-h4nrmgT-GMfqrJDq5bXR5ZI";
+        const chatId = "6016112482";
 
-    // إعدادات Appwrite
-    const { Client, Databases, ID } = Appwrite;
-    const client = new Client()
-        .setEndpoint('https://fra.cloud.appwrite.io/v1')
-        .setProject('6abe94b500149981a9c2');
+        const { Client, Databases, ID, Query } = Appwrite;
+        const client = new Client()
+            .setEndpoint('https://fra.cloud.appwrite.io/v1')
+            .setProject('6abe94b500149981a9c2');
 
-    const databases = new Databases(client);
-    const DATABASE_ID = '6abe955d003d5da5415b';
-    const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
+        const databases = new Databases(client);
+        const DATABASE_ID = '6abe955d003d5da5415b';
+        const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
-    function generateLicenseKey(tag = "LIFE") {
-        const randomPart = () => Math.random().toString(36).substring(2, 7).toUpperCase();
-        return `POS-${tag}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}-${randomPart()}`;
-    }
-
-    // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedUser = localStorage.getItem('pos_logged_user');
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            showDashboard(user);
-        }
-    });
-
-    // 1. تسجيل حساب جديد وحفظه في Appwrite
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const name = document.getElementById('regName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const password = document.getElementById('regPassword').value.trim();
-        const regBtn = document.getElementById('regBtn');
-
-        regBtn.innerText = "Création en cours...";
-        regBtn.disabled = true;
-
-        const generatedKey = generateLicenseKey("LIFE");
-        const expiryDate = new Date();
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-        const formattedExpiry = expiryDate.toISOString().split('T')[0];
-
-        try {
-            // إرسال تنبيه لتليجرام
-            const telegramMessage = `🚀 Nouveau compte client POS Pro :\n\n👤 Nom : ${name}\n📧 Email : ${email}\n📞 Tél : ${phone}\n🔑 Clé : ${generatedKey}`;
-            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
-            });
-
-            // حفظ المستخدم في جدول users عبر Appwrite
-            await databases.createDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                ID.unique(),
-                {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    password: password,
-                    activation_key: generatedKey,
-                    expiry_date: formattedExpiry
-                }
-            );
-
-            const userData = { name, email, activation_key: generatedKey, expiry_date: formattedExpiry };
-            localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-            showDashboard(userData);
-
-        } catch (err) {
-            console.error(err);
-            alert('Erreur: Cet e-mail existe peut-être déjà ou un problème est survenu. ' + (err.message || ''));
-        } finally {
-            regBtn.innerText = "S'inscrire";
-            regBtn.disabled = false;
-        }
-    });
-
-    // 2. تسجيل الدخول والبحث عن المستخدم في Appwrite
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const email = document.getElementById('logEmail').value.trim();
-        const password = document.getElementById('logPassword').value.trim();
-        const logBtn = document.getElementById('logBtn');
-
-        logBtn.innerText = "Connexion...";
-        logBtn.disabled = true;
-
-        try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Appwrite.Query.equal('email', email),
-                    Appwrite.Query.equal('password', password)
-                ]
-            );
-
-            if (response.documents.length > 0) {
-                const user = response.documents[0];
-                localStorage.setItem('pos_logged_user', JSON.stringify(user));
+        // التحقق من الجلسة المحفوظة مسبقاً
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('pos_logged_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
                 showDashboard(user);
+            }
+        });
+
+        // 1. تسجيل حساب جديد (بدون توليد مفتاح تلقائي)
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const regBtn = document.getElementById('regBtn');
+
+            regBtn.innerText = "Création en cours...";
+            regBtn.disabled = true;
+
+            try {
+                // إرسال تنبيه لتليجرام بوجود مسجل جديد
+                const telegramMessage = `👤 Nouveau compte client (En attente d'achat) :\n\nNom : ${name}\nEmail : ${email}\nTél : ${phone}`;
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                });
+
+                // حفظ المستخدم في جدول users في Appwrite (بدون مفتاح أو بمفتاح فارغ)
+                const doc = await databases.createDocument(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    ID.unique(),
+                    {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        password: password,
+                        activation_key: "", // فارغ لحين الشراء والاعتماد
+                        expiry_date: ""
+                    }
+                );
+
+                localStorage.setItem('pos_logged_user', JSON.stringify(doc));
+                showDashboard(doc);
+
+            } catch (err) {
+                console.error(err);
+                alert('Erreur: Cet e-mail existe déjà ou un problème est survenu.');
+            } finally {
+                regBtn.innerText = "S'inscrire";
+                regBtn.disabled = false;
+            }
+        });
+
+        // 2. تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('logEmail').value.trim();
+            const password = document.getElementById('logPassword').value.trim();
+            const logBtn = document.getElementById('logBtn');
+
+            logBtn.innerText = "Connexion...";
+            logBtn.disabled = true;
+
+            try {
+                const response = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    [
+                        Query.equal('email', email),
+                        Query.equal('password', password)
+                    ]
+                );
+
+                if (response.documents.length > 0) {
+                    const user = response.documents[0];
+                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
+                    showDashboard(user);
+                } else {
+                    alert('E-mail ou mot de passe incorrect.');
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert('Erreur de connexion.');
+            } finally {
+                logBtn.innerText = "Se connecter";
+                logBtn.disabled = false;
+            }
+        });
+
+        // 3. طلب شراء رخصة من الداشبورد وإرسال إشعار لتليجرام
+        async function requestLicensePurchase() {
+            const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
+            if (!savedUser) return;
+
+            const orderBtn = document.getElementById('orderBtn');
+            orderBtn.innerText = "Envoi de la commande...";
+            orderBtn.disabled = true;
+
+            try {
+                const telegramMessage = `🛒 DEMANDE D'ACHAT DE LICENCE :\n\n👤 Nom : ${savedUser.name}\n📧 Email : ${savedUser.email}\n📞 Tél : ${savedUser.phone}\n\n👉 Veuillez générer et lui attribuer une clé depuis Appwrite.`;
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage })
+                });
+
+                alert('Votre demande de licence a été envoyée avec succès ! Notre équipe vous contactera pour valider le paiement.');
+            } catch (err) {
+                console.error(err);
+                alert('Erreur lors de l\'envoi de la demande.');
+            } finally {
+                orderBtn.innerText = "Commander une Licence (Validation Admin)";
+                orderBtn.disabled = false;
+            }
+        }
+
+        // عرض لوحة التحكم وتحديث حالة المفتاح بناءً على ما إذا تم تفعيله من قاعدة البيانات
+        function showDashboard(user) {
+            document.getElementById('authTabs').style.display = 'none';
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').classList.remove('active');
+            
+            document.getElementById('userNameDisplay').innerText = user.name;
+            
+            const licenseContainer = document.getElementById('licenseStatusContainer');
+            if (user.activation_key && user.activation_key.trim() !== "") {
+                licenseContainer.innerHTML = `
+                    <span style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Licence Active</span>
+                    <div class="license-box">${user.activation_key}</div>
+                    <small style="color: var(--text-muted); display: block; margin-top: 8px;">Expire le : <b>${user.expiry_date || 'Illimité'}</b></small>
+                `;
+                document.querySelector('.order-box').style.display = 'none'; // إخفاء زر الطلب إذا كان لديه رخصة بالفعل
             } else {
-                alert('E-mail ou mot de passe incorrect.');
+                licenseContainer.innerHTML = `
+                    <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> En attente de validation d'achat</span>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Votre compte est créé. Commandez votre licence ci-dessous pour recevoir votre clé d'activation.</p>
+                `;
             }
 
-        } catch (err) {
-            console.error(err);
-            alert('Erreur de connexion.');
-        } finally {
-            logBtn.innerText = "Se connecter";
-            logBtn.disabled = false;
+            document.getElementById('clientDashboard').style.display = 'block';
         }
-    });
 
-    function showDashboard(user) {
-        document.getElementById('authTabs').style.display = 'none';
-        document.getElementById('registerForm').classList.remove('active');
-        document.getElementById('loginForm').classList.remove('active');
-        
-        document.getElementById('userNameDisplay').innerText = user.name;
-        document.getElementById('userKeyDisplay').innerText = user.activation_key;
-        document.getElementById('userExpiryDisplay').innerText = user.expiry_date;
-        
-        document.getElementById('clientDashboard').style.display = 'block';
-    }
-
-    function logoutUser() {
-        localStorage.removeItem('pos_logged_user');
-        document.getElementById('clientDashboard').style.display = 'none';
-        document.getElementById('authTabs').style.display = 'flex';
-        document.getElementById('registerForm').classList.add('active');
-        document.getElementById('loginForm').classList.remove('active');
-        document.getElementById('registerForm').reset();
-        document.getElementById('loginForm').reset();
-    }
-</script>
+        // تسجيل الخروج
+        function logoutUser() {
+            localStorage.removeItem('pos_logged_user');
+            document.getElementById('clientDashboard').style.display = 'none';
+            document.getElementById('authTabs').style.display = 'flex';
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
+        }
+    </script>
 
 </body>
 </html>
