@@ -1398,6 +1398,7 @@ async function requestLicensePurchase() {
 
             savedUser.licenses = updatedData.licenses;
             savedUser.activation_key = newKey;
+            savedUser.expiry_date = expiryDateStr;
             localStorage.setItem('pos_logged_user', JSON.stringify(savedUser));
 
             showDashboard(savedUser);
