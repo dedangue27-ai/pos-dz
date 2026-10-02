@@ -1145,14 +1145,12 @@
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
-            // توليد أول كود ترحيبي وتاريخ الصلاحية وتاريخ الشراء الحالي
             const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
             const purchaseDateStr = new Date().toISOString().split('T')[0];
             const expiryDateObj = new Date();
             expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
             const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
 
-            // تخزين الأكواد بمصفوفة (أول كود افتراضي)
             const initialLicenses = [
                 {
                     key: initialKey,
@@ -1167,7 +1165,7 @@
                 email, 
                 phone, 
                 password, 
-                activation_key: initialKey, // تم إضافته لتجنب خطأ Missing required attribute في قاعدة البيانات
+                activation_key: initialKey, 
                 licenses: JSON.stringify(initialLicenses) 
             };
 
@@ -1269,26 +1267,65 @@
             window.location.reload();
         }
 
-        // طلب شراء ترخيص جديد وإرسال تنبيه عبر تيليجرام
+        // 3. دالة محاكاة الشراء التلقائي وإضافة الرخصة مباشرة لقاعدة بيانات Appwrite
         async function requestLicensePurchase() {
             const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
             if (!savedUser) return;
 
             const orderBtn = document.getElementById('orderBtn');
-            orderBtn.innerText = "Envoi de la demande...";
+            orderBtn.innerText = "Traitement du paiement...";
             orderBtn.disabled = true;
 
             try {
-                const telegramMessage = `🛒 <b>DEMANDE DE NOUVELLE LICENCE :</b>\n👤 Nom : ${savedUser.name}\n📧 E-mail : ${savedUser.email}\n📞 Tél : ${savedUser.phone}`;
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: telegramMessage, parse_mode: "HTML" })
-                });
-                alert('Votre demande de licence a été envoyée avec succès ! L\'administrateur validera et ajoutera le code à votre espace.');
+                const newKey = "POS-AUTO-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+                const purchaseDateStr = new Date().toISOString().split('T')[0];
+                const expiryDateObj = new Date();
+                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
+
+                const newLicenseItem = {
+                    key: newKey,
+                    purchase_date: purchaseDateStr,
+                    expiry_date: expiryDateStr,
+                    status: 'Actif'
+                };
+
+                let currentLicenses = [];
+                try {
+                    if (savedUser.licenses) {
+                        currentLicenses = typeof savedUser.licenses === 'string' ? JSON.parse(savedUser.licenses) : savedUser.licenses;
+                    } else if (savedUser.activation_key) {
+                        currentLicenses = [{
+                            key: savedUser.activation_key,
+                            purchase_date: '2026-01-01',
+                            expiry_date: '2027-01-01',
+                            status: 'Archivé'
+                        }];
+                    }
+                } catch(e) {
+                    currentLicenses = [];
+                }
+
+                currentLicenses.forEach(lic => lic.status = 'Archivé');
+                currentLicenses.push(newLicenseItem);
+
+                const updatedData = {
+                    licenses: JSON.stringify(currentLicenses),
+                    activation_key: newKey
+                };
+
+                await databases.updateDocument(DATABASE_ID, COLLECTION_ID, savedUser.$id, updatedData);
+
+                savedUser.licenses = updatedData.licenses;
+                savedUser.activation_key = newKey;
+                localStorage.setItem('pos_logged_user', JSON.stringify(savedUser));
+
+                showDashboard(savedUser);
+                alert('Paiement réussi ! Votre nouvelle licence a été générée et ajoutée à votre compte avec succès.');
+
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de l\'envoi de la commande.');
+                alert('Erreur lors de la génération automatique de la licence.');
             } finally {
                 orderBtn.innerText = "Commander une Licence";
                 orderBtn.disabled = false;
