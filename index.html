@@ -1353,9 +1353,7 @@ async function requestLicensePurchase() {
             
             const expiryDateObj = new Date();
             if (selectedTag === '30SEC') {
-                expiryDateObj.setSeconds(expiryDateObj.getSeconds() + 30);
-            } else if (selectedTag === '15DAYS') {
-                expiryDateObj.setDate(expiryDateObj.getDate() + 15);
+                
             } else if (selectedTag === '1YEAR' || selectedTag === '2PC') {
                 expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
             } else if (selectedTag === 'LIFE') {
