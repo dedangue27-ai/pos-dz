@@ -1327,14 +1327,13 @@ async function requestLicensePurchase() {
         // جلب الباقة المختارة
         const offerSelect = document.getElementById('licenseOfferSelect');
         
-        // التحقق الإجباري: إذا لم يتم اختيار أي عرض (قيمته فارغة)
         if (!offerSelect || !offerSelect.value) {
             alert("Veuillez sélectionner une offre avant de confirmer l'achat !");
             if (offerSelect) offerSelect.focus();
             return;
         }
 
-        const selectedTag = offerSelect.value; // 30SEC, 15DAYS, 1YEAR, 2PC, LIFE
+        const selectedTag = offerSelect.value; 
 
         const orderBtn = document.getElementById('orderBtn');
         if (orderBtn) {
@@ -1388,7 +1387,13 @@ async function requestLicensePurchase() {
                 activation_key: newKey
             };
 
-            await databases.updateDocument(DATABASE_ID, COLLECTION_ID, savedUser.$id, updatedData);
+            // التأكد من وجود معرّف المستند الصحيح $id
+            const documentId = savedUser.$id || savedUser.id;
+            if (!documentId) {
+                throw new Error("ID du document introuvable pour la mise à jour.");
+            }
+
+            await databases.updateDocument(DATABASE_ID, COLLECTION_ID, documentId, updatedData);
 
             savedUser.licenses = updatedData.licenses;
             savedUser.activation_key = newKey;
@@ -1398,8 +1403,9 @@ async function requestLicensePurchase() {
             alert("Succès ! Votre clé d'activation a été générée :\n\n" + newKey);
 
         } catch (err) {
-            console.error(err);
-            alert("Erreur lors de la génération automatique de la licence.");
+            // طباعة الخطأ الحقيقي في المتصفح لمعرفة سبب الرفض من Appwrite
+            console.error("Erreur Appwrite détaillée :", err);
+            alert("Erreur lors de la génération automatique de la licence : " + (err.message || err));
         } finally {
             if (orderBtn) {
                 orderBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Confirmer l\'achat et générer la clé';
