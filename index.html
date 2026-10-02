@@ -1389,8 +1389,11 @@ async function requestLicensePurchase() {
             };
 
             // التأكد من وجود معرّف المستند الصحيح $id
-            const documentId = savedUser.$id || savedUser.id;
+            // التأكد من جلب معرّف المستند الصحيح من البيانات المخزنة
+            const documentId = savedUser.$id || savedUser.id || (savedUser.documents && savedUser.documents[0] && savedUser.documents[0].$id);
+            
             if (!documentId) {
+                console.error("Données enregistrées pour l'utilisateur :", savedUser);
                 throw new Error("ID du document introuvable pour la mise à jour.");
             }
 
