@@ -995,32 +995,49 @@
                 <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
             </form>
 
-            <!-- Dashboard Client Professionnel -->
-            <div id="clientDashboard" class="dashboard-box">
-                <div class="dashboard-header">
-                    <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
-                    <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Déconnexion</button>
-                </div>
+            <!-- داخل لوحة التحكم الخاصة بالعميل -->
+<div id="clientDashboard" class="dashboard-box">
+    <div class="dashboard-header">
+        <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
+        <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Déconnexion</button>
+    </div>
 
-                <div style="margin-bottom: 15px;">
-                    <h4 style="font-size: 16px; color: var(--dark); margin-bottom: 5px;"><i class="fa-solid fa-key" style="color: var(--primary);"></i> Historique de vos Licences (Du plus ancien au plus récent) :</h4>
-                    <p style="font-size: 13px; color: var(--text-muted);">Consultez l'ensemble des clés d'activation achetées, dates d'achat et expirations.</p>
-                </div>
+    <div style="margin-bottom: 15px;">
+        <h4 style="font-size: 16px; color: var(--dark); margin-bottom: 5px;"><i class="fa-solid fa-key" style="color: var(--primary);"></i> Historique de vos Licences (Du plus ancien au plus récent) :</h4>
+        <p style="font-size: 13px; color: var(--text-muted);">Consultez l'ensemble des clés d'activation achetées, dates d'achat et expirations.</p>
+    </div>
 
-                <!-- قائمة الأكواد -->
-                <div id="licensesHistoryContainer" class="licenses-history-container">
-                    <!-- سيتم تعبئتها ديناميكياً عبر الجافاسكريبت -->
-                </div>
+    <!-- قائمة الأكواد -->
+    <div id="licensesHistoryContainer" class="licenses-history-container">
+        <!-- سيتم تعبئتها ديناميكياً عبر الجافاسكريبت -->
+    </div>
 
-                <div class="order-box">
-                    <h3><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Nouvelle Licence</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Commandez une nouvelle licence pour étendre ou ajouter un poste à votre activité.</p>
-                    <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;">Commander une Licence</button>
-                </div>
-            </div>
-
+    <!-- صندوق طلب وشراء رخصة جديدة -->
+    <div class="order-box">
+        <h3><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Nouvelle Licence</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Commandez une nouvelle licence pour étendre ou ajouter un poste à votre activité.</p>
+        
+        <!-- قائمة اختيار الباقة -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="licenseOfferSelect" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--dark);">
+                <i class="fa-solid fa-tags" style="color: var(--primary);"></i> Choisir une offre / formule :
+            </label>
+            <select id="licenseOfferSelect" style="width: 100%; padding: 12px 16px; background: white; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; color: var(--dark); outline: none;">
+                <option value="" disabled selected>-- Veuillez sélectionner une offre --</option>
+                <option value="30SEC">Essai - 30 Secondes</option>
+                <option value="15DAYS">Abonnement - 15 Jours</option>
+                <option value="1YEAR">Abonnement - 1 An (1 PC)</option>
+                <option value="2PC">Abonnement - 1 An (2 PC)</option>
+                <option value="LIFE">Licence à Vie (Standard)</option>
+            </select>
         </div>
-    </section>
+
+        <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;">
+            <i class="fa-solid fa-bag-shopping"></i> Confirmer l'achat et générer la clé
+        </button>
+    </div><!-- نهاية order-box -->
+
+</div><!-- نهاية clientDashboard -->
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -1184,49 +1201,6 @@
             }
         });
 
-        <!-- داخل لوحة التحكم الخاصة بالعميل -->
-<div id="clientDashboard" class="dashboard-box">
-    <div class="dashboard-header">
-        <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
-        <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Déconnexion</button>
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <h4 style="font-size: 16px; color: var(--dark); margin-bottom: 5px;"><i class="fa-solid fa-key" style="color: var(--primary);"></i> Historique de vos Licences (Du plus ancien au plus récent) :</h4>
-        <p style="font-size: 13px; color: var(--text-muted);">Consultez l'ensemble des clés d'activation achetées, dates d'achat et expirations.</p>
-    </div>
-
-    <!-- قائمة الأكواد -->
-    <div id="licensesHistoryContainer" class="licenses-history-container">
-        <!-- سيتم تعبئتها ديناميكياً عبر الجافاسكريبت -->
-    </div>
-
-    <!-- صندوق طلب وشراء رخصة جديدة -->
-    <div class="order-box">
-        <h3><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Nouvelle Licence</h3>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Commandez une nouvelle licence pour étendre ou ajouter un poste à votre activité.</p>
-        
-        <!-- قائمة اختيار الباقة -->
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label for="licenseOfferSelect" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--dark);">
-                <i class="fa-solid fa-tags" style="color: var(--primary);"></i> Choisir une offre / formule :
-            </label>
-            <select id="licenseOfferSelect" style="width: 100%; padding: 12px 16px; background: white; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; color: var(--dark); outline: none;">
-                <option value="" disabled selected>-- Veuillez sélectionner une offre --</option>
-                <option value="30SEC">Essai - 30 Secondes</option>
-                <option value="15DAYS">Abonnement - 15 Jours</option>
-                <option value="1YEAR">Abonnement - 1 An (1 PC)</option>
-                <option value="2PC">Abonnement - 1 An (2 PC)</option>
-                <option value="LIFE">Licence à Vie (Standard)</option>
-            </select>
-        </div>
-
-        <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%;">
-            <i class="fa-solid fa-bag-shopping"></i> Confirmer l'achat et générer la clé
-        </button>
-    </div><!-- نهاية order-box -->
-
-</div><!-- نهاية clientDashboard -->
 
         // 2. تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
