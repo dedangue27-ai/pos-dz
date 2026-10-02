@@ -971,7 +971,7 @@
                 <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
             </form>
 
-            <!-- Formulaire d'Inscription Direct (بدون تحقق OTP معقد) -->
+            <!-- Formulaire d'Inscription Direct -->
             <form id="registerForm" class="auth-form">
                 <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous instantanément pour commander votre licence.</p>
                 <div class="input-group">
@@ -993,7 +993,7 @@
                 <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
             </form>
 
-            <!-- Dashboard Client Professionnel Aniq (يعرض جميع الأكواد من القديم إلى الجديد مع التواريخ) -->
+            <!-- Dashboard Client Professionnel -->
             <div id="clientDashboard" class="dashboard-box">
                 <div class="dashboard-header">
                     <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay"></span></h2>
@@ -1126,7 +1126,7 @@
             }
         });
 
-        // 1. التسجيل المباشر بدون OTP
+        // 1. التسجيل المباشر وتوفير الحقل activation_key المتوافق مع جدول Appwrite
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1167,6 +1167,7 @@
                 email, 
                 phone, 
                 password, 
+                activation_key: initialKey, // تم إضافته لتجنب خطأ Missing required attribute في قاعدة البيانات
                 licenses: JSON.stringify(initialLicenses) 
             };
 
@@ -1223,7 +1224,6 @@
                 if (user.licenses) {
                     licensesList = typeof user.licenses === 'string' ? JSON.parse(user.licenses) : user.licenses;
                 } else if (user.activation_key) {
-                    // توافق مع الحسابات القديمة إن وجدت
                     licensesList = [{
                         key: user.activation_key,
                         purchase_date: '2026-01-01',
@@ -1235,14 +1235,14 @@
                 licensesList = [];
             }
 
-            // التأكد من الترتيب من القديم إلى الجديد اعتماداً على تاريخ الشراء
+            // الترتيب من القديم إلى الجديد اعتماداً على تاريخ الشراء
             licensesList.sort((a, b) => new Date(a.purchase_date) - new Date(b.purchase_date));
 
             if (licensesList.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">Aucune licence trouvée pour le moment.</p>`;
             } else {
                 licensesList.forEach((lic, index) => {
-                    const isActive = index === licensesList.length - 1; // الأحدث غالباً أو حسب حالته
+                    const isActive = index === licensesList.length - 1;
                     container.innerHTML += `
                         <div class="license-card-item ${isActive ? 'active-license' : ''}">
                             <h4>
