@@ -1359,7 +1359,7 @@ async function requestLicensePurchase() {
             } else if (selectedTag === '1YEAR' || selectedTag === '2PC') {
                 expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
             } else if (selectedTag === 'LIFE') {
-                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 99);
+                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 990);
             }
             const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
 
@@ -1385,6 +1385,7 @@ async function requestLicensePurchase() {
             const updatedData = {
                 licenses: JSON.stringify(currentLicenses),
                 activation_key: newKey
+                expiry_date: expiryDateStr
             };
 
             // التأكد من وجود معرّف المستند الصحيح $id
