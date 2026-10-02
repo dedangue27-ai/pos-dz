@@ -1269,7 +1269,7 @@
             window.location.reload();
         }
 
-        // 3. دالة محاكاة الشراء التلقائي وإضافة الرخصة مباشرة لقاعدة بيانات Appwrite
+// دالة الشراء مع التحقق الإجباري من اختيار العرض
 async function requestLicensePurchase() {
     const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
     if (!savedUser) {
@@ -1280,7 +1280,15 @@ async function requestLicensePurchase() {
 
     // جلب الباقة المختارة من القائمة المنسدلة
     const offerSelect = document.getElementById('licenseOfferSelect');
-    const selectedTag = offerSelect ? offerSelect.value : 'LIFE'; // القيمة الافتراضية LIFE
+    
+    // التحقق الإجباري من وجود القائمة واختيار عرض صالح
+    if (!offerSelect || !offerSelect.value) {
+        alert("Veuillez sélectionner une offre avant de confirmer l'achat.");
+        if (offerSelect) offerSelect.focus();
+        return;
+    }
+
+    const selectedTag = offerSelect.value; // سيأخذ القيمة المختارة: 30SEC, 15DAYS, 1YEAR, 2PC, LIFE
 
     const orderBtn = document.getElementById('orderBtn');
     if (orderBtn) {
@@ -1301,7 +1309,7 @@ async function requestLicensePurchase() {
 
         const purchaseDateStr = new Date().toISOString().split('T')[0];
         
-        // حساب تاريخ انتهاء الصلاحية بناءً على الباقة المختارة
+        // حساب تاريخ انتهاء الصلاحية بناءً على الباقة المختارة بدقة
         const expiryDateObj = new Date();
         if (selectedTag === '30SEC') {
             expiryDateObj.setSeconds(expiryDateObj.getSeconds() + 30);
@@ -1330,7 +1338,7 @@ async function requestLicensePurchase() {
             currentLicenses = [];
         }
 
-        // أرشفة التراخيص السابقة وإضافة الجديدة
+        // أرشفة التراخيص السابقة وإضافة الرخصة الجديدة بحالة نشط
         currentLicenses.forEach(lic => lic.status = 'Archivé');
         currentLicenses.push(newLicenseItem);
 
@@ -1342,13 +1350,13 @@ async function requestLicensePurchase() {
         // التحديث في قاعدة بيانات Appwrite
         await databases.updateDocument(DATABASE_ID, COLLECTION_ID, savedUser.$id, updatedData);
 
-        // تحديث التخزين المحلي
+        // تحديث التخزين المحلي للمتصفح
         savedUser.licenses = updatedData.licenses;
         savedUser.activation_key = newKey;
         localStorage.setItem('pos_logged_user', JSON.stringify(savedUser));
 
         showDashboard(savedUser);
-        alert('Succès ! Votre clé d\'activation a été générée : \n\n' + newKey);
+        alert('Succès ! Votre clé d\'activation a été générée avec succès :\n\n' + newKey);
 
     } catch (err) {
         console.error(err);
@@ -1359,7 +1367,7 @@ async function requestLicensePurchase() {
             orderBtn.disabled = false;
         }
     }
-}
-    </script>
+}   
+   </script>
 </body>
 </html>   
