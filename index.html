@@ -1291,7 +1291,28 @@
             window.location.reload();
         }
 
+        // دالة يتم تنفيذها عند التحقق من الكود وتفعيله
+async function activateKeyIfNeeded(documentId, currentExpiryDate, durationDays) {
+    if (!currentExpiryDate) {
+        // حساب تاريخ انتهاء الصلاحية من اللحظة الحالية (مثلاً بعد 30 يوماً من الآن)
+        const activationDate = new Date();
+        activationDate.setDate(activationDate.getDate() + durationDays);
         
+        const newExpiryIsoString = activationDate.toISOString();
+
+        // تحديث جدول pos_activations بتحديد تاريخ الانتهاء بناءً على وقت التفعيل الفعلي
+        await databases.updateDocument(
+            '6abe955d003d5da5415b',
+            '6abe96a0001a8ace3964',
+            documentId,
+            {
+                expiry_date: newExpiryIsoString
+            }
+        );
+        
+        console.log("تم تفعيل الكود بنجاح وبدء احتساب المدة من الآن:", newExpiryIsoString);
+    }
+}
 
         
 
