@@ -67,7 +67,7 @@
 
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const name = document.getElementById('regName',).value.trim();
+            const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
             const password = document.getElementById('regPassword').value.trim();
@@ -94,12 +94,12 @@
                     status: 'Actif'
                 }]);
 
-                // 2. إرسال قيمة آمنة لخانة password في الجدول لإرضاء شرط الجدول (Required) مع حماية الخصوصية
+                // 2. إرسال كلمة المرور للجدول لتلبية شرط الحقل الإجباري (Required)
                 const userData = {
                     name: name,
                     email: email,
                     phone: phone,
-                    password: "[SECURED_BY_AUTH]", // قيمة وهمية آمنة تتجاوز خطأ الجدول بينما الحماية الحقيقية تتم في Auth
+                    password: password, 
                     activation_key: initialKey,
                     licenses: initialLicenses,
                     expiry_date: expiryDateStr
