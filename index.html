@@ -1144,7 +1144,7 @@
             }
         });
 
-        // 1. التسجيل المباشر وتوفير الحقل activation_key المتوافق مع جدول Appwrite
+        // 1. التسجيل المباشر بدون أي مفتاح تفعيل افتراضي (فترة تجريبية تعتمد على التاريخ فقط)
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -1163,22 +1163,29 @@
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
+            const purchaseDateStr = new Date().toISOString().split('T')[0];
             
+            // حساب تاريخ انتهاء الفترة التجريبية (15 يوماً من الآن)
+            const expiryDateObj = new Date();
+            expiryDateObj.setDate(expiryDateObj.getDate() + 15);
+            const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
 
+            // إرسال البيانات بدون أي مفتاح (حقل activation_key فارغ، وقائمة التراخيص فارغة حتى يشتركي لاحقاً)
             const userData = { 
                 name, 
                 email, 
                 phone, 
                 password, 
-                activation_key: 
+                activation_key: "", 
                 licenses: JSON.stringify([]),
                 expiry_date: expiryDateStr
             };
 
             try {
-                await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-                showDashboard(userData);
+                const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
+                
+                localStorage.setItem('pos_logged_user', JSON.stringify(response));
+                showDashboard(response);
             } catch (err) {
                 console.error(err);
                 alert('Erreur lors de l\'enregistrement dans la base de données.');
