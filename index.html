@@ -77,11 +77,11 @@
             regBtn.disabled = true;
 
             try {
-                // الخطوة 1: إنشاء الحساب في نظام المصادقة (Auth) أولاً
+                // الخطوة 1: إنشاء الحساب الآمن في نظام المصادقة (Auth) أولاً لتشفير وحماية كلمة المرور
                 const newAccount = await account.create(ID.unique(), email, password, name);
-                const userId = newAccount.$id; // معرف المستخدم من المصادقة
+                const userId = newAccount.$id; // معرف المستخدم الفريد من المصادقة
 
-                // بيانات التراخيص الافتراضية
+                // توليد بيانات التراخيص الافتراضية
                 const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
                 const expiryDateObj = new Date();
                 expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
@@ -94,31 +94,27 @@
                     status: 'Actif'
                 }]);
 
-                // الخطوة 2: تسجيل وتخزين البيانات تلقائياً في جدول users باستخدام نفس الـ ID أو كوثيقة مرتبطة
+                // الخطوة 2: تجهيز بيانات الملف الشخصي للـ جدول (بدون حفظ كلمة المرور نصياً لحماية الخصوصية)
                 const userData = {
                     name: name,
                     email: email,
                     phone: phone,
-                    password: password, // أو ترك هذا الحقل فارغاً طالما أن Auth يحميه، حسب رغبتك في الجدول
                     activation_key: initialKey,
                     licenses: initialLicenses,
                     expiry_date: expiryDateStr
                 };
 
-                // نقوم بحفظ المستند في الجدول باستخدام الـ userId الخاص بالمصادقة كمعرف للوثيقة لضمان التارباط
+                // حفظ المستند في جدول users باستخدام الـ userId كمعرف للوثيقة لضمان الربط التلقائي
                 await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, userData);
 
-                // بعد إنشاء الحساب بنجاح
-const newAccount = await account.create(ID.unique(), email, password, name);
+                // الخطوة 3: محاولة إرسال إيميل التحقق (إن وجد إعداد SMTP صحيح، وإلا يتم تخطي الخطوة دون تعطيل التطبيق)
+                try {
+                    await account.createVerification('https://yourdomain.com/verify.html');
+                } catch (mailErr) {
+                    console.log("إشعار: لم يتم إرسال بريد التحقق لعدم اكتمال إعدادات خادم البريد.");
+                }
 
-// إرسال إيميل التحقق (اختياري - يتطلب إعداد SMTP صحيح في لوحة Appwrite)
-try {
-    await account.createVerification('https://yourdomain.com/verify.html');
-} catch (mailErr) {
-    console.log("لم يتم إرسال البريد لعدم ضبط إعدادات SMTP، لكن الحساب يعمل بنجاح.");
-}
-
-                // الخطوة 3: تسجيل الدخول تلقائياً بعد التسجيل الانتقالي
+                // الخطوة 4: تسجيل الدخول تلقائياً والانتقال إلى لوحة التحكم
                 await account.createEmailPasswordSession(email, password);
 
                 alert("Inscription réussie ! Bienvenue sur POS Pro.");
