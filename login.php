@@ -93,19 +93,6 @@
             color: #60a5fa;
         }
 
-        .nav-btn {
-            background: var(--primary);
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background 0.3s, transform 0.2s !important;
-        }
-
-        .nav-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
         .hamburger {
             display: none;
             cursor: pointer;
@@ -126,32 +113,6 @@
             gap: 40px;
             min-height: 90vh;
         }
-
-        /* Download Section */
-        .download-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .download-box {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .download-box h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .download-box p {
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-
 
         .hero-content {
             flex: 1;
@@ -263,6 +224,38 @@
         .section-title p {
             color: var(--text-muted);
             font-size: 1.05rem;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .download-box {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-box h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .download-box p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .version-text {
+            display: block;
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 14px;
         }
 
         /* Features */
@@ -468,6 +461,7 @@
         </button>
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
+            <a href="#download" onclick="closeMenu()">Télécharger</a>
             <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
         </nav>
@@ -601,11 +595,11 @@
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410';
 
-        // إذا كان المستخدم مسجل دخوله مسبقاً، وجهه مباشرة إلى لوحة التحكم
+        // التصحيح: إذا كان المستخدم مسجل الدخول مسبقاً، يتم توجيهه إلى Dashboard.html وليس نفس الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
-                window.location.href = 'index.html';
+                window.location.href = 'Dashboard.html';
             }
         });
 
@@ -688,7 +682,6 @@
 
             try {
                 const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                // الاحتفاظ بالمعرف الحقيقي ($id) من قاعدة البيانات
                 localStorage.setItem('pos_logged_user', JSON.stringify(response));
                 window.location.href = 'Dashboard.html';
             } catch (err) {
