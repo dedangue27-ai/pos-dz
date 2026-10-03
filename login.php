@@ -467,8 +467,21 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    
+    <!-- Hero Section (تمت إعادتها لتظهر بشكل صحيح) -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge">Solution Algérienne .DZ</span>
+            <h1>La solution ultime pour la gestion de votre stock et ventes</h1>
+            <p>Optimisez votre commerce avec POS Pro. Un logiciel rapide, sécurisé et parfaitement adapté aux besoins des professionnels en Algérie.</p>
+            <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger le Logiciel</a>
+        </div>
+        <div class="hero-card">
+            <div class="pos-preview-box">
+                <h2>POS PRO</h2>
+                <span>GESTION .DZ</span>
+            </div>
+        </div>
+    </section>
 
     <!-- Download Section -->
     <section id="download" class="download-section">
@@ -580,7 +593,6 @@
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410';
 
-        // التصحيح: إذا كان المستخدم مسجل الدخول مسبقاً، يتم توجيهه إلى Dashboard.html وليس نفس الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
