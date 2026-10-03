@@ -741,14 +741,14 @@
             try {
                 await account.create(ID.unique(), email, password, name);
                 
-                // Update phone using Appwrite account API after account creation
                 try {
                     await account.updatePhone(phone, password);
                 } catch (phoneErr) {
                     console.error("Erreur mise à jour téléphone:", phoneErr);
                 }
 
-                await account.createEmailSession(email, password);
+                // Updated method name for Appwrite v15+ SDK
+                await account.createEmailPasswordSession(email, password);
 
                 alert("Compte créé avec succès !");
                 window.location.href = 'Dashboard.html';
@@ -775,7 +775,8 @@
             logBtn.disabled = true;
 
             try {
-                await account.createEmailSession(email, password);
+                // Updated method name for Appwrite v15+ SDK
+                await account.createEmailPasswordSession(email, password);
                 window.location.href = 'Dashboard.html';
             } catch (err) {
                 console.error(err);
