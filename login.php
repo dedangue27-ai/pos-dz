@@ -93,6 +93,24 @@
             color: #60a5fa;
         }
 
+        /* تنسيق زر التحميل في القائمة العلوية */
+        .nav-download-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s, transform 0.2s !important;
+        }
+
+        .nav-download-btn:hover {
+            background: var(--primary-dark) !important;
+            transform: translateY(-2px);
+        }
+
         .hamburger {
             display: none;
             cursor: pointer;
@@ -463,12 +481,19 @@
             }
             .nav-links.active { left: 0; }
             .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
+            
+            .nav-download-btn {
+                width: 80%;
+                justify-content: center;
+                text-align: center;
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header (تم إزالة Espace Client وتعويضه بـ Télécharger) -->
+    <!-- Header -->
     <header class="navbar">
         <a href="index.html" class="logo-container">
             <div class="mini-logo">POS</div>
@@ -481,6 +506,9 @@
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#download" onclick="closeMenu()">Télécharger</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
+            <a href="POS.exe" class="nav-download-btn" download="POS.exe">
+                <i class="fa-solid fa-download"></i> Télécharger
+            </a>
         </nav>
     </header>
 
@@ -535,7 +563,7 @@
         </div>
     </section>
 
-    <!-- Auth & Login Section (مع إضافة خيار نسيت كلمة السر) -->
+    <!-- Auth & Login Section -->
     <section id="accountSection" class="register-section">
         <div class="section-title">
             <h2>Espace Connexion</h2>
