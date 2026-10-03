@@ -73,18 +73,14 @@
             regBtn.disabled = true;
 
             try {
-                // 1. إنشاء الحساب في Appwrite Auth مع البريد، كلمة المرور، والاسم
+                // 1. إنشاء الحساب في Appwrite Auth بالبريد، كلمة المرور، والاسم
                 await account.create(ID.unique(), email, password, name);
 
                 // 2. تسجيل الدخول تلقائياً لإنشاء الجلسة
                 await account.createEmailPasswordSession(email, password);
 
-                // 3. إضافة رقم الهاتف لتفاصيل الحساب في Auth (عبر دالة تحديث الهاتف)
-                try {
-                    await account.updatePhone(phone, password);
-                } catch (phoneErr) {
-                    console.log("ملاحظة بخصوص رقم الهاتف:", phoneErr);
-                }
+                // 3. تحديث رقم الهاتف وإضافته بشكل إجباري لحساب المستخدم الحالي في Auth
+                await account.updatePhone(phone, password);
 
                 // 4. إرسال بريد التحقق للمستخدم
                 try {
