@@ -710,7 +710,7 @@
         // دالة استعادة كلمة المرور الآمنة (التحقق من وجود الإيميل وإرسال رمز تحقق مؤقت OTP)
         async function forgotPassword(e) {
             e.preventDefault();
-            const emailInput = prompt("Veuillez entrer votre adresse e-mail pour réinitialiser votre mot de passe :");
+            const emailInput = prompt("mail.pospro.lol :");
             if (!emailInput) return;
 
             try {
@@ -805,37 +805,38 @@
             }
         });
 
-        // تسجيل الدخول
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('logEmail').value.trim();
-            const password = document.getElementById('logPassword').value.trim();
-            const logBtn = document.getElementById('logBtn');
+            // تسجيل الدخول
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('logEmail').value.trim();
+    const password = document.getElementById('logPassword').value.trim();
+    const logBtn = document.getElementById('logBtn');
 
-            logBtn.innerText = "Connexion...";
-            logBtn.disabled = true;
+    logBtn.innerText = "Connexion...";
+    logBtn.disabled = true;
 
-            try {
-                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-                    Query.equal('email', email),
-                    Query.equal('password', password)
-                ]);
+    try {
+        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+            Query.equal('email', email),
+            Query.equal('password', password)
+        ]);
 
-                if (response.documents.length > 0) {
-                    const user = response.documents[0];
-                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    window.location.href = 'Dashboard.html';
-                } else {
-                    alert('E-mail ou mot de passe incorrect.');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Erreur de connexion.');
-            } finally {
-                logBtn.innerText = "Se connecter";
-                logBtn.disabled = false;
-            }
-        });
+        if (response.documents.length > 0) {
+            const user = response.documents[0];
+            localStorage.setItem('pos_logged_user', JSON.stringify(user));
+            window.location.href = 'Dashboard.html';
+        } else {
+            alert('E-mail ou mot de passe incorrect.');
+        }
+    } catch (err) {
+        console.error("Appwrite Error Details:", err);
+        // عرض الخطأ البرمجي الفعلي لمعرفة السبب بدقة
+        alert('Erreur de connexion: ' + (err.message || JSON.stringify(err)));
+    } finally {
+        logBtn.innerText = "Se connecter";
+        logBtn.disabled = false;
+    }
+});
     </script>
 </body>
 </html>
