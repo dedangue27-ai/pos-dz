@@ -127,6 +127,32 @@
             min-height: 90vh;
         }
 
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .download-box {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-box h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .download-box p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+
         .hero-content {
             flex: 1;
             max-width: 600px;
@@ -462,6 +488,16 @@
                 <h2>POS</h2>
                 <span>SYSTEM</span>
             </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="download-box">
+            <h2>Prêt à digitaliser votre commerce ?</h2>
+            <p>Téléchargez la dernière version du logiciel dès maintenant.</p>
+            <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
         </div>
     </section>
 
