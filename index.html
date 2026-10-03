@@ -40,10 +40,6 @@
                 <input type="email" id="regEmail" placeholder="Adresse e-mail" required>
             </div>
             <div class="input-group">
-                <i class="fa-solid fa-phone"></i>
-                <input type="tel" id="regPhone" placeholder="Numéro de téléphone" required>
-            </div>
-            <div class="input-group">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" id="regPassword" placeholder="Mot de passe (6 caractères min)" required>
             </div>
@@ -54,22 +50,17 @@
     <!-- Appwrite SDK -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Account, Databases, ID } = Appwrite;
+        const { Client, Account, ID } = Appwrite;
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
 
         const account = new Account(client);
-        const databases = new Databases(client);
-
-        const DATABASE_ID = '6abe955d003d5da5415b';
-        const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
             const password = document.getElementById('regPassword').value.trim();
             const regBtn = document.getElementById('regBtn');
 
@@ -77,41 +68,20 @@
             regBtn.disabled = true;
 
             try {
-                // 1. إنشاء الحساب الآمن في نظام المصادقة (Auth) أولاً
-                const newAccount = await account.create(ID.unique(), email, password, name);
-                const userId = newAccount.$id; 
+                // 1. إنشاء الحساب في نظام المصادقة (Auth) فقط
+                await account.create(ID.unique(), email, password, name);
 
-                // توليد بيانات التراخيص الافتراضية
-                const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-                const expiryDateObj = new Date();
-                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
-                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
-
-                const initialLicenses = JSON.stringify([{
-                    key: initialKey,
-                    purchase_date: new Date().toISOString().split('T')[0],
-                    expiry_date: expiryDateStr,
-                    status: 'Actif'
-                }]);
-
-                // 2. إرسال كلمة المرور للجدول لتلبية شرط الحقل الإجباري (Required)
-                const userData = {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    password: password, 
-                    activation_key: initialKey,
-                    licenses: initialLicenses,
-                    expiry_date: expiryDateStr
-                };
-
-                // حفظ المستند في الجدول باستخدام الـ userId كمعرف للوثيقة
-                await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, userData);
-
-                // 3. تسجيل الدخول تلقائياً والانتقال إلى لوحة التحكم
+                // 2. تسجيل الدخول تلقائياً بالمعلومات الجديدة لإنشاء الجلسة
                 await account.createEmailPasswordSession(email, password);
 
-                alert("Inscription réussie ! Bienvenue sur POS Pro.");
+                // 3. إرسال بريد التحقق للمستخدم (تأكد من ضبط رابط إعادة التوجيه في لوحة Appwrite Auth)
+                try {
+                    await account.createVerification(window.location.origin + '/Dashboard.html');
+                } catch (verifyErr) {
+                    console.log("إشعار: لم يتم إرسال بريد التحقق، يجدر التحقق من إعدادات SMTP في لوحة التحكم.", verifyErr);
+                }
+
+                alert("Inscription réussie ! Un e-mail de vérification a été envoyé à votre adresse.");
                 window.location.href = 'Dashboard.html';
 
             } catch (err) {
