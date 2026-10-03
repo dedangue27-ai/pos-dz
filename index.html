@@ -640,7 +640,7 @@
         <p>Pour l'achat de licence ou toute demande d'assistance :</p>
         <div class="contact-info">
             <div class="contact-item"><i class="fa-solid fa-phone"></i> +213 (0) 7 79 62 58 67</div>
-            <div class="contact-item"><i class="fa-solid fa-envelope"></i> contact@pospro.lol</div>
+            <div class="contact-item"><i class="fa-solid fa-envelope">5</i> contact@pospro.lol</div>
         </div>
     </section>
 
@@ -651,13 +651,18 @@
     <!-- Appwrite & UI Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Account, ID } = Appwrite;
+        const { Client, Account, Databases, ID } = Appwrite;
         
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
 
         const account = new Account(client);
+        const databases = new Databases(client);
+
+        // Remplacez par vos vrais identifiants de base de données Appwrite
+        const DATABASE_ID = 'YOUR_DATABASE_ID';
+        const COLLECTION_ID = 'YOUR_COLLECTION_ID';
 
         window.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -721,6 +726,7 @@
             }
         }
 
+        // Formulaire d'Inscription (Création Auth + Document Database)
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -739,7 +745,8 @@
             regBtn.disabled = true;
 
             try {
-                await account.create(ID.unique(), email, password, name);
+                // 1. Création du compte utilisateur dans Appwrite Auth
+                const newUser = await account.create(ID.unique(), email, password, name);
                 
                 try {
                     await account.updatePhone(phone, password);
@@ -747,7 +754,22 @@
                     console.error("Erreur mise à jour téléphone:", phoneErr);
                 }
 
-                // Updated method name for Appwrite v15+ SDK
+                // 2. Enregistrement des données complémentaires dans la Database
+                await databases.createDocument(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    newUser.$id, // Utilisation de l'ID utilisateur comme ID de document
+                    {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        expiry_date: "",
+                        licenses: "",
+                        activation_key: ""
+                    }
+                );
+
+                // 3. Création de la session et redirection
                 await account.createEmailPasswordSession(email, password);
 
                 alert("Compte créé avec succès !");
@@ -765,6 +787,7 @@
             }
         });
 
+        // Formulaire de Connexion
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
@@ -775,7 +798,6 @@
             logBtn.disabled = true;
 
             try {
-                // Updated method name for Appwrite v15+ SDK
                 await account.createEmailPasswordSession(email, password);
                 window.location.href = 'Dashboard.html';
             } catch (err) {
