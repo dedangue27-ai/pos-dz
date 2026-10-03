@@ -47,8 +47,8 @@
         </form>
     </div>
 
-    <!-- Appwrite SDK -->
-    <script src="https://cdn.jsdelivr.5net/npm/appwrite@14.0.1"></script>
+    <!-- Appwrite SDK (تم التصحيح هنا) -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
         const { Client, Account, ID } = Appwrite;
         const client = new Client()
@@ -86,7 +86,6 @@
 
             } catch (err) {
                 console.error(err);
-                // إذا ظهر خطأ Rate Limit، نبه المستخدم بانتظار دقائق قليلة
                 if (err.message && err.message.includes('Rate limit')) {
                     alert("Trop de tentatives. Veuillez patienter quelques minutes avant de réessayez.");
                 } else {
