@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Pro - Tableau de Bord Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #0f172a;
+            --gray-light: #f8fafc;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--gray-light); color: var(--text-main); display: flex; min-height: 100vh; }
+
+        /* القائمة الجانبية الاحترافية */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .mini-logo {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .sidebar-profile {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            background: var(--primary);
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .sidebar-profile h3 { font-size: 16px; color: white; margin-bottom: 4px; }
+        .sidebar-profile p { font-size: 12px; color: #94a3b8; }
+
+        .sidebar-menu { list-style: none; padding: 20px 0; flex-grow: 1; }
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 25px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu li.active a, .sidebar-menu li a:hover {
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            border-left: 4px solid var(--primary);
+        }
+
+        .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .logout-btn:hover { background: #ef4444; color: white; }
+
+        /* المحتوى الرئيسي للوحة التحكم */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-card h3 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .info-box {
+            background: var(--gray-light);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .info-box span { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .info-box b { font-size: 15px; color: var(--dark); }
+
+        .licenses-history-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .license-card-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            border-top: 5px solid var(--primary);
+        }
+
+        .license-card-item.active-license {
+            border-top-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .license-key-badge {
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark);
+            background: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: block;
+            margin: 10px 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        
+        .input-group select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--gray-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--dark);
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .sidebar-header span, .sidebar-profile h3, .sidebar-profile p, .sidebar-menu span, .logout-btn span { display: none; }
+            .main-content { margin-left: 70px; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة الجانبية (Sidebar) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="mini-logo">POS</div>
+            <span style="font-weight: 700; font-size: 18px;">DASHBOARD</span>
+        </div>
+        
+        <div class="sidebar-profile">
+            <div class="avatar" id="userAvatar">Z</div>
+            <h3 id="sidebarUserName">Chargement...</h3>
+            <p>Client Actif</p>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#"><i class="fa-solid fa-house"></i> <span>Accueil & Licences</span></a>
+            </li>
+            <li>
+                <a href="index.html"><i class="fa-solid fa-globe"></i> <span>Retour au Site Web</span></a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button onclick="logoutUser()" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي للوحة التحكم -->
+    <main class="main-content">
+        <div class="top-navbar">
+            <h1>Tableau de Bord Client</h1>
+            <span style="color: var(--text-muted); font-size: 14px;"><i class="fa-solid fa-calendar-days"></i> <span id="currentDateDisplay"></span></span>
+        </div>
+
+        <!-- معلومات حساب العميل -->
+        <div class="section-card">
+            <h3><i class="fa-solid fa-user-gear" style="color: var(--primary);"></i> Informations Personnelles</h3>
+            <div class="user-info-grid">
+                <div class="info-box">
+                    <span>Nom Complet</span>
+                    <b id="infoName">-</b>
+                </div>
+                <div class="info-box">
+                    <span>Adresse E-mail</span>
+                    <b id="infoEmail">-</b>
+                </div>
+                <div class="info-box">
+                    <span>Numéro de Téléphone</span>
+                    <b id="infoPhone">-</b>
+                </div>
+            </div>
+        </div>
+
+        <!-- تاريخ وتفاصيل التراخيص -->
+        <div class="section-card">
+            <h3><i class="fa-solid fa-key" style="color: var(--primary);"></i> Historique de vos Licences</h3>
+            <div id="licensesHistoryContainer" class="licenses-history-container">
+                <!-- يتم تعبئتها ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- طلب وشراء رخصة جديدة -->
+        <div class="section-card">
+            <h3><i class="fa-solid fa-bag-shopping" style="color: var(--primary);"></i> Demander / Acheter une Nouvelle Licence</h3>
+            <div class="input-group">
+                <select id="licenseOfferSelect">
+                    <option value="" disabled selected>-- Veuillez sélectionner une offre --</option>
+                    <option value="1YEAR">Abonnement - 1 An (1 PC) - 3 000 DA</option>
+                    <option value="2PC">Abonnement - 1 An (2 PC) - 5 000 DA</option>
+                    <option value="LIFE">Licence à Vie (Standard) - 25 000 DA</option>
+                </select>
+            </div>
+            <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()">
+                <i class="fa-solid fa-circle-check"></i> Confirmer l'achat et générer la clé
+            </button>
+        </div>
+    </main>
+
+    <!-- Appwrite Script -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    <script>
+        const { Client, Databases } = Appwrite;
+        const client = new Client()
+            .setEndpoint('https://fra.cloud.appwrite.io/v1')
+            .setProject('6abe94b500149981a9c2');
+
+        const databases = new Databases(client);
+        const DATABASE_ID = '6abe955d003d5da5415b';
+        const COLLECTION_ID = '6abe9d4b0031f85bf410';
+
+        document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString('fr-FR');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('pos_logged_user');
+            if (!savedUser) {
+                // إذا لم يكن المستخدم مسجلاً، قم بإعادته تلقائياً لصفحة الدخول
+                window.location.href = 'index.html';
+                return;
+            }
+            showDashboard(JSON.parse(savedUser));
+        });
+
+        function showDashboard(user) {
+            document.getElementById('sidebarUserName').innerText = user.name || 'Client';
+            document.getElementById('userAvatar').innerText = (user.name || 'C').charAt(0).toUpperCase();
+
+            document.getElementById('infoName').innerText = user.name || '-';
+            document.getElementById('infoEmail').innerText = user.email || '-';
+            document.getElementById('infoPhone').innerText = user.phone || 'Non renseigné';
+
+            const container = document.getElementById('licensesHistoryContainer');
+            container.innerHTML = "";
+
+            let licensesList = [];
+            try {
+                if (user.licenses) {
+                    licensesList = typeof user.licenses === 'string' ? JSON.parse(user.licenses) : user.licenses;
+                } else if (user.activation_key) {
+                    licensesList = [{
+                        key: user.activation_key,
+                        purchase_date: '2026-01-01',
+                        expiry_date: user.expiry_date || 'Illimité',
+                        status: 'Actif'
+                    }];
+                }
+            } catch(e) { licensesList = []; }
+
+            licensesList.sort((a, b) => new Date(a.purchase_date) - new Date(b.purchase_date));
+
+            if (licensesList.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">Aucune licence trouvée.</p>`;
+            } else {
+                licensesList.forEach((lic, index) => {
+                    const isActive = index === licensesList.length - 1;
+                    container.innerHTML += `
+                        <div class="license-card-item ${isActive ? 'active-license' : ''}">
+                            <h4 style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:8px;">
+                                <span>Licence #${index + 1}</span>
+                                <span style="color: ${isActive ? '#10b981' : '#64748b'}; font-weight:600;">${isActive ? 'Actif' : 'Archivé'}</span>
+                            </h4>
+                            <div class="license-key-badge">${lic.key}</div>
+                            <div style="font-size:13px; color:var(--text-muted); display:flex; justify-content:space-between; margin-top:12px; border-top:1px dashed var(--border); padding-top:10px;">
+                                <span>Achat : <b>${lic.purchase_date || 'N/A'}</b></span>
+                                <span>Expiration : <b>${lic.expiry_date || 'Illimité'}</b></span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('pos_logged_user');
+            window.location.href = 'index.html';
+        }
+
+        async function requestLicensePurchase() {
+            const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
+            if (!savedUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const offerSelect = document.getElementById('licenseOfferSelect');
+            if (!offerSelect.value) {
+                alert("Veuillez sélectionner une offre avant de confirmer !");
+                return;
+            }
+
+            const selectedTag = offerSelect.value;
+            const orderBtn = document.getElementById('orderBtn');
+            orderBtn.innerText = "Traitement...";
+            orderBtn.disabled = true;
+
+            try {
+                const p1 = Math.random().toString(36).substring(2, 7).toUpperCase();
+                const p2 = Math.random().toString(36).substring(2, 7).toUpperCase();
+                const p3 = Math.random().toString(36).substring(2, 7).toUpperCase();
+                const p4 = Math.random().toString(36).substring(2, 7).toUpperCase();
+                const p5 = Math.random().toString(36).substring(2, 7).toUpperCase();
+
+                const newKey = `POS-${selectedTag}-${p1}-${p2}-${p3}-${p4}-${p5}`;
+                const purchaseDateStr = new Date().toISOString().split('T')[0];
+                
+                const expiryDateObj = new Date();
+                if (selectedTag === '1YEAR' || selectedTag === '2PC') {
+                    expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+                } else if (selectedTag === 'LIFE') {
+                    expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 990);
+                }
+                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
+
+                const newLicenseItem = {
+                    key: newKey,
+                    purchase_date: purchaseDateStr,
+                    expiry_date: expiryDateStr,
+                    status: 'Actif'
+                };
+
+                let currentLicenses = [];
+                try {
+                    currentLicenses = typeof savedUser.licenses === 'string' ? JSON.parse(savedUser.licenses) : savedUser.licenses;
+                } catch(e) { currentLicenses = []; }
+
+                currentLicenses.forEach(lic => lic.status = 'Archivé');
+                currentLicenses.push(newLicenseItem);
+
+                const updatedData = {
+                    licenses: JSON.stringify(currentLicenses),
+                    activation_key: newKey,
+                    expiry_date: expiryDateStr
+                };
+
+                const documentId = savedUser.$id || savedUser.id;
+                if (!documentId) {
+                    throw new Error("ID du document introuvable.");
+                }
+
+                await databases.updateDocument(DATABASE_ID, COLLECTION_ID, documentId, updatedData);
+
+                savedUser.licenses = updatedData.licenses;
+                savedUser.activation_key = newKey;
+                savedUser.expiry_date = expiryDateStr;
+                localStorage.setItem('pos_logged_user', JSON.stringify(savedUser));
+
+                showDashboard(savedUser);
+                alert("Succès ! Nouvelle clé générée :\n\n" + newKey);
+
+            } catch (err) {
+                alert("Erreur: " + (err.message || err));
+            } finally {
+                orderBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Confirmer l\'achat et générer la clé';
+                orderBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
