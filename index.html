@@ -640,7 +640,7 @@
         <p>Pour l'achat de licence ou toute demande d'assistance :</p>
         <div class="contact-info">
             <div class="contact-item"><i class="fa-solid fa-phone"></i> +213 (0) 7 79 62 58 67</div>
-            <div class="contact-item"><i class="fa-solid fa-envelope">5</i> contact@pospro.lol</div>
+            <div class="contact-item"><i class="fa-solid fa-envelope"></i> contact@pospro.lol</div>
         </div>
     </section>
 
@@ -648,30 +648,26 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- Appwrite & UI Scripts -->
+    <!-- Appwrite SDK (Databases only, no Auth) -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Account, Databases, ID } = Appwrite;
+        const { Client, Databases, ID, Query } = Appwrite;
         
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
 
-        const account = new Account(client);
         const databases = new Databases(client);
 
-        // Remplacez par vos vrais identifiants de base de données Appwrite
-        const DATABASE_ID = 'YOUR_DATABASE_ID';
-        const COLLECTION_ID = 'YOUR_COLLECTION_ID';
+        // قم بتعديل هذه المعرفات بما يطابق قاعدة البيانات لديك في Appwrite
+        const DATABASE_ID = '6abe955d003d5da5415b';
+        const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const session = await account.get();
-                if (session) {
-                    window.location.href = 'Dashboard.html';
-                }
-            } catch (err) {
-                // User not logged in
+        // التحقق من وجود جلسة محلية مخزنة عبر localStorage عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('pos_user_session');
+            if (savedUser) {
+                window.location.href = 'Dashboard.html';
             }
         });
 
@@ -713,20 +709,30 @@
 
         async function forgotPassword(e) {
             e.preventDefault();
-            const emailInput = prompt("Veuillez entrer votre adresse e-mail pour recevoir le lien de réinitialisation :");
+            const emailInput = prompt("Veuillez entrer votre adresse e-mail pour retrouver votre mot de passe :");
             if (!emailInput) return;
 
             try {
-                const redirectUrl = window.location.origin + '/reset-password.html';
-                await account.createRecovery(emailInput.trim(), redirectUrl);
-                alert("Un e-mail de récupération a été envoyé avec succès. Vérifiez votre boîte de réception.");
+                // البحث عن المستخدم بالبريد الإلكتروني في جدول users
+                const response = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    [Query.equal('email', emailInput.trim())]
+                );
+
+                if (response.documents.length > 0) {
+                    const user = response.documents[0];
+                    alert(`Votre mot de passe est : ${user.password}`);
+                } else {
+                    alert("Aucun compte trouvé avec cet e-mail.");
+                }
             } catch (err) {
                 console.error(err);
-                alert("Erreur : " + (err.message || "Impossible d'envoyer l'e-mail de récupération."));
+                alert("Erreur lors de la recherche du compte.");
             }
         }
 
-        // Formulaire d'Inscription (Création Auth + Document Database)
+        // تسجيل حساب جديد مباشرة في جدول users
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -745,49 +751,58 @@
             regBtn.disabled = true;
 
             try {
-                // 1. Création du compte utilisateur dans Appwrite Auth
-                const newUser = await account.create(ID.unique(), email, password, name);
-                
-                try {
-                    await account.updatePhone(phone, password);
-                } catch (phoneErr) {
-                    console.error("Erreur mise à jour téléphone:", phoneErr);
+                // التأكد مما إذا كان البريد موجوداً مسبقاً
+                const existing = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    [Query.equal('email', email)]
+                );
+
+                if (existing.documents.length > 0) {
+                    alert("Cet e-mail est déjà utilisé.");
+                    regBtn.innerText = "Créer mon compte";
+                    regBtn.disabled = false;
+                    return;
                 }
 
-                // 2. Enregistrement des données complémentaires dans la Database
+                // إنشاء مفتاح تفعيل افتراضي وتاريخ انتهاء الصلاحية لسنة من الآن
+                const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+                const expiryDateObj = new Date();
+                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
+
+                // حفظ المستند مباشرة في جدول users
+                const newDocId = ID.unique();
                 await databases.createDocument(
                     DATABASE_ID,
                     COLLECTION_ID,
-                    newUser.$id, // Utilisation de l'ID utilisateur comme ID de document
+                    newDocId,
                     {
                         name: name,
                         email: email,
                         phone: phone,
-                        expiry_date: "",
-                        licenses: "",
-                        activation_key: ""
+                        password: password,
+                        activation_key: initialKey,
+                        licenses: JSON.stringify([{ key: initialKey, status: 'Actif', expiry_date: expiryDateStr }]),
+                        expiry_date: expiryDateStr
                     }
                 );
 
-                // 3. Création de la session et redirection
-                await account.createEmailPasswordSession(email, password);
+                // حفظ الجلسة محلياً والانتقال للوحة التحكم
+                localStorage.setItem('pos_user_session', JSON.stringify({ id: newDocId, name, email }));
 
                 alert("Compte créé avec succès !");
                 window.location.href = 'Dashboard.html';
             } catch (err) {
                 console.error(err);
-                if (err.code === 409) {
-                    alert("Cet e-mail est déjà utilisé. Veuillez vous connecter ou utiliser un autre e-mail.");
-                } else {
-                    alert('Erreur lors de la création du compte : ' + (err.message || ''));
-                }
+                alert('Erreur lors de la création du compte : ' + (err.message || ''));
             } finally {
                 regBtn.innerText = "Créer mon compte";
                 regBtn.disabled = false;
             }
         });
 
-        // Formulaire de Connexion
+        // تسجيل الدخول بالتحقق من جدول users مباشرة
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
@@ -798,11 +813,27 @@
             logBtn.disabled = true;
 
             try {
-                await account.createEmailPasswordSession(email, password);
-                window.location.href = 'Dashboard.html';
+                // البحث عن المستند الذي يتطابق فيه البريد وكلمة المرور
+                const response = await databases.listDocuments(
+                    DATABASE_ID,
+                    COLLECTION_ID,
+                    [
+                        Query.equal('email', email),
+                        Query.equal('password', password)
+                    ]
+                );
+
+                if (response.documents.length > 0) {
+                    const user = response.documents[0];
+                    // حفظ الجلسة محلياً
+                    localStorage.setItem('pos_user_session', JSON.stringify({ id: user.$id, name: user.name, email: user.email }));
+                    window.location.href = 'Dashboard.html';
+                } else {
+                    alert('E-mail ou mot de passe incorrect.');
+                }
             } catch (err) {
                 console.error(err);
-                alert('E-mail ou mot de passe incorrect.');
+                alert('Erreur lors de la connexion.');
             } finally {
                 logBtn.innerText = "Se connecter";
                 logBtn.disabled = false;
