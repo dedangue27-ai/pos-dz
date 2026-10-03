@@ -1367,7 +1367,7 @@
                     expiry_date: expiryDateStr
                 };
 
-                const documentId = savedUser.$id || savedUser.id || (savedUser.documents && savedUser.documents[0] && savedUser.documents[0].$id);
+                const documentId = savedUser.$id \vert{}\vert{} savedUser.id \vert{}\vert{} (savedUser.documents && savedUser.documents[0] && savedUser.documents[0].$id);
                 if (!documentId) {
                     throw new Error("ID du document introuvable pour la mise à jour.");
                 }
