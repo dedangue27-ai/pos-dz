@@ -108,6 +108,16 @@
                 // نقوم بحفظ المستند في الجدول باستخدام الـ userId الخاص بالمصادقة كمعرف للوثيقة لضمان التارباط
                 await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, userData);
 
+                // بعد إنشاء الحساب بنجاح
+const newAccount = await account.create(ID.unique(), email, password, name);
+
+// إرسال إيميل التحقق (اختياري - يتطلب إعداد SMTP صحيح في لوحة Appwrite)
+try {
+    await account.createVerification('https://yourdomain.com/verify.html');
+} catch (mailErr) {
+    console.log("لم يتم إرسال البريد لعدم ضبط إعدادات SMTP، لكن الحساب يعمل بنجاح.");
+}
+
                 // الخطوة 3: تسجيل الدخول تلقائياً بعد التسجيل الانتقالي
                 await account.createEmailPasswordSession(email, password);
 
