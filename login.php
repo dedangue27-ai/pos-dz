@@ -305,79 +305,6 @@
             font-size: 15px;
         }
 
-        /* Register & Auth Section */
-        .register-section {
-            background: white;
-            padding: 80px 5%;
-        }
-
-        .auth-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: var(--gray-light);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-        }
-
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-group i {
-            position: absolute;
-            top: 50%;
-            left: 16px;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 16px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 14px 16px 14px 48px;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 15px;
-            color: var(--dark);
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
-
         /* Contact & Footer */
         .contact {
             text-align: center;
@@ -446,6 +373,23 @@
             .nav-links.active { left: 0; }
             .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
         }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -462,12 +406,11 @@
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#download" onclick="closeMenu()">Télécharger</a>
-            <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
         </nav>
     </header>
 
-    <!-- Hero Section (تمت إعادتها لتظهر بشكل صحيح) -->
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <span class="badge">Solution Algérienne .DZ</span>
@@ -518,55 +461,6 @@
         </div>
     </section>
 
-    <!-- Espace Client Auth Section -->
-    <section id="accountSection" class="register-section">
-        <div class="section-title">
-            <h2>Espace Client</h2>
-            <p>Connectez-vous ou créez un compte pour accéder à vos licences.</p>
-        </div>
-        <div class="auth-container">
-            <!-- Tabs -->
-            <div class="auth-tabs" id="authTabs">
-                <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
-                <button class="tab-btn" onclick="switchTab('register')">Créer un Compte</button>
-            </div>
-
-            <!-- Formulaire de Connexion -->
-            <form id="loginForm" class="auth-form active">
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="logPassword" placeholder="Mot de passe" required>
-                </div>
-                <button type="submit" class="btn-primary" id="logBtn" style="max-width: 100%;">Se connecter</button>
-            </form>
-
-            <!-- Formulaire d'Inscription -->
-            <form id="registerForm" class="auth-form">
-                <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="regName" placeholder="Nom complet" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="regEmail" placeholder="Adresse e-mail" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="regPhone" placeholder="Numéro (ex: +213550000000)" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="regPassword" placeholder="Mot de passe" required>
-                </div>
-                <button type="submit" class="btn-primary" id="regBtn" style="max-width: 100%;">Créer mon compte</button>
-            </form>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <h2>Contactez-nous</h2>
@@ -584,7 +478,7 @@
     <!-- Appwrite & UI Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Databases, ID, Query } = Appwrite;
+        const { Client, Databases, Query } = Appwrite;
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
@@ -592,13 +486,6 @@
         const databases = new Databases(client);
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('pos_logged_user');
-            if (savedUser) {
-                window.location.href = 'Dashboard.html';
-            }
-        });
 
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
@@ -623,104 +510,27 @@
             icon.classList.add('fa-bars');
         }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-
-            if (tab === 'register') {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('registerForm').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
-            }
-        }
-
-        // تسجيل حساب جديد
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            const regBtn = document.getElementById('regBtn');
-
-            const phoneRegex = /^\+213[5-7][0-9]{8}$/;
-            if (!phoneRegex.test(phone)) {
-                alert('Erreur: Le numéro doit commencer par +213 suivi de 9 chiffres (ex: +213555123456).');
-                return;
-            }
-
-            regBtn.innerText = "Création en cours...";
-            regBtn.disabled = true;
-
-            const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const purchaseDateStr = new Date().toISOString().split('T')[0];
-            const expiryDateObj = new Date();
-            expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
-            const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
-
-            const initialLicenses = [{
-                key: initialKey,
-                purchase_date: purchaseDateStr,
-                expiry_date: expiryDateStr,
-                status: 'Actif'
-            }];
-
-            const userData = { 
-                name, 
-                email, 
-                phone, 
-                password, 
-                activation_key: initialKey, 
-                licenses: JSON.stringify(initialLicenses),
-                expiry_date: expiryDateStr
-            };
-
-            try {
-                const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                localStorage.setItem('pos_logged_user', JSON.stringify(response));
-                window.location.href = 'Dashboard.html';
-            } catch (err) {
-                console.error(err);
-                alert('Erreur lors de l\'enregistrement dans la base de données: ' + (err.message || ''));
-            } finally {
-                regBtn.innerText = "Créer mon compte";
-                regBtn.disabled = false;
-            }
-        });
-
-        // تسجيل الدخول
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('logEmail').value.trim();
-            const password = document.getElementById('logPassword').value.trim();
-            const logBtn = document.getElementById('logBtn');
-
-            logBtn.innerText = "Connexion...";
-            logBtn.disabled = true;
+        // دالة استرجاع كلمة المرور
+        async function forgotPassword() {
+            const email = prompt("Veuillez entrer votre adresse e-mail pour retrouver votre mot de passe :");
+            if (!email) return;
 
             try {
                 const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-                    Query.equal('email', email),
-                    Query.equal('password', password)
+                    Query.equal('email', email.trim())
                 ]);
 
                 if (response.documents.length > 0) {
                     const user = response.documents[0];
-                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    window.location.href = 'Dashboard.html';
+                    alert(`Compte trouvé !\nVotre mot de passe actuel est : ${user.password}`);
                 } else {
-                    alert('E-mail ou mot de passe incorrect.');
+                    alert("Aucun compte trouvé avec cet e-mail.");
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erreur de connexion.');
-            } finally {
-                logBtn.innerText = "Se connecter";
-                logBtn.disabled = false;
+                alert("Erreur lors de la recherche du compte.");
             }
-        });
+        }
     </script>
 </body>
 </html>
