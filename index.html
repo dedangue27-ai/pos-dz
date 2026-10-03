@@ -67,7 +67,7 @@
 
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
+            const name = document.getElementById('regName',).value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
             const password = document.getElementById('regPassword').value.trim();
@@ -77,9 +77,9 @@
             regBtn.disabled = true;
 
             try {
-                // الخطوة 1: إنشاء الحساب الآمن في نظام المصادقة (Auth) أولاً لتشفير وحماية كلمة المرور
+                // 1. إنشاء الحساب الآمن في نظام المصادقة (Auth) أولاً
                 const newAccount = await account.create(ID.unique(), email, password, name);
-                const userId = newAccount.$id; // معرف المستخدم الفريد من المصادقة
+                const userId = newAccount.$id; 
 
                 // توليد بيانات التراخيص الافتراضية
                 const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -94,27 +94,21 @@
                     status: 'Actif'
                 }]);
 
-                // الخطوة 2: تجهيز بيانات الملف الشخصي للـ جدول (بدون حفظ كلمة المرور نصياً لحماية الخصوصية)
+                // 2. إرسال قيمة آمنة لخانة password في الجدول لإرضاء شرط الجدول (Required) مع حماية الخصوصية
                 const userData = {
                     name: name,
                     email: email,
                     phone: phone,
+                    password: "[SECURED_BY_AUTH]", // قيمة وهمية آمنة تتجاوز خطأ الجدول بينما الحماية الحقيقية تتم في Auth
                     activation_key: initialKey,
                     licenses: initialLicenses,
                     expiry_date: expiryDateStr
                 };
 
-                // حفظ المستند في جدول users باستخدام الـ userId كمعرف للوثيقة لضمان الربط التلقائي
+                // حفظ المستند في الجدول باستخدام الـ userId كمعرف للوثيقة
                 await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, userData);
 
-                // الخطوة 3: محاولة إرسال إيميل التحقق (إن وجد إعداد SMTP صحيح، وإلا يتم تخطي الخطوة دون تعطيل التطبيق)
-                try {
-                    await account.createVerification('https://yourdomain.com/verify.html');
-                } catch (mailErr) {
-                    console.log("إشعار: لم يتم إرسال بريد التحقق لعدم اكتمال إعدادات خادم البريد.");
-                }
-
-                // الخطوة 4: تسجيل الدخول تلقائياً والانتقال إلى لوحة التحكم
+                // 3. تسجيل الدخول تلقائياً والانتقال إلى لوحة التحكم
                 await account.createEmailPasswordSession(email, password);
 
                 alert("Inscription réussie ! Bienvenue sur POS Pro.");
