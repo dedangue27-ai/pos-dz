@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* Navbar responsive & Mobile Menu */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -239,7 +239,7 @@
             font-size: 1.05rem;
         }
 
-        /* Features Section */
+        /* Features */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -286,258 +286,6 @@
             font-size: 15px;
         }
 
-        /* Slider Section */
-        .slider-section {
-            padding: 80px 5%;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            text-align: center;
-            color: #fff;
-        }
-
-        .slider-container {
-            max-width: 900px;
-            margin: 30px auto 0;
-            position: relative;
-            background: #1e293b;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .window-header {
-            background: #0f172a;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .window-dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .window-dots span {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .dot-red { background: #ef4444; }
-        .dot-yellow { background: #f59e0b; }
-        .dot-green { background: #10b981; }
-
-        .window-title {
-            font-size: 13px;
-            color: #94a3b8;
-            font-family: monospace;
-        }
-
-        .slide-track {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        .slide img {
-            width: 100%;
-            height: auto;
-            max-height: 480px;
-            object-fit: contain;
-            background: #000;
-            display: block;
-        }
-
-        .slide-caption {
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            text-align: left;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .slide-caption h3 {
-            margin: 0 0 5px;
-            color: #60a5fa;
-            font-size: 17px;
-        }
-
-        .slide-caption p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(15, 23, 42, 0.7);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slider-btn:hover { background: #3b82f6; }
-        .prev-btn { left: 10px; }
-        .next-btn { right: 10px; }
-
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            padding: 15px;
-            background: #0f172a;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #475569;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .dot.active {
-            background: #3b82f6;
-            width: 22px;
-            border-radius: 4px;
-        }
-
-        /* Pricing Section */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 380px));
-            justify-content: center;
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pricing-card.popular {
-            border: 2px solid var(--primary);
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .pricing-card h3 {
-            font-size: 22px;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        .price {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 25px;
-        }
-
-        .pricing-card ul {
-            list-style: none;
-            margin-bottom: 30px;
-            flex-grow: 1;
-        }
-
-        .pricing-card ul li {
-            padding: 10px 0;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-        }
-
-        .pricing-card ul li i { color: #10b981; }
-
-        .btn-secondary {
-            display: block;
-            text-align: center;
-            background: var(--gray-light);
-            color: var(--dark);
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .btn-secondary:hover { background: var(--border); }
-
-        /* Download Section */
-        .download-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .download-box {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .download-box h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .download-box p {
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-
-        .version-text {
-            display: block;
-            margin-top: 15px;
-            color: #64748b;
-            font-size: 13px;
-        }
-
         /* Register & Auth Section */
         .register-section {
             background: white;
@@ -545,7 +293,7 @@
         }
 
         .auth-container {
-            max-width: 850px;
+            max-width: 600px;
             margin: 0 auto;
             background: var(--gray-light);
             padding: 40px 30px;
@@ -594,7 +342,7 @@
             font-size: 16px;
         }
 
-        .input-group input, .input-group select {
+        .input-group input {
             width: 100%;
             padding: 14px 16px 14px 48px;
             background: white;
@@ -606,170 +354,12 @@
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .input-group input:focus, .input-group select:focus {
+        .input-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        /* --- Dashboard Layout (New Sidebar Style Integration) --- */
-        .dashboard-box {
-            display: none;
-        }
-
-        .dashboard-container-layout {
-            display: flex;
-            min-height: 500px;
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .sidebar {
-            width: 240px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            flex-shrink: 0;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 0.5px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            padding: 12px;
-            margin-bottom: 5px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .sidebar ul li.active, .sidebar ul li:hover {
-            background-color: #34495e;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            font-size: 14px;
-        }
-
-        .main-content-area {
-            flex: 1;
-            padding: 25px;
-            background: #f8fafc;
-            overflow-y: auto;
-        }
-
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .cards-grid {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .card-stat {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            flex: 1;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
-        }
-
-        .card-stat h3 {
-            color: #7f8c8d;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .card-stat p {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .licenses-history-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .license-card-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            border-right: 5px solid var(--primary);
-        }
-
-        .license-card-item.active-license {
-            border-right-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        .license-card-item h4 {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .license-key-badge {
-            font-family: monospace;
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--dark);
-            background: #e2e8f0;
-            padding: 6px 10px;
-            border-radius: 6px;
-            display: inline-block;
-            margin: 6px 0;
-            letter-spacing: 1px;
-        }
-
-        .license-dates {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            gap: 15px;
-            margin-top: 6px;
-            border-top: 1px dashed var(--border);
-            padding-top: 6px;
-        }
-
-        .order-box {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* Contact Section */
+        /* Contact & Footer */
         .contact {
             text-align: center;
             background: var(--gray-light);
@@ -836,8 +426,6 @@
             }
             .nav-links.active { left: 0; }
             .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
-            .dashboard-container-layout { flex-direction: column; }
-            .sidebar { width: 100%; }
         }
     </style>
 </head>
@@ -845,7 +433,7 @@
 
     <!-- Header -->
     <header class="navbar">
-        <a href="index.html" class="logo-container" onclick="reloadToHome(event)">
+        <a href="index.html" class="logo-container">
             <div class="mini-logo">POS</div>
             <span class="logo-text">PRO</span>
         </a>
@@ -854,10 +442,8 @@
         </button>
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
-            <a href="#pricing" onclick="closeMenu()">Tarifs</a>
             <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
-            <a href="#download" class="nav-btn" onclick="closeMenu()">Télécharger</a>
         </nav>
     </header>
 
@@ -868,7 +454,7 @@
             <h1>Solution Ultime de Gestion de Stock & POS</h1>
             <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
             <div class="hero-buttons">
-                <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger l'Application</a>
+                <a href="#accountSection" class="btn-primary"><i class="fa-solid fa-user-circle"></i> Espace Client</a>
             </div>
         </div>
         <div class="hero-card">
@@ -904,126 +490,13 @@
         </div>
     </section>
 
-    <!-- UI Preview / Slider Section -->
-    <section class="slider-section">
-        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);">Interfaces Haut de Gamme</span>
-        <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 15px 0 10px; color: #ffffff;">Aperçu Dynamique de l'Application</h2>
-        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto 30px;">Explorez les différentes fenêtres et fonctionnalités du système.</p>
-        
-        <div class="slider-container">
-            <div class="window-header">
-                <div class="window-dots">
-                    <span class="dot-red"></span>
-                    <span class="dot-yellow"></span>
-                    <span class="dot-green"></span>
-                </div>
-                <div class="window-title">POS_Pro_System_v2.6.exe</div>
-                <div style="width: 30px;"></div>
-            </div>
-
-            <div class="slide-track" id="slideTrack">
-                <div class="slide">
-                    <img src="Dashboard.JPG" alt="Dashboard">
-                    <div class="slide-caption">
-                        <h3>1. Gestion de Stock & Ventes (Dashboard)</h3>
-                        <p>Interface principale avec alertes de stock bas et statistiques en temps réel.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Pos.JPG" alt="POS">
-                    <div class="slide-caption">
-                        <h3>2. Système de Point de Vente Direct (POS)</h3>
-                        <p>Passation ultra-rapide des ventes et calcul instantané du panier.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="benifice.JPG" alt="Bénéfice">
-                    <div class="slide-caption">
-                        <h3>3. Calcul des Intérêts & Bénéfice Net</h3>
-                        <p>Suivi détaillé des profits journaliers, mensuels et annuels.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Login.JPG" alt="Login">
-                    <div class="slide-caption">
-                        <h3>4. Connexion Sécurisée</h3>
-                        <p>Écran d'authentification protégeant l'accès au système.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Loading.jpg" alt="Loading">
-                    <div class="slide-caption">
-                        <h3>5. Écran de Chargement Professionnel</h3>
-                        <p>Animation de démarrage fluide et initialisation sécurisée de la base locale.</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="Adduser.JPG" alt="Add User">
-                    <div class="slide-caption">
-                        <h3>6. Gestion des Utilisateurs & Rôles</h3>
-                        <p>Ajout de nouveaux utilisateurs et attribution des permissions.</p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="slider-btn prev-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="slider-btn next-btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
-
-            <div class="slider-dots" id="sliderDots">
-                <span class="dot active" onclick="currentSlide(0)"></span>
-                <span class="dot" onclick="currentSlide(1)"></span>
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
-                <span class="dot" onclick="currentSlide(4)"></span>
-                <span class="dot" onclick="currentSlide(5)"></span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <div class="section-title">
-            <h2>Nos Tarifs</h2>
-            <p>Choisissez la formule adaptée à votre commerce.</p>
-        </div>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>Version Essai</h3>
-                <div class="price">Gratuit</div>
-                <ul>
-                    <li><i class="fa-solid fa-check"></i> Test de 15 jours</li>
-                    <li><i class="fa-solid fa-check"></i> Fonctionnalités de base</li>
-                </ul>
-                <a href="#download" class="btn-secondary">Essayer</a>
-            </div>
-            <div class="pricing-card popular">
-                <div class="popular-badge">Recommandé</div>
-                <h3>Licence À Vie</h3>
-                <div class="price">Sur Devis</div>
-                <ul>
-                    <li><i class="fa-solid fa-check"></i> Utilisation illimitée</li>
-                    <li><i class="fa-solid fa-check"></i> Mises à jour gratuites</li>
-                    <li><i class="fa-solid fa-check"></i> Support technique dédié</li>
-                </ul>
-                <a href="#accountSection" class="btn-primary" style="max-width: 100%;">Commander une Licence</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="download-section">
-        <div class="download-box">
-            <h2>Prêt à digitaliser votre commerce ?</h2>
-            <p>Téléchargez la dernière version du logiciel dès maintenant.</p>
-            <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
-            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
-        </div>
-    </section>
-
-    <!-- Espace Client & Dashboard Section -->
+    <!-- Espace Client Auth Section -->
     <section id="accountSection" class="register-section">
+        <div class="section-title">
+            <h2>Espace Client</h2>
+            <p>Connectez-vous ou créez un compte pour accéder à vos licences.</p>
+        </div>
         <div class="auth-container">
-            
             <!-- Tabs -->
             <div class="auth-tabs" id="authTabs">
                 <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
@@ -1032,7 +505,6 @@
 
             <!-- Formulaire de Connexion -->
             <form id="loginForm" class="auth-form active">
-                <p style="margin-bottom: 20px; color: var(--text-muted);">Accédez directement à votre tableau de bord client.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-envelope"></i>
                     <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
@@ -1041,12 +513,11 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
                 </div>
-                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
+                <button type="submit" class="btn-primary" id="logBtn" style="max-width: 100%;">Se connecter</button>
             </form>
 
-            <!-- Formulaire d'Inscription Direct -->
+            <!-- Formulaire d'Inscription -->
             <form id="registerForm" class="auth-form">
-                <p style="margin-bottom: 15px; color: var(--text-muted);">Inscrivez-vous instantanément pour commander votre licence.</p>
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="regName" placeholder="Nom complet" required>
@@ -1063,82 +534,8 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="regPassword" placeholder="Mot de passe" required>
                 </div>
-                <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
+                <button type="submit" class="btn-primary" id="regBtn" style="max-width: 100%;">Créer mon compte</button>
             </form>
-
-            <!-- لوحة التحكم الجديدة (مع القائمة الجانبية Sidebar) -->
-            <div id="clientDashboard" class="dashboard-box">
-                <div class="dashboard-container-layout">
-
-                    <!-- القائمة الجانبية (Sidebar) -->
-                    <div class="sidebar">
-                        <h2>Gestion App</h2>
-                        <ul>
-                            <li class="active">
-                                <a href="#"><i class="fa-solid fa-house"></i> Tableau de bord</a>
-                            </li>
-                            <li>
-                                <a href="#" onclick="logoutUser()"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- المحتوى الرئيسي للوحة التحكم -->
-                    <div class="main-content-area">
-                        <!-- الهيدر العلوي -->
-                        <div class="top-header">
-                            <h2><i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Bienvenue, <span id="userNameDisplay">Utilisateur</span></h2>
-                            <button onclick="logoutUser()" class="btn-secondary" style="padding: 6px 12px; font-size: 13px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Déconnexion</button>
-                        </div>
-
-                        <!-- البطاقات الإحصائية السريعة -->
-                        <div class="cards-grid">
-                            <div class="card-stat">
-                                <h3>Historique des Licences</h3>
-                                <p style="font-size: 15px; color: var(--dark);">Gestion des clés</p>
-                            </div>
-                            <div class="card-stat">
-                                <h3>Statut du Compte</h3>
-                                <p style="font-size: 15px; color: #10b981;"><i class="fa-solid fa-circle-check"></i> Actif</p>
-                            </div>
-                        </div>
-
-                        <!-- حاوية سجل التراخيص -->
-                        <div style="margin-bottom: 20px; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
-                            <h4 style="font-size: 15px; color: var(--dark); margin-bottom: 5px;"><i class="fa-solid fa-key" style="color: var(--primary);"></i> Historique de vos Licences (Du plus ancien au plus récent) :</h4>
-                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Consultez l'ensemble des clés d'activation achetées, dates d'achat et expirations.</p>
-                            
-                            <div id="licensesHistoryContainer" class="licenses-history-container">
-                                <!-- سيتم تعبئتها ديناميكياً عبر الجافاسكريبت -->
-                            </div>
-                        </div>
-
-                        <!-- صندوق طلب وشراء رخصة جديدة -->
-                        <div class="order-box">
-                            <h3 style="color: var(--dark); font-size: 16px; margin-bottom: 8px;"><i class="fa-solid fa-cart-shopping"></i> Demander / Acheter une Nouvelle Licence</h3>
-                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Commandez une nouvelle licence pour étendre ou ajouter un poste à votre activité.</p>
-                            
-                            <!-- قائمة اختيار الباقة -->
-                            <div style="margin-bottom: 15px;">
-                                <label for="licenseOfferSelect" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--dark);">
-                                    <i class="fa-solid fa-tags" style="color: var(--primary);"></i> Choisir une offre / formule :
-                                </label>
-                                <select id="licenseOfferSelect" style="width: 100%; padding: 10px; background: white; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--dark); outline: none;">
-                                    <option value="" disabled selected>-- Veuillez sélectionner une offre --</option>
-                                    <option value="1YEAR">Abonnement - 1 An (1 PC) - 3 000 DA</option>
-                                    <option value="2PC">Abonnement - 1 An (2 PC) - 5 000 DA</option>
-                                    <option value="LIFE">Licence à Vie (Standard) - 25 000 DA</option>
-                                </select>
-                            </div>
-
-                            <button type="button" class="btn-primary" id="orderBtn" onclick="requestLicensePurchase()" style="max-width: 100%; padding: 10px; font-size: 14px;">
-                                <i class="fa-solid fa-bag-shopping"></i> Confirmer l'achat et générer la clé
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- نهاية clientDashboard -->
-
         </div>
     </section>
 
@@ -1156,8 +553,26 @@
         <p>&copy; 2026 POS Pro System. Tous droits réservés.</p>
     </footer>
 
-    <!-- JavaScript Mobile Menu & UI Handlers -->
+    <!-- Appwrite & UI Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
+        const { Client, Databases, ID, Query } = Appwrite;
+        const client = new Client()
+            .setEndpoint('https://fra.cloud.appwrite.io/v1')
+            .setProject('6abe94b500149981a9c2');
+
+        const databases = new Databases(client);
+        const DATABASE_ID = '6abe955d003d5da5415b';
+        const COLLECTION_ID = '6abe9d4b0031f85bf410';
+
+        // إذا كان المستخدم مسجل دخوله مسبقاً، وجهه مباشرة إلى لوحة التحكم
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('pos_logged_user');
+            if (savedUser) {
+                window.location.href = 'Dashboard.html';
+            }
+        });
+
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -1181,12 +596,6 @@
             icon.classList.add('fa-bars');
         }
 
-        function reloadToHome(e) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => { window.location.reload(); }, 300);
-        }
-
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
@@ -1199,56 +608,10 @@
                 document.getElementById('loginForm').classList.add('active');
             }
         }
-    </script>
 
-    <!-- Slider JavaScript -->
-    <script>
-        let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        const totalSlides = slides.length;
-        let slideInterval;
-
-        function updateSlider() {
-            const track = document.getElementById('slideTrack');
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        function nextSlide() { currentIndex = (currentIndex + 1) % totalSlides; updateSlider(); }
-        function prevSlide() { currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; updateSlider(); }
-        function currentSlide(index) { currentIndex = index; updateSlider(); resetTimer(); }
-        function startTimer() { slideInterval = setInterval(nextSlide, 4000); }
-        function resetTimer() { clearInterval(slideInterval); startTimer(); }
-
-        startTimer();
-    </script>
-
-    <!-- Appwrite Auth & System Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
-    <script>
-        const { Client, Databases, ID, Query } = Appwrite;
-        const client = new Client()
-            .setEndpoint('https://fra.cloud.appwrite.io/v1')
-            .setProject('6abe94b500149981a9c2');
-
-        const databases = new Databases(client);
-        const DATABASE_ID = '6abe955d003d5da5415b';
-        const COLLECTION_ID = '6abe9d4b0031f85bf410';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('pos_logged_user');
-            if (savedUser) {
-                showDashboard(JSON.parse(savedUser));
-            }
-        });
-
-        // 1. التسجيل المباشر وتوفير الحقل activation_key المتوافق مع جدول Appwrite
+        // تسجيل حساب جديد
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
@@ -1270,14 +633,12 @@
             expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
             const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
 
-            const initialLicenses = [
-                {
-                    key: initialKey,
-                    purchase_date: purchaseDateStr,
-                    expiry_date: expiryDateStr,
-                    status: 'Actif'
-                }
-            ];
+            const initialLicenses = [{
+                key: initialKey,
+                purchase_date: purchaseDateStr,
+                expiry_date: expiryDateStr,
+                status: 'Actif'
+            }];
 
             const userData = { 
                 name, 
@@ -1290,24 +651,28 @@
             };
 
             try {
-                const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                userData.$id = doc.$id;
-                localStorage.setItem('pos_logged_user', JSON.stringify(userData));
-                showDashboard(userData);
+                const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
+                // الاحتفاظ بالمعرف الحقيقي ($id) من قاعدة البيانات
+                localStorage.setItem('pos_logged_user', JSON.stringify(response));
+                window.location.href = 'Dashboard.html';
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de l\'enregistrement dans la base de données.');
+                alert('Erreur lors de l\'enregistrement dans la base de données: ' + (err.message || ''));
             } finally {
                 regBtn.innerText = "Créer mon compte";
                 regBtn.disabled = false;
             }
         });
 
-        // 2. تسجيل الدخول
+        // تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
             const password = document.getElementById('logPassword').value.trim();
+            const logBtn = document.getElementById('logBtn');
+
+            logBtn.innerText = "Connexion...";
+            logBtn.disabled = true;
 
             try {
                 const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -1318,167 +683,18 @@
                 if (response.documents.length > 0) {
                     const user = response.documents[0];
                     localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    showDashboard(user);
+                    window.location.href = 'Dashboard.html';
                 } else {
                     alert('E-mail ou mot de passe incorrect.');
                 }
             } catch (err) {
                 console.error(err);
                 alert('Erreur de connexion.');
+            } finally {
+                logBtn.innerText = "Se connecter";
+                logBtn.disabled = false;
             }
         });
-
-        // عرض لوحة التحكم الأنيقة وترتيب الأكواد من القديم إلى الجديد
-        function showDashboard(user) {
-            document.getElementById('authTabs').style.display = 'none';
-            document.getElementById('registerForm').classList.remove('active');
-            document.getElementById('loginForm').classList.remove('active');
-            
-            document.getElementById('userNameDisplay').innerText = user.name;
-            const container = document.getElementById('licensesHistoryContainer');
-            container.innerHTML = "";
-
-            let licensesList = [];
-            try {
-                if (user.licenses) {
-                    licensesList = typeof user.licenses === 'string' ? JSON.parse(user.licenses) : user.licenses;
-                } else if (user.activation_key) {
-                    licensesList = [{
-                        key: user.activation_key,
-                        purchase_date: '2026-01-01',
-                        expiry_date: user.expiry_date || 'Illimité',
-                        status: 'Actif'
-                    }];
-                }
-            } catch(e) {
-                licensesList = [];
-            }
-
-            // الترتيب من القديم إلى الجديد اعتماداً على تاريخ الشراء
-            licensesList.sort((a, b) => new Date(a.purchase_date) - new Date(b.purchase_date));
-
-            if (licensesList.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">Aucune licence trouvée pour le moment.</p>`;
-            } else {
-                licensesList.forEach((lic, index) => {
-                    const isActive = index === licensesList.length - 1;
-                    container.innerHTML += `
-                        <div class="license-card-item ${isActive ? 'active-license' : ''}">
-                            <h4>
-                                <span>Licence #${index + 1}</span>
-                                <span style="color: ${isActive ? '#10b981' : '#64748b'}; font-weight: 600;">
-                                    <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-clock'}"></i> ${isActive ? 'Actif / Récent' : 'Archivé'}
-                                </span>
-                            </h4>
-                            <div class="license-key-badge">${lic.key}</div>
-                            <div class="license-dates">
-                                <span><i class="fa-solid fa-cart-shopping"></i> Achat : <b>${lic.purchase_date || 'N/A'}</b></span>
-                                <span><i class="fa-solid fa-hourglass-end"></i> Expiration : <b>${lic.expiry_date || 'Illimité'}</b></span>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            document.getElementById('clientDashboard').style.display = 'block';
-        }
-
-        function logoutUser() {
-            localStorage.removeItem('pos_logged_user');
-            window.location.reload();
-        }
-
-        async function requestLicensePurchase() {
-            const savedUser = JSON.parse(localStorage.getItem('pos_logged_user'));
-            if (!savedUser) {
-                alert("Veuillez vous connecter d'abord à votre espace client.");
-                window.location.href = "#accountSection";
-                return;
-            }
-
-            const offerSelect = document.getElementById('licenseOfferSelect');
-            if (!offerSelect || !offerSelect.value) {
-                alert("Veuillez sélectionner une offre avant de confirmer l'achat !");
-                if (offerSelect) offerSelect.focus();
-                return;
-            }
-
-            const selectedTag = offerSelect.value; 
-            const orderBtn = document.getElementById('orderBtn');
-            if (orderBtn) {
-                orderBtn.innerText = "Traitement en cours...";
-                orderBtn.disabled = true;
-            }
-
-            try {
-                const p1 = Math.random().toString(36).substring(2, 7).toUpperCase();
-                const p2 = Math.random().toString(36).substring(2, 7).toUpperCase();
-                const p3 = Math.random().toString(36).substring(2, 7).toUpperCase();
-                const p4 = Math.random().toString(36).substring(2, 7).toUpperCase();
-                const p5 = Math.random().toString(36).substring(2, 7).toUpperCase();
-
-                const newKey = `POS-${selectedTag}-${p1}-${p2}-${p3}-${p4}-${p5}`;
-                const purchaseDateStr = new Date().toISOString().split('T')[0];
-                
-                const expiryDateObj = new Date();
-                if (selectedTag === '1YEAR' || selectedTag === '2PC') {
-                    expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
-                } else if (selectedTag === 'LIFE') {
-                    expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 990);
-                }
-                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
-
-                const newLicenseItem = {
-                    key: newKey,
-                    purchase_date: purchaseDateStr,
-                    expiry_date: expiryDateStr,
-                    status: 'Actif'
-                };
-
-                let currentLicenses = [];
-                try {
-                    if (savedUser.licenses) {
-                        currentLicenses = typeof savedUser.licenses === 'string' ? JSON.parse(savedUser.licenses) : savedUser.licenses;
-                    }
-                } catch(e) {
-                    currentLicenses = [];
-                }
-
-                currentLicenses.forEach(lic => lic.status = 'Archivé');
-                currentLicenses.push(newLicenseItem);
-
-                const updatedData = {
-                    licenses: JSON.stringify(currentLicenses),
-                    activation_key: newKey,
-                    expiry_date: expiryDateStr
-                };
-
-                const documentId = savedUser.$id || savedUser.id;
-                if (!documentId) {
-                    throw new Error("ID du document introuvable pour la mise à jour.");
-                }
-
-                await databases.updateDocument(DATABASE_ID, COLLECTION_ID, documentId, updatedData);
-
-                savedUser.licenses = updatedData.licenses;
-                savedUser.activation_key = newKey;
-                savedUser.expiry_date = expiryDateStr;
-                localStorage.setItem('pos_logged_user', JSON.stringify(savedUser));
-
-                showDashboard(savedUser);
-                alert("Succès ! Votre clé d'activation a été générée :\n\n" + newKey);
-
-            } catch (err) {
-                console.error("Erreur Appwrite détaillée :", err);
-                alert("Erreur lors de la génération automatique de la licence : " + (err.message || err));
-            } finally {
-                if (orderBtn) {
-                    orderBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Confirmer l\'achat et générer la clé';
-                    orderBtn.disabled = false;
-                }
-            }
-        }
     </script>
-
 </body>
 </html>
