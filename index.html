@@ -93,7 +93,6 @@
             color: #60a5fa;
         }
 
-        /* تنسيق زر الحساب في القائمة العلوية */
         .nav-account-btn {
             background: rgba(255, 255, 255, 0.1);
             color: white !important;
@@ -112,7 +111,6 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* تنسيق زر التحميل في القائمة العلوية */
         .nav-download-btn {
             background: var(--primary);
             color: white !important;
@@ -415,7 +413,6 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        /* زر نسيت كلمة السر */
         .forgot-password {
             text-align: right;
             margin-top: -10px;
@@ -608,7 +605,6 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
                 </div>
-                <!-- زر نسيت كلمة السر -->
                 <div class="forgot-password">
                     <a href="#" onclick="forgotPassword(event)">Mot de passe oublié ?</a>
                 </div>
@@ -657,14 +653,12 @@
     <script>
         const { Client, Account, ID } = Appwrite;
         
-        // إعداد الاتصال بـ Appwrite
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
 
         const account = new Account(client);
 
-        // التحقق مما إذا كان المستخدم مسجلاً مسبقاً عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 const session = await account.get();
@@ -672,7 +666,7 @@
                     window.location.href = 'Dashboard.html';
                 }
             } catch (err) {
-                // المستخدم غير مسجل دخول، تبقى الصفحة عادية
+                // User not logged in
             }
         });
 
@@ -712,7 +706,6 @@
             }
         }
 
-        // 1. نظام استعادة كلمة المرور عبر Appwrite Auth
         async function forgotPassword(e) {
             e.preventDefault();
             const emailInput = prompt("Veuillez entrer votre adresse e-mail pour recevoir le lien de réinitialisation :");
@@ -728,7 +721,6 @@
             }
         }
 
-        // 2. تسجيل حساب جديد عبر Appwrite Auth
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -747,24 +739,32 @@
             regBtn.disabled = true;
 
             try {
-                // إنشاء الحساب في نظام Auth المدمج
                 await account.create(ID.unique(), email, password, name);
+                
+                // Update phone using Appwrite account API after account creation
+                try {
+                    await account.updatePhone(phone, password);
+                } catch (phoneErr) {
+                    console.error("Erreur mise à jour téléphone:", phoneErr);
+                }
 
-                // إنشاء جلسة دخول مباشرة بعد التسجيل
                 await account.createEmailSession(email, password);
 
                 alert("Compte créé avec succès !");
                 window.location.href = 'Dashboard.html';
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de la création du compte : ' + (err.message || ''));
+                if (err.code === 409) {
+                    alert("Cet e-mail est déjà utilisé. Veuillez vous connecter ou utiliser un autre e-mail.");
+                } else {
+                    alert('Erreur lors de la création du compte : ' + (err.message || ''));
+                }
             } finally {
                 regBtn.innerText = "Créer mon compte";
                 regBtn.disabled = false;
             }
         });
 
-        // 3. تسجيل الدخول عبر Appwrite Auth
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
@@ -775,7 +775,6 @@
             logBtn.disabled = true;
 
             try {
-                // التحقق وإنشاء جلسة دخول آمنة
                 await account.createEmailSession(email, password);
                 window.location.href = 'Dashboard.html';
             } catch (err) {
