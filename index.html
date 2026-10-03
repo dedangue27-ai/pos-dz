@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Pro - Système de Gestion de Stock & Vente (.DZ)</title>
+    <title>POS Pro - Inscription & Authentification</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -12,149 +12,59 @@
             --dark: #0f172a;
             --gray-light: #f8fafc;
             --text-main: #334155;
-            --text-muted: #64748b;
             --border: #e2e8f0;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--gray-light); color: var(--text-main); line-height: 1.6; }
-        
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(15, 23, 42, 0.95); display: flex; align-items: center;
-            justify-content: space-between; padding: 0 5%; z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .mini-logo { background: var(--primary); color: white; padding: 8px 12px; border-radius: 8px; font-weight: 800; }
-        .logo-text { color: white; font-size: 20px; font-weight: 700; }
-        
-        .hero {
-            padding: 140px 5% 80px; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            color: white; text-align: center;
-        }
-        .hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 20px; font-weight: 800; }
-        .hero p { color: #94a3b8; max-width: 700px; margin: 0 auto 30px; font-size: 1.1rem; }
-
-        .register-section { padding: 80px 5%; background: white; }
-        .auth-container {
-            max-width: 600px; margin: 0 auto; background: var(--gray-light);
-            padding: 40px 30px; border-radius: 20px; border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-        }
-        .auth-tabs { display: flex; margin-bottom: 25px; border-bottom: 1px solid var(--border); }
-        .tab-btn {
-            flex: 1; background: none; border: none; padding: 12px; font-size: 16px;
-            font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.3s;
-        }
-        .tab-btn.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
+        body { background-color: var(--gray-light); color: var(--text-main); display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .auth-container { max-width: 450px; width: 100%; background: white; padding: 40px 30px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
         .input-group { position: relative; margin-bottom: 20px; }
-        .input-group i { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); color: var(--text-muted); }
-        .input-group input {
-            width: 100%; padding: 14px 16px 14px 48px; background: white;
-            border: 1px solid var(--border); border-radius: 12px; font-size: 15px; outline: none;
-        }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-
-        .btn-primary {
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            background: var(--primary); color: white; padding: 14px 28px; border-radius: 12px;
-            font-weight: 600; border: none; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s;
-        }
+        .input-group i { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); color: #64748b; }
+        .input-group input { width: 100%; padding: 14px 16px 14px 48px; background: var(--gray-light); border: 1px solid var(--border); border-radius: 12px; font-size: 15px; outline: none; }
+        .input-group input:focus { border-color: var(--primary); background: white; }
+        .btn-primary { background: var(--primary); color: white; padding: 14px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; }
         .btn-primary:hover { background: var(--primary-dark); }
-        .forgot-password { text-align: right; margin-bottom: 15px; }
-        .forgot-password a { color: var(--primary); font-size: 14px; text-decoration: none; }
-        .forgot-password a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <a href="index.html" class="logo-container">
-            <div class="mini-logo">POS</div>
-            <span class="logo-text">PRO</span>
-        </a>
-    </header>
-
-    <section class="hero">
-        <h1>Espace Client & Gestion des Licences</h1>
-        <p>Connectez-vous pour accéder à votre tableau de bord et gérer vos licences d'activation.</p>
-    </section>
-
-    <section class="register-section">
-        <div class="auth-container">
-            <div class="auth-tabs" id="authTabs">
-                <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
-                <button class="tab-btn" onclick="switchTab('register')">Créer un Compte</button>
+    <div class="auth-container">
+        <h2 style="margin-bottom: 20px; text-align: center; color: var(--dark);">Créer un Compte</h2>
+        
+        <form id="registerForm">
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="regName" placeholder="Nom complet" required>
             </div>
-
-            <!-- نموذج تسجيل الدخول -->
-            <form id="loginForm" class="auth-form active">
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="logEmail" placeholder="Adresse e-mail" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="logPassword" placeholder="Mot de passe" required>
-                </div>
-                <div class="forgot-password">
-                    <a href="#" onclick="forgotPassword(event)">Mot de passe oublié ?</a>
-                </div>
-                <button type="submit" class="btn-primary" id="logBtn">Se connecter</button>
-            </form>
-
-            <!-- نموذج إنشاء حساب جديد -->
-            <form id="registerForm" class="auth-form">
-                <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="regName" placeholder="Nom complet" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="regEmail" placeholder="Adresse e-mail" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="regPhone" placeholder="Numéro (ex: +213550000000)" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="regPassword" placeholder="Mot de passe" required>
-                </div>
-                <button type="submit" class="btn-primary" id="regBtn">Créer mon compte</button>
-            </form>
-        </div>
-    </section>
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="regEmail" placeholder="Adresse e-mail" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-phone"></i>
+                <input type="tel" id="regPhone" placeholder="Numéro de téléphone" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="regPassword" placeholder="Mot de passe (6 caractères min)" required>
+            </div>
+            <button type="submit" class="btn-primary" id="regBtn">S'inscrire</button>
+        </form>
+    </div>
 
     <!-- Appwrite SDK -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Databases, ID, Query } = Appwrite;
+        const { Client, Account, Databases, ID } = Appwrite;
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
 
+        const account = new Account(client);
         const databases = new Databases(client);
+
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410'; // جدول users
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-
-            if (tab === 'register') {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('registerForm').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
-            }
-        }
-
-        // تسجيل حساب جديد وحفظ البيانات في جدول users
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -166,94 +76,52 @@
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
-            const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const purchaseDateStr = new Date().toISOString().split('T')[0];
-            const expiryDateObj = new Date();
-            expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
-            const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
-
-            const initialLicenses = [{
-                key: initialKey,
-                purchase_date: purchaseDateStr,
-                expiry_date: expiryDateStr,
-                status: 'Actif'
-            }];
-
-            const userData = { 
-                name, email, phone, password, 
-                activation_key: initialKey, 
-                licenses: JSON.stringify(initialLicenses),
-                expiry_date: expiryDateStr
-            };
-
             try {
-                const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                localStorage.setItem('pos_logged_user', JSON.stringify(response));
+                // الخطوة 1: إنشاء الحساب في نظام المصادقة (Auth) أولاً
+                const newAccount = await account.create(ID.unique(), email, password, name);
+                const userId = newAccount.$id; // معرف المستخدم من المصادقة
+
+                // بيانات التراخيص الافتراضية
+                const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+                const expiryDateObj = new Date();
+                expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+                const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
+
+                const initialLicenses = JSON.stringify([{
+                    key: initialKey,
+                    purchase_date: new Date().toISOString().split('T')[0],
+                    expiry_date: expiryDateStr,
+                    status: 'Actif'
+                }]);
+
+                // الخطوة 2: تسجيل وتخزين البيانات تلقائياً في جدول users باستخدام نفس الـ ID أو كوثيقة مرتبطة
+                const userData = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password, // أو ترك هذا الحقل فارغاً طالما أن Auth يحميه، حسب رغبتك في الجدول
+                    activation_key: initialKey,
+                    licenses: initialLicenses,
+                    expiry_date: expiryDateStr
+                };
+
+                // نقوم بحفظ المستند في الجدول باستخدام الـ userId الخاص بالمصادقة كمعرف للوثيقة لضمان التارباط
+                await databases.createDocument(DATABASE_ID, COLLECTION_ID, userId, userData);
+
+                // الخطوة 3: تسجيل الدخول تلقائياً بعد التسجيل الانتقالي
+                await account.createEmailPasswordSession(email, password);
+
+                alert("Inscription réussie ! Bienvenue sur POS Pro.");
                 window.location.href = 'Dashboard.html';
+
             } catch (err) {
                 console.error(err);
-                alert('Erreur lors de l\'enregistrement dans la base de données.');
+                alert("Erreur lors de l'inscription : " + (err.message || err));
             } finally {
-                regBtn.innerText = "Créer mon compte";
+                regBtn.innerText = "S'inscrire";
                 regBtn.disabled = false;
             }
         });
-
-        // تسجيل الدخول والتحقق من جدول users
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('logEmail').value.trim();
-            const password = document.getElementById('logPassword').value.trim();
-            const logBtn = document.getElementById('logBtn');
-
-            logBtn.innerText = "Connexion...";
-            logBtn.disabled = true;
-
-            try {
-                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-                    Query.equal('email', email),
-                    Query.equal('password', password)
-                ]);
-
-                if (response.documents.length > 0) {
-                    const user = response.documents[0];
-                    localStorage.setItem('pos_logged_user', JSON.stringify(user));
-                    window.location.href = 'Dashboard.html';
-                } else {
-                    alert('E-mail ou mot de passe incorrect.');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Erreur de connexion.');
-            } finally {
-                logBtn.innerText = "Se connecter";
-                logBtn.disabled = false;
-            }
-        });
-
-        // استعادة كلمة المرور (البحث عن المستخدم عبر البريد وتوجيهه لصفحة التعيين مع الـ userID الخاص به)
-        async function forgotPassword(e) {
-            e.preventDefault();
-            const emailInput = prompt("Veuillez entrer votre adresse e-mail :");
-            if (!emailInput) return;
-
-            try {
-                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-                    Query.equal('email', emailInput.trim())
-                ]);
-
-                if (response.documents.length > 0) {
-                    const userId = response.documents[0].$id;
-                    // توجيه المستخدم لصفحة إعادة تعيين كلمة المرور مع تمرير الـ userID في الرابط
-                    window.location.href = `reset-password.html?id=${userId}`;
-                } else {
-                    alert("Aucun compte trouvé avec cet e-mail.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Erreur lors de la recherche du compte.");
-            }
-        }
     </script>
 </body>
 </html>
