@@ -468,22 +468,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
-            <h1>Solution Ultime de Gestion de Stock & POS</h1>
-            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
-            <div class="hero-buttons">
-                <a href="#accountSection" class="btn-primary"><i class="fa-solid fa-user-circle"></i> Espace Client</a>
-            </div>
-        </div>
-        <div class="hero-card">
-            <div class="pos-preview-box">
-                <h2>POS</h2>
-                <span>SYSTEM</span>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- Download Section -->
     <section id="download" class="download-section">
