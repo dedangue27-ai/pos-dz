@@ -655,15 +655,15 @@
     <!-- Appwrite & UI Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Databases, ID, Query } = Appwrite;
-        const client = new Client()
-            .setEndpoint('https://fra.cloud.appwrite.io/v1')
-            .setProject('6abe94b500149981a9c2');
-            const account = new Account(client);
+        const { Client, Databases, Account, ID, Query } = Appwrite;
+const client = new Client()
+    .setEndpoint('https://fra.cloud.appwrite.io/v1')
+    .setProject('6abe94b500149981a9c2');
 
-        const databases = new Databases(client);
-        const DATABASE_ID = '6abe955d003d5da5415b';
-        const COLLECTION_ID = '6abe9d4b0031f85bf410';
+const databases = new Databases(client);
+const account = new Account(client); // تأكد من وجود هذا السطر هنا في الأعلى
+const DATABASE_ID = '6abe955d003d5da5415b';
+const COLLECTION_ID = '6abe9d4b0031f85bf410';
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
@@ -710,14 +710,13 @@
 
         // دالة استرجاع كلمة المرور (نسيت كلمة السر)
         // دالة استعادة كلمة المرور الآمنة عبر البريد الإلكتروني (OTP / رابط إعادة تعيين)
+// دالة استعادة كلمة المرور الآمنة عبر البريد الإلكتروني
 async function forgotPassword(e) {
     e.preventDefault();
     const emailInput = prompt("Veuillez entrer votre adresse e-mail pour recevoir le lien de réinitialisation :");
     if (!emailInput) return;
 
     try {
-        // استخدام خدمة الاستعادة الخاصة بـ Appwrite لإرسال رابط التحقق إلى البريد
-        // ملاحظة: يجب أن يكون الرابط الموجه إليه متاحاً لدك (مثلا صفحة reset.html أو نفس الصفحة)
         const redirectUrl = window.location.origin + window.location.pathname;
         
         await account.createRecovery(
@@ -726,12 +725,11 @@ async function forgotPassword(e) {
         );
 
         alert("Un e-mail de réinitialisation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.");
-        } catch (err) {
+    } catch (err) {
         console.error(err);
         alert("Erreur lors de l'envoi de l'e-mail de réinitialisation : " + (err.message || "Veuillez réessayer."));
-        }
     }
-
+}
         // تسجيل حساب جديد
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
