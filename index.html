@@ -1163,10 +1163,10 @@
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
-            const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const initialKey = "15DYS-" + Math.random().toString(36).substring(2, 8).toUpperCase();
             const purchaseDateStr = new Date().toISOString().split('T')[0];
             const expiryDateObj = new Date();
-            expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
+            expiryDateObj.set15DYS(expiryDateObj.get15DYS() + 1);
             const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
 
             const initialLicenses = [
