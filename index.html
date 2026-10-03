@@ -93,16 +93,21 @@
             color: #60a5fa;
         }
 
-        .nav-btn {
+        /* تنسيق زر التحميل في القائمة العلوية */
+        .nav-download-btn {
             background: var(--primary);
             color: white !important;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             transition: background 0.3s, transform 0.2s !important;
         }
 
-        .nav-btn:hover {
-            background: var(--primary-dark);
+        .nav-download-btn:hover {
+            background: var(--primary-dark) !important;
             transform: translateY(-2px);
         }
 
@@ -239,6 +244,38 @@
             font-size: 1.05rem;
         }
 
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .download-box {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-box h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .download-box p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .version-text {
+            display: block;
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
         /* Features */
         .features-grid {
             display: grid;
@@ -359,6 +396,24 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
+        /* زر نسيت كلمة السر */
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
         /* Contact & Footer */
         .contact {
             text-align: center;
@@ -426,6 +481,13 @@
             }
             .nav-links.active { left: 0; }
             .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
+            
+            .nav-download-btn {
+                width: 80%;
+                justify-content: center;
+                text-align: center;
+                padding: 12px;
+            }
         }
     </style>
 </head>
@@ -442,26 +504,37 @@
         </button>
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
-            <a href="#accountSection" onclick="closeMenu()">Espace Client</a>
+            <a href="#download" onclick="closeMenu()">Télécharger</a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
+            <a href="POS.exe" class="nav-download-btn" download="POS.exe">
+                <i class="fa-solid fa-download"></i> Télécharger
+            </a>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <span class="badge">Conçu pour les commerces en Algérie 🇩🇿</span>
-            <h1>Solution Ultime de Gestion de Stock & POS</h1>
-            <p>Optimisez vos ventes, suivez vos stocks en temps réel et sécurisez vos transactions avec un système rapide, moderne et intuitif.</p>
-            <div class="hero-buttons">
-                <a href="#accountSection" class="btn-primary"><i class="fa-solid fa-user-circle"></i> Espace Client</a>
-            </div>
+            <span class="badge">Solution Algérienne .DZ</span>
+            <h1>La solution ultime pour la gestion de votre stock et ventes</h1>
+            <p>Optimisez votre commerce avec POS Pro. Un logiciel rapide, sécurisé et parfaitement adapté aux besoins des professionnels en Algérie.</p>
+            <a href="#download" class="btn-primary"><i class="fa-solid fa-download"></i> Télécharger le Logiciel</a>
         </div>
         <div class="hero-card">
             <div class="pos-preview-box">
-                <h2>POS</h2>
-                <span>SYSTEM</span>
+                <h2>POS PRO</h2>
+                <span>GESTION .DZ</span>
             </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="download-box">
+            <h2>Prêt à digitaliser votre commerce ?</h2>
+            <p>Téléchargez la dernière version du logiciel dès maintenant.</p>
+            <a href="POS.exe" class="btn-primary" style="margin: 0 auto; max-width: 320px;" download="POS.exe"><i class="fa-solid fa-cloud-arrow-down"></i> Télécharger (Setup .exe)</a>
+            <span class="version-text">Compatible avec Windows 8.1 / 10 / 11</span>
         </div>
     </section>
 
@@ -490,11 +563,11 @@
         </div>
     </section>
 
-    <!-- Espace Client Auth Section -->
+    <!-- Auth & Login Section -->
     <section id="accountSection" class="register-section">
         <div class="section-title">
-            <h2>Espace Client</h2>
-            <p>Connectez-vous ou créez un compte pour accéder à vos licences.</p>
+            <h2>Espace Connexion</h2>
+            <p>Connectez-vous à votre compte client pour gérer vos licences.</p>
         </div>
         <div class="auth-container">
             <!-- Tabs -->
@@ -512,6 +585,10 @@
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="logPassword" placeholder="Mot de passe" required>
+                </div>
+                <!-- زر نسيت كلمة السر -->
+                <div class="forgot-password">
+                    <a href="#" onclick="forgotPassword(event)">Mot de passe oublié ?</a>
                 </div>
                 <button type="submit" class="btn-primary" id="logBtn" style="max-width: 100%;">Se connecter</button>
             </form>
@@ -565,7 +642,6 @@
         const DATABASE_ID = '6abe955d003d5da5415b';
         const COLLECTION_ID = '6abe9d4b0031f85bf410';
 
-        // إذا كان المستخدم مسجل دخوله مسبقاً، وجهه مباشرة إلى لوحة التحكم
         window.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('pos_logged_user');
             if (savedUser) {
@@ -606,6 +682,29 @@
             } else {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('loginForm').classList.add('active');
+            }
+        }
+
+        // دالة استرجاع كلمة المرور (نسيت كلمة السر)
+        async function forgotPassword(e) {
+            e.preventDefault();
+            const emailInput = prompt("Veuillez entrer votre adresse e-mail pour retrouver votre mot de passe :");
+            if (!emailInput) return;
+
+            try {
+                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+                    Query.equal('email', emailInput.trim())
+                ]);
+
+                if (response.documents.length > 0) {
+                    const userAccount = response.documents[0];
+                    alert(`Compte trouvé avec succès !\n\nVotre mot de passe actuel est : ${userAccount.password}`);
+                } else {
+                    alert("Aucun compte n'a été trouvé avec cette adresse e-mail.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de la recherche du compte.");
             }
         }
 
@@ -652,7 +751,6 @@
 
             try {
                 const response = await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), userData);
-                // الاحتفاظ بالمعرف الحقيقي ($id) من قاعدة البيانات
                 localStorage.setItem('pos_logged_user', JSON.stringify(response));
                 window.location.href = 'Dashboard.html';
             } catch (err) {
