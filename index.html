@@ -78,7 +78,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 25px;
         }
 
         .nav-links a {
@@ -91,6 +91,25 @@
 
         .nav-links a:hover {
             color: #60a5fa;
+        }
+
+        /* تنسيق زر الحساب في القائمة العلوية */
+        .nav-account-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: background 0.3s, border-color 0.3s !important;
+        }
+
+        .nav-account-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         /* تنسيق زر التحميل في القائمة العلوية */
@@ -476,13 +495,13 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 25px;
+                gap: 20px;
                 transition: left 0.3s ease-in-out;
             }
             .nav-links.active { left: 0; }
             .hero { flex-direction: column; text-align: center; padding: 120px 20px 60px; }
             
-            .nav-download-btn {
+            .nav-download-btn, .nav-account-btn {
                 width: 80%;
                 justify-content: center;
                 text-align: center;
@@ -505,6 +524,9 @@
         <nav class="nav-links" id="navLinks">
             <a href="#features" onclick="closeMenu()">Fonctionnalités</a>
             <a href="#download" onclick="closeMenu()">Télécharger</a>
+            <a href="#accountSection" class="nav-account-btn" onclick="closeMenu()">
+                <i class="fa-solid fa-user"></i> Compte Client
+            </a>
             <a href="#contact" onclick="closeMenu()">Contact</a>
             <a href="POS.exe" class="nav-download-btn" download="POS.exe">
                 <i class="fa-solid fa-download"></i> Télécharger
@@ -637,6 +659,7 @@
         const client = new Client()
             .setEndpoint('https://fra.cloud.appwrite.io/v1')
             .setProject('6abe94b500149981a9c2');
+            const account = new Account(client);
 
         const databases = new Databases(client);
         const DATABASE_ID = '6abe955d003d5da5415b';
@@ -686,27 +709,28 @@
         }
 
         // دالة استرجاع كلمة المرور (نسيت كلمة السر)
-        async function forgotPassword(e) {
-            e.preventDefault();
-            const emailInput = prompt("Veuillez entrer votre adresse e-mail pour retrouver votre mot de passe :");
-            if (!emailInput) return;
+        // دالة استعادة كلمة المرور الآمنة عبر البريد الإلكتروني (OTP / رابط إعادة تعيين)
+async function forgotPassword(e) {
+    e.preventDefault();
+    const emailInput = prompt("Veuillez entrer votre adresse e-mail pour recevoir le lien de réinitialisation :");
+    if (!emailInput) return;
 
-            try {
-                const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-                    Query.equal('email', emailInput.trim())
-                ]);
+    try {
+        // استخدام خدمة الاستعادة الخاصة بـ Appwrite لإرسال رابط التحقق إلى البريد
+        // ملاحظة: يجب أن يكون الرابط الموجه إليه متاحاً لدك (مثلا صفحة reset.html أو نفس الصفحة)
+        const redirectUrl = window.location.origin + window.location.pathname;
+        
+        await account.createRecovery(
+            emailInput.trim(),
+            redirectUrl 
+        );
 
-                if (response.documents.length > 0) {
-                    const userAccount = response.documents[0];
-                    alert(`Compte trouvé avec succès !\n\nVotre mot de passe actuel est : ${userAccount.password}`);
-                } else {
-                    alert("Aucun compte n'a été trouvé avec cette adresse e-mail.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Erreur lors de la recherche du compte.");
-            }
+        alert("Un e-mail de réinitialisation a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.");
+        } catch (err) {
+        console.error(err);
+        alert("Erreur lors de l'envoi de l'e-mail de réinitialisation : " + (err.message || "Veuillez réessayer."));
         }
+    }
 
         // تسجيل حساب جديد
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
