@@ -1163,7 +1163,7 @@
             regBtn.innerText = "Création en cours...";
             regBtn.disabled = true;
 
-            const initialKey = "LIFE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            
             const purchaseDateStr = new Date().toISOString().split('T')[0];
             const expiryDateObj = new Date();
             expiryDateObj.setFullYear(expiryDateObj.getFullYear() + 1);
